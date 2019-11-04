@@ -30,14 +30,18 @@
                             <table class="table table-borderless">
                                 <thead>
                                     <tr>
-                                        <th>#</th><th>Name</th><th>Image</th><th>Description</th><th>Actions</th>
+                                        <th>#</th><th>Name</th><th>Categroy</th><th>Image</th><th>Description</th><th
+                                        >Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($products as $item)
                                     <tr>
-                                        <td>{{ $loop->iteration or $item->id }}</td>
-                                        <td>{{ $item->name }}</td><td>{{ $item->image }}</td><td>{{ $item->description }}</td>
+                                        <td>{{$item->id }}</td>
+                                        <td>{{ $item->name }}</td>
+                                        <td>{{ $item->category_name }}</td>
+                                        <td><img src="{{ url(\App\Http\Controllers\Admin\ProductsController::$_mediaBasePath.$item->image) }}" width="150"/></td>
+                                        <td>{{ $item->description }}</td>
                                         <td>
                                             <a href="{{ url('/admin/products/' . $item->id) }}" title="View Product"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i></button></a>
                                             <a href="{{ url('/admin/products/' . $item->id . '/edit') }}" title="Edit Product"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a>

@@ -37,7 +37,9 @@
                                 @foreach($productcategory as $item)
                                     <tr>
                                         <td>{{  $item->id }}</td>
-                                        <td>{{ $item->name }}</td><td>{{ $item->image }}</td>
+                                        <td>{{ $item->name }}</td>
+                                        <td><img src="{{ url(\App\Http\Controllers\Admin\ProductCategoryController::$_mediaBasePath
+                                        .$item->image) }}" width="150"/></td>
                                         <td>
                                             <a href="{{ url('/admin/product-category/' . $item->id) }}" title="View ProductCategory"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i></button></a>
                                             <a href="{{ url('/admin/product-category/' . $item->id . '/edit') }}" title="Edit ProductCategory"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a>

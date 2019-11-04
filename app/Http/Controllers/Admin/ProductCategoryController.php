@@ -16,6 +16,8 @@ class ProductCategoryController extends Controller
      *
      * @return \Illuminate\View\View
      */
+    public static $_mediaBasePath='uploads/product/category/';
+
     public function index(Request $request)
     {
         $keyword = $request->get('search');
@@ -53,7 +55,7 @@ class ProductCategoryController extends Controller
     {
 
         $requestData = $request->all();
-        $requestData['image']=ApiController::__uploadImage($request->file('image'),public_path('uploads/product/category'));
+        $requestData['image']=ApiController::__uploadImage($request->file('image'),public_path(self::$_mediaBasePath));
         ProductCategory::create($requestData);
 
         return redirect('admin/product-category')->with('flash_message', 'ProductCategory added!');
@@ -102,7 +104,7 @@ class ProductCategoryController extends Controller
 
         $productcategory = ProductCategory::findOrFail($id);
         if(isset($request->image))
-            $requestData['image']=ApiController::__uploadImage($request->file('image'),public_path('uploads/product/category'));
+            $requestData['image']=ApiController::__uploadImage($request->file('image'),public_path(self::$_mediaBasePath));
 
         $productcategory->update($requestData);
 

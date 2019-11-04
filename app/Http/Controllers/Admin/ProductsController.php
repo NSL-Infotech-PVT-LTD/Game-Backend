@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\API\ApiController;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 use App\Product;
+use App\ProductCategory;
 use Illuminate\Http\Request;
 
 class ProductsController extends Controller
@@ -15,6 +17,7 @@ class ProductsController extends Controller
      *
      * @return \Illuminate\View\View
      */
+    public static $_mediaBasePath='uploads/product/';
     public function index(Request $request)
     {
         $keyword = $request->get('search');
@@ -40,7 +43,8 @@ class ProductsController extends Controller
      */
     public function create()
     {
-        return view('admin.products.create');
+        $category = ProductCategory::get()->pluck('name','id');
+        return view('admin.products.create',compact('category'));
     }
 
     /**
@@ -56,7 +60,8 @@ class ProductsController extends Controller
 			'name' => 'required'
 		]);
         $requestData = $request->all();
-        
+//        $requestData['category_id']='1';
+        $requestData['image']=ApiController::__uploadImage($request->file('image'),public_path(self::$_mediaBasePath));
         Product::create($requestData);
 
         return redirect('admin/products')->with('flash_message', 'Product added!');
@@ -83,11 +88,15 @@ class ProductsController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function edit($id)
+    public function edit(Request $request,$id)
     {
         $product = Product::findOrFail($id);
 
-        return view('admin.products.edit', compact('product'));
+        $category = ProductCategory::get()->pluck('name','id');
+        if(isset($request->image))
+            $requestData['image']=ApiController::__uploadImage($request->file('image'),public_path(self::$_mediaBasePath));
+
+        return view('admin.products.edit', compact('product','category'));
     }
 
     /**
@@ -104,7 +113,7 @@ class ProductsController extends Controller
 			'name' => 'required'
 		]);
         $requestData = $request->all();
-        
+
         $product = Product::findOrFail($id);
         $product->update($requestData);
 
@@ -124,4 +133,5 @@ class ProductsController extends Controller
 
         return redirect('admin/products')->with('flash_message', 'Product deleted!');
     }
+
 }

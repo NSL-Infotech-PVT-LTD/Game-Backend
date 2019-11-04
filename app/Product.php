@@ -8,7 +8,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
 class Product extends Model
 {
     use LogsActivity;
-    
+
 
     /**
      * The database table used by the model.
@@ -29,9 +29,9 @@ class Product extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'image', 'description', 'price'];
+    protected $fillable = ['name', 'image', 'description', 'price','category_id'];
 
-    
+
 
     /**
      * Change activity log event description
@@ -44,4 +44,20 @@ class Product extends Model
     {
         return __CLASS__ . " model has been {$eventName}";
     }
+
+
+    protected $appends = array('category_name');
+
+
+    public function getCategoryNameAttribute() {
+        try {
+            $productCategory = ProductCategory::where('id',$this->category_id)->get();
+            if ($productCategory->isEmpty() !== true)
+                    return $productCategory->first()->name;
+            return '';
+        } catch (Exception $ex) {
+            return '';
+        }
+    }
+
 }
