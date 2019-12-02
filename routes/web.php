@@ -40,7 +40,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'roles'], 'roles' =>
     Route::get('generator', ['uses' => '\Appzcoder\LaravelAdmin\Controllers\ProcessController@getGenerator']);
     Route::post('generator', ['uses' => '\Appzcoder\LaravelAdmin\Controllers\ProcessController@postGenerator']);
 
+    Route::resource('game', 'Admin\GameController');
 });
 
-Route::resource('admin/products', 'Admin\\ProductsController');
-Route::resource('admin/product-category', 'Admin\\ProductCategoryController');
+Route::resource('admin/competition', 'Admin\\CompetitionController');
+Route::resource('admin/news', 'Admin\\NewsController');

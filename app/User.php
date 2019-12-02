@@ -18,7 +18,7 @@ class User extends Authenticatable {
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','status','profile_image','dob','mobile',
+        'first_name','last_name', 'email', 'password','status','profile_image','dob','mobile',
     ];
 
     /**
@@ -40,9 +40,17 @@ class User extends Authenticatable {
     ];
 
 
-    protected $appends = array('role');
+    protected $appends = array('role','fullname');
 
 
+    public function getFullNameAttribute() {
+         try {
+           
+            return $this->first_name.' '.$this->last_name;
+        } catch (Exception $ex) {
+            return [];
+        }
+    }
     public function getRoleAttribute() {
         try {
             $rolesID = \DB::table('role_user')->where('user_id', $this->id)->pluck('role_id');

@@ -5,17 +5,17 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 
-class Product extends Model
+class Game extends Model
 {
     use LogsActivity;
-
+    
 
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'products';
+    protected $table = 'games';
 
     /**
     * The database primary key value.
@@ -29,9 +29,9 @@ class Product extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'image', 'description', 'price','category_id'];
+    protected $fillable = ['name', 'image'];
 
-
+    
 
     /**
      * Change activity log event description
@@ -44,20 +44,4 @@ class Product extends Model
     {
         return __CLASS__ . " model has been {$eventName}";
     }
-
-
-    protected $appends = array('category_name');
-
-
-    public function getCategoryNameAttribute() {
-        try {
-            $productCategory = ProductCategory::where('id',$this->category_id)->get();
-            if ($productCategory->isEmpty() !== true)
-                    return $productCategory->first()->name;
-            return '';
-        } catch (Exception $ex) {
-            return '';
-        }
-    }
-
 }

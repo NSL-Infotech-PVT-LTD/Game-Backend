@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 
-class ProductCategory extends Model
+class news extends Model
 {
     use LogsActivity;
     
@@ -15,7 +15,7 @@ class ProductCategory extends Model
      *
      * @var string
      */
-    protected $table = 'product_categories';
+    protected $table = 'news';
 
     /**
     * The database primary key value.
@@ -29,7 +29,7 @@ class ProductCategory extends Model
      *
      * @var array
      */
-    protected $fillable = ['name', 'image'];
+    protected $fillable = ['title', 'description', 'image'];
 
     
 

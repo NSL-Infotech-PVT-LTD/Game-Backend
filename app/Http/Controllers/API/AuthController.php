@@ -76,7 +76,7 @@ class AuthController extends ApiController {
      * @return \Illuminate\Http\Response
      */
     public function register(Request $request) {
-        $rules = ['name' => 'required', 'email' => 'required|email|unique:users', 'password' => 'required', 'c_password' => 'required|same:password'];
+        $rules = ['first_name' => 'required','last_name' => 'required', 'email' => 'required|email|unique:users', 'password' => 'required', 'c_password' => 'required|same:password','mobile'=>'required','country'=>'','image'=>''];
         $rules = array_merge($this->requiredParams, $rules);
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -85,6 +85,9 @@ class AuthController extends ApiController {
         }
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
+        
+        if (isset($request->image))
+            $input['image'] = parent::__uploadImage($request->file('image'), public_path(\App\Http\Controllers\Admin\UsersController::$_mediaBasePath));
         $user = User::create($input);
         $success['token'] = $user->createToken('MyApp')->accessToken;
         $success['user'] = $user;
@@ -97,55 +100,12 @@ class AuthController extends ApiController {
 
         // Add user device details for firbase
         parent::addUserDeviceData($user, $request);
-        if ($user->status != 1) {
-            return parent::error('Please contact admin to activate your account', 200);
-        }
+//        if ($user->status != 1) {
+//            return parent::error('Please contact admin to activate your account', 200);
+//        }
         return parent::success($success, $this->successStatus);
     }
 
-    public function getDirectories(Request $request) {
-        $model = new App\Directory;
-        if ($model->get()->isEmpty() === false) {
-            $perPage = isset($request->limit) ? $request->limit : 20;
-            if (isset($request->search))
-                $model = $model->Where('name', 'LIKE', "%$request->search%");
-            $model = $model->orderBy('id','desc');
-            return parent::success($model->paginate($perPage));
-//            return parent::success($directories, $this->successStatus);
-        } else {
-            return parent::error('No Directories Found', 200);
-        }
-    }
-
-    public function getAlphaLinks(Request $request) {
-        $model = new App\AlphaLink;
-        if ($model->get()->isEmpty() === false) {
-            $perPage = isset($request->limit) ? $request->limit : 20;
-            if (isset($request->search))
-                $model = $model->Where('name', 'LIKE', "%$request->search%");
-            $model = $model->orderBy('id','desc');
-            return parent::success($model->paginate($perPage));
-        } else {
-            return parent::error('No Alpha Links Found', 200);
-        }
-    }
-
-    public function getMeta(Request $request) {
-
-        $validator = Validator::make($request->all(), [
-                    'meta_name' => 'required',
-        ]);
-        if ($validator->fails()) {
-            $errors = self::formatValidator($validator);
-            return parent::error($errors, 200);
-        }
-        $meta = App\Meta::where('meta_name', $request->input('meta_name'))->first();
-        if ($meta) {
-            return parent::success($meta, $this->successStatus);
-        } else {
-            return parent::error('No Meta Content Found', 200);
-        }
-    }
 
     public function resetPassword(Request $request, Factory $view) {
         //Validating attributes

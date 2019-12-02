@@ -100,7 +100,7 @@
                                 @foreach($users as $item)
                                 <tr>
                                     <td>{{ $item->id }}</td>
-                                    <td><a href="{{ url('/admin/users', $item->id) }}">{{ $item->name }}</a></td><td>{{ $item->email }}</td>
+                                    <td><a href="{{ url('/admin/users', $item->id) }}">{{ $item->fullname }}</a></td><td>{{ $item->email }}</td>
                                     <td>
                                         <label class="switch">
                                             <input type="checkbox" <?php if ($item->status) {

@@ -23,6 +23,7 @@ Route::post('forget-password', 'API\AuthController@resetPassword');
 
 Route::group(['middleware' => ['auth:api', 'roles'], 'namespace' => 'API'], function() {
 //    Route::group(['middleware' => ['auth:api', 'roles'], 'roles' => ['App-Users'],'namespace' => 'API'], function() {
-//    Route::post('getDirectories', 'AuthController@getDirectories');
-
+    Route::post('games', 'GameController@getItems');
+    Route::post('competitions', 'CompetitionController@getItems');
+    Route::post('news', 'NewsController@getItems');
 });

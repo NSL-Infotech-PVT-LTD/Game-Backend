@@ -7,20 +7,20 @@
 
             <div class="col-md-9">
                 <div class="card">
-                    <div class="card-header">User</div>
+                    <div class="card-header">Game {{ $game->id }}</div>
                     <div class="card-body">
 
-                        <a href="{{ url('/admin/users') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
-                        <a href="{{ url('/admin/users/' . $user->id . '/edit') }}" title="Edit User"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>
+                        <a href="{{ url('/admin/game') }}" title="Back"><button class="btn btn-warning btn-sm"><i class="fa fa-arrow-left" aria-hidden="true"></i> Back</button></a>
+                        <a href="{{ url('/admin/game/' . $game->id . '/edit') }}" title="Edit Game"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></a>
                         {!! Form::open([
-                            'method' => 'DELETE',
-                            'url' => ['/admin/users', $user->id],
+                            'method'=>'DELETE',
+                            'url' => ['admin/game', $game->id],
                             'style' => 'display:inline'
                         ]) !!}
                             {!! Form::button('<i class="fa fa-trash-o" aria-hidden="true"></i> Delete', array(
                                     'type' => 'submit',
                                     'class' => 'btn btn-danger btn-sm',
-                                    'title' => 'Delete User',
+                                    'title' => 'Delete Game',
                                     'onclick'=>'return confirm("Confirm delete?")'
                             ))!!}
                         {!! Form::close() !!}
@@ -29,15 +29,11 @@
 
                         <div class="table-responsive">
                             <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>ID.</th> <th>Name</th><th>Email</th>
-                                    </tr>
-                                </thead>
                                 <tbody>
                                     <tr>
-                                        <td>{{ $user->id }}</td> <td> {{ $user->fullname }} </td><td> {{ $user->email }} </td>
+                                        <th>ID</th><td>{{ $game->id }}</td>
                                     </tr>
+                                    <tr><th> Name </th><td> {{ $game->name }} </td></tr><tr><th> Image </th><td> {{ $game->image }} </td></tr>
                                 </tbody>
                             </table>
                         </div>

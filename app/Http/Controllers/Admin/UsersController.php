@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Auth;
 class UsersController extends Controller {
 
+
+    public static $_mediaBasePath = 'uploads/users/';
     /**
      * Display a listing of the resource.
      *
@@ -51,7 +53,7 @@ class UsersController extends Controller {
         $this->validate(
                 $request,
                 [
-                    'name' => 'required',
+                    'first_name' => 'required',
                     'email' => 'required|string|max:255|email|unique:users',
                     'password' => 'required',
                     'roles' => 'required'
@@ -93,7 +95,7 @@ class UsersController extends Controller {
         $roles = Role::select('id', 'name', 'label')->get();
         $roles = $roles->pluck('label', 'name');
 
-        $user = User::with('roles')->select('id', 'name', 'email')->findOrFail($id);
+        $user = User::with('roles')->findOrFail($id);
         $user_roles = [];
         foreach ($user->roles as $role) {
             $user_roles[] = $role->name;
@@ -114,7 +116,7 @@ class UsersController extends Controller {
         $this->validate(
                 $request,
                 [
-                    'name' => 'required',
+                    'first_name' => 'required',
                     'email' => 'required|string|max:255|email|unique:users,email,' . $id,
                     'roles' => 'required'
                 ]
@@ -131,7 +133,7 @@ class UsersController extends Controller {
 
         $user->roles()->detach();
         foreach ($request->roles as $role) {
-            $user->assignRole('App-Users');
+//            $user->assignRole('App-Users');
             $user->assignRole($role);
         }
 
