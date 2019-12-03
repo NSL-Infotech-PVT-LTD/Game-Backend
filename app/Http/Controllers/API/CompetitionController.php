@@ -27,5 +27,14 @@ class CompetitionController extends ApiController {
             return parent::error($ex->getMessage());
         }
     }
+    
+        public function updateleaderboard(Request $request) {
+        $rules = ['competition_id' => 'required|exsits.competitions.id',
+                   'user_id' => 'required|exsits.users.id',
+                   'score' => 'required',
+            ];
+//        dd($request->all());
+        
+    }
 
 }
