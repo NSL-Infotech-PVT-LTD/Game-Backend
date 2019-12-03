@@ -33,7 +33,18 @@
                                     <tr>
                                         <th>ID</th><td>{{ $news->id }}</td>
                                     </tr>
-                                    <tr><th> Title </th><td> {{ $news->title }} </td></tr><tr><th> Description </th><td> {{ $news->description }} </td></tr><tr><th> Image </th><td> {{ $news->image }} </td></tr>
+                                    <tr><th> Title </th><td> {{ $news->title }} </td></tr><tr><th> Description </th><td> {{ $news->description }} </td></tr>
+                                    <tr>
+                                        <th> Image </th>
+                                        <td> 
+        <?php if (file_exists(public_path(App\Http\Controllers\Admin\NewsController::$_mediaBasePath . $news->image))): ?>
+        <img width="50" src="<?= url(App\Http\Controllers\Admin\NewsController::$_mediaBasePath . $news->image) ?>">
+                                        <?php else: ?>
+                                            <!--<span>-</span>-->
+        <img width="50" src="<?= url(App\Http\Controllers\Admin\NewsController::$_mediaBasePath . 'noimage.png') ?>">
+                                        <?php endif; ?>                            
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>

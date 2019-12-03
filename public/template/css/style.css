@@ -135,7 +135,7 @@ a.sidebar-icon:hover{
     top: 0;
     left: 0;
     bottom: 0;
-    background-color:#b52e31;
+    background-color:#56befc;
     color: #aaabae;
     box-shadow: 0px 0px 10px 0px rgb(58, 41, 31);
 	-o-box-shadow: 0px 0px 10px 0px rgb(58, 41, 31);
@@ -173,11 +173,11 @@ label.col-sm-2.control-label {
     color: #fff;
     white-space: nowrap;
     z-index: 2;
-    background-color: #b52e31;
+    background-color: #56befc;
     font-size:0.9em;
     font-family: 'Roboto', sans-serif;
 	border:none;
-	border-left: 4px solid #b52e31;
+	border-left: 4px solid #56befc;
 }
 #menu li a:hover {
   color: #ffffff;
@@ -552,7 +552,7 @@ ul.qty li p{
 }
 /*-- header_top --*/
 .top_bg{
-	background: #bb8d24;
+	background: #2b303a;
 }
 .header_top {
     padding: 15px 0 5px;

@@ -36,11 +36,11 @@
                 <!-- header-starts -->
                 <div class="header-section">
                     <!-- top_bg -->
-                    <div class="top_bg">
+                    <div class="top_bg" >
 
                         <div class="header_top">
                             <div class="top_right">
-                                <img style = "width:10%" src = "{{ asset('template/images/logo.png') }}">
+                                <img style = "width:19%" src = "{{ asset('template/images/logo_web_small.png') }}">
                             </div>
                             <div class="top_left">
 
@@ -86,7 +86,7 @@
         </div>
         <!--//content-inner-->
         <!--/sidebar-menu-->
-        <div class="sidebar-menu">
+        <div class="sidebar-menu" >
             <header class="logo1">
                 <a href="#" class="sidebar-icon"> <span class="fa fa-bars"></span> </a>
             </header>
@@ -99,8 +99,9 @@
                     <li><a href="{{ url('admin/game')}}"><i class="fa fa-rocket"></i> <span>Game</span></a></li>
                     <li><a href="{{ url('admin/competition')}}"><i class="fa fa-rocket"></i> <span>Competition</span></a></li>
                      <li><a href="{{ url('admin/news')}}"><i class="fa fa-rocket"></i> <span>News</span></a></li>
-                    <li><a href="{{ url('admin/permissions')}}"><i class="fa fa-rocket"></i> <span>Permissions</span></a></li>
-
+                    <!--<li><a href="{{ url('admin/permissions')}}"><i class="fa fa-rocket"></i> <span>Permissions</span></a></li>-->
+                     <li><a href="{{ url('admin/compition-lead-board')}}"><i class="fa fa-rocket"></i> <span>Leaderboard</span></a></li>
+                            
                     <li><a href="{{ url('admin/generator')}}"><i class="fa fa-bars"></i> <span>Generator</span></a></li>
 
                 </ul>

@@ -38,7 +38,18 @@
                                 <tr>
                                     <td>{{ $item->id }}</td>
                                     <td>{{ $item->name }}</td>
-                                    <td><img width="50" src="<?= url(App\Http\Controllers\Admin\GameController::$_mediaBasePath . $item->image) ?>"></td>
+                                    <td>
+
+                                        <?php if (file_exists(public_path(App\Http\Controllers\Admin\GameController::$_mediaBasePath . $item->image))): ?>
+                                            <img width="50" src="<?= url(App\Http\Controllers\Admin\GameController::$_mediaBasePath . $item->image) ?>">
+                                        <?php else: ?>
+                                            <!--<span>-</span>-->
+            <img width="50" src="<?= url(App\Http\Controllers\Admin\GameController::$_mediaBasePath . 'noimage.png') ?>">
+                                        <?php endif; ?>                        
+
+
+
+                                    </td>
                                     <td>
                                         <a href="{{ url('/admin/game/' . $item->id) }}" title="View Game"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i></button></a>
                                         <a href="{{ url('/admin/game/' . $item->id . '/edit') }}" title="Edit Game"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a>

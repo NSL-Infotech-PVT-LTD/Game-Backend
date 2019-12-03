@@ -45,3 +45,4 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'roles'], 'roles' =>
 
 Route::resource('admin/competition', 'Admin\\CompetitionController');
 Route::resource('admin/news', 'Admin\\NewsController');
+Route::resource('admin/compition-lead-board', 'Admin\\CompitionLeadBoardController');

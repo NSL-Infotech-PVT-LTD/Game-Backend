@@ -43,10 +43,11 @@
                                     <td>{{  $item->id }}</td>
                                     <td>{{ $item->name }}</td>
                                     <td>
-                                        <?php if (file_exists(public_path(App\Http\Controllers\Admin\CompetitionController::$_mediaBasePath . $item->image))): ?>
-                                            <img width="50" src="<?= url(App\Http\Controllers\Admin\CompetitionController::$_mediaBasePath . $item->image) ?>">
+  <?php if (file_exists(public_path(App\Http\Controllers\Admin\CompetitionController::$_mediaBasePath . $item->image))): ?>
+  <img width="50" src="<?= url(App\Http\Controllers\Admin\CompetitionController::$_mediaBasePath . $item->image) ?>">
                                         <?php else: ?>
-                                            <span>-</span>
+                                            <!--<span>-</span>-->
+  <img width="50" src="<?= url(App\Http\Controllers\Admin\CompetitionController::$_mediaBasePath . 'noimage.png') ?>">
                                         <?php endif; ?>
                                     </td>
 

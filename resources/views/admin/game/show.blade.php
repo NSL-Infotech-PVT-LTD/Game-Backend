@@ -33,7 +33,17 @@
                                     <tr>
                                         <th>ID</th><td>{{ $game->id }}</td>
                                     </tr>
-                                    <tr><th> Name </th><td> {{ $game->name }} </td></tr><tr><th> Image </th><td> {{ $game->image }} </td></tr>
+                                    <tr><th> Name </th><td> {{ $game->name }} </td></tr><tr>
+                                        <th> Image </th>
+                                        <td> 
+        <?php if (file_exists(public_path(App\Http\Controllers\Admin\GameController::$_mediaBasePath . $game->image))): ?>
+        <img width="50" src="<?= url(App\Http\Controllers\Admin\GameController::$_mediaBasePath . $game->image) ?>">
+        <?php else: ?>
+        <img width="50" src="<?= url(App\Http\Controllers\Admin\GameController::$_mediaBasePath . 'noimage.png') ?>">
+                <!--<span>-</span>-->
+        <?php endif; ?>                            
+        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>

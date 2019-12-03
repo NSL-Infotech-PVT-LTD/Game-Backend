@@ -45,7 +45,7 @@ class CompetitionController extends Controller {
      * @return \Illuminate\View\View
      */
     public function create() {
-        $game = Game::get()->pluck('id','name');
+        $game = Game::get()->pluck('name', 'id');
         return view('admin.competition.create', compact('game'));
     }
 
@@ -97,7 +97,7 @@ class CompetitionController extends Controller {
      */
     public function edit(Request $request, $id) {
         $competition = Competition::findOrFail($id);
-        $game = Game::get()->pluck('name','id');
+        $game = Game::get()->pluck('name', 'id');
 
         return view('admin.competition.edit', compact('competition', 'game'));
     }

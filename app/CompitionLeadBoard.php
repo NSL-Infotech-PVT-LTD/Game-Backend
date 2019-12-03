@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 
-class News extends Model
+class CompitionLeadBoard extends Model
 {
     use LogsActivity;
     
@@ -15,7 +15,7 @@ class News extends Model
      *
      * @var string
      */
-    protected $table = 'news';
+    protected $table = 'compition_lead_boards';
 
     /**
     * The database primary key value.
@@ -29,7 +29,7 @@ class News extends Model
      *
      * @var array
      */
-    protected $fillable = ['title', 'description', 'image'];
+    protected $fillable = ['score'];
 
     
 
