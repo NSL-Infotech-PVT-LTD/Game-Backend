@@ -35,13 +35,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'roles'], 'roles' =>
         'index', 'show', 'destroy'
     ]);
     Route::resource('settings', 'Admin\SettingsController');
-
-
     Route::get('generator', ['uses' => '\Appzcoder\LaravelAdmin\Controllers\ProcessController@getGenerator']);
     Route::post('generator', ['uses' => '\Appzcoder\LaravelAdmin\Controllers\ProcessController@postGenerator']);
-
     Route::resource('game', 'Admin\GameController');
-
     Route::resource('competition', 'Admin\\CompetitionController');
     Route::resource('news', 'Admin\\NewsController');
     Route::resource('compition-lead-board', 'Admin\\CompitionLeadBoardController');
