@@ -45,9 +45,10 @@
                                     <td>
   <?php if (file_exists(public_path(App\Http\Controllers\Admin\CompetitionController::$_mediaBasePath . $item->image))): ?>
   <img width="50" src="<?= url(App\Http\Controllers\Admin\CompetitionController::$_mediaBasePath . $item->image) ?>">
-                                        <?php else: ?>
-                                            <!--<span>-</span>-->
+    <?php else: ?>
   <img width="50" src="<?= url(App\Http\Controllers\Admin\CompetitionController::$_mediaBasePath . 'noimage.png') ?>">
+                                            <!--<span>-</span>-->
+  
                                         <?php endif; ?>
                                     </td>
 

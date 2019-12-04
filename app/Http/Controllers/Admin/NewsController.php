@@ -50,8 +50,9 @@ class newsController extends Controller {
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function store(Request $request) {
+         $requestData = $request->all();
         $requestData['image'] = ApiController::__uploadImage($request->file('image'), public_path(self::$_mediaBasePath));
-        $requestData = $request->all();
+       
 
         News::create($requestData);
 

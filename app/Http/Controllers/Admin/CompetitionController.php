@@ -66,9 +66,9 @@ class CompetitionController extends Controller {
             'prize_image' => 'required',
         ]);
 
+        $requestData = $request->all();
         $requestData['image'] = ApiController::__uploadImage($request->file('image'), public_path(self::$_mediaBasePath));
         $requestData['prize_image'] = \App\Http\Controllers\API\ApiController::__uploadImage($request->file('prize_image'), public_path('uploads/competition/prize_details'));
-        $requestData = $request->all();
 //        dd($requestData);
         Competition::create($requestData);
 

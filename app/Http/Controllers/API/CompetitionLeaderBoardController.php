@@ -40,23 +40,21 @@ class CompetitionLeaderBoardController extends ApiController {
             $userCheck = MyModel::where('competition_id', $request->competition_id)->where('user_id', \Auth::id())->get();
 //            dd($userCheck);
             if ($userCheck->isEmpty() !== true):
-            $id = $userCheck->first()->id;
-            $score = $userCheck->first()->score;
-            if($score > $request->score):
-                return parent::error('Your score is less than cureent score');
-            
-            endif;
-                $updateleader = MyModel::findOrFail($id);
+                $id = $userCheck->first()->id;
+                $score = $userCheck->first()->score;
+                if ($score >= $request->score)
+                    return parent::error('Your score is less or equals than current score');
 
                 $count = $userCheck->first()->count;
-                if($count === 2):
+                if ($count === 2):
                     return parent::error('Your update limit exceeded');
                 endif;
                 $input = $request->all();
+                $updateleader = MyModel::findOrFail($id);
                 $input['user_id'] = \Auth::id();
                 $input['count'] = '2';
                 $updateleader->fill($input);
-                
+
                 $updateleader->save();
                 return parent::successCreated(['Message' => 'Updated Successfully', 'updateleader' => $updateleader]);
             else:
