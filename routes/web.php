@@ -41,8 +41,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'roles'], 'roles' =>
     Route::post('generator', ['uses' => '\Appzcoder\LaravelAdmin\Controllers\ProcessController@postGenerator']);
 
     Route::resource('game', 'Admin\GameController');
-});
 
-Route::resource('admin/competition', 'Admin\\CompetitionController');
-Route::resource('admin/news', 'Admin\\NewsController');
-Route::resource('admin/compition-lead-board', 'Admin\\CompitionLeadBoardController');
+    Route::resource('competition', 'Admin\\CompetitionController');
+    Route::resource('news', 'Admin\\NewsController');
+    Route::resource('compition-lead-board', 'Admin\\CompitionLeadBoardController');
+});
