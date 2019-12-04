@@ -26,4 +26,5 @@ Route::group(['middleware' => ['auth:api', 'roles'], 'namespace' => 'API'], func
     Route::post('games', 'GameController@getItems');
     Route::post('competitions', 'CompetitionController@getItems');
     Route::post('news', 'NewsController@getItems');
+    Route::post('update/leaderboard', 'CompetitionLeaderBoardController@updateleaderboard');
 });

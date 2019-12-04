@@ -29,7 +29,7 @@ class CompitionLeadBoard extends Model
      *
      * @var array
      */
-    protected $fillable = ['score'];
+    protected $fillable = ['score','competition_id','user_id','count'];
 
     
 
