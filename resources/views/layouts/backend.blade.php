@@ -113,9 +113,9 @@
                     <li><a href="{{ url('admin/users')}}"><i class="fa fa-users"></i> <span>Users</span></a></li>
                     <!--<li><a href="{{ url('admin/roles')}}"><i class="fa fa-rocket"></i> <span>Roles</span></a></li>-->
                     <li><a href="{{ url('admin/game')}}"><i class="fa fa-rocket"></i> <span>Game</span></a></li>
-                    <li><a href="{{ url('admin/competition')}}"><i class="fa fa-rocket"></i> <span>Competition</span></a></li>
+                <li><a href="{{ url('admin/competition')}}"><i class="fa fa-rocket"></i> <span>Competition</span></a></li>
                      <li><a href="{{ url('admin/news')}}"><i class="fa fa-rocket"></i> <span>News</span></a></li>
-                     <li><a href="{{ url('admin/competition-categories')}}"><i class="fa fa-rocket"></i> <span>Category</span></a></li>
+     <li><a href="{{ url('admin/competition-categories')}}"><i class="fa fa-rocket"></i> <span>Competition Category</span></a></li>
                     <!--<li><a href="{{ url('admin/permissions')}}"><i class="fa fa-rocket"></i> <span>Permissions</span></a></li>-->
         <!--<li><a href="{{ url('admin/generator')}}"><i class="fa fa-bars"></i> <span>Generator</span></a></li>-->
 
@@ -143,9 +143,10 @@
             toggle = !toggle;
         });
         $("#menu li a").each(function () {
-            if ((window.location.href.indexOf($(this).attr('href'))) > -1) {
-                $(this).parent().addClass('active');
-            }
+            var basepath =  window.location.pathname.split('/')[4];
+        if($(this).attr('href').split('/')[6] == basepath){
+               $(this).parent().addClass('active');
+           }
         });
     </script>
     <!--js -->

@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 
 use App\CompetitionCategory;
 use Illuminate\Http\Request;
-
+use Datatables;
 class CompetitionCategoriesController extends Controller
 {
     /**
@@ -15,19 +15,40 @@ class CompetitionCategoriesController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index(Request $request)
-    {
-        $keyword = $request->get('search');
-        $perPage = 25;
+    protected $__rulesforindex = ['name' => 'required'];
+    public function index(Request $request) {
+        if ($request->ajax()) {
+            $competitionCategory = CompetitionCategory::all();
+//               dd($competition);
+            return Datatables::of($competitionCategory)
+                            ->addIndexColumn()
+//                            ->editColumn('image', function($item) {
+//                            if(empty($item->image)) {
+//                                return "<img width='50' src=".url('uploads/competition/noimage.png').">";
+//                            }else{
+//                            return "<img width='50' src=".url('uploads/competition/'.$item->image).">";   
+//                            }
+//                                
+//                            })
+                            ->addColumn('action', function($item) {
+                                
+                                $return = '';
 
-        if (!empty($keyword)) {
-            $competitioncategories = CompetitionCategory::where('name', 'LIKE', "%$keyword%")
-                ->latest()->paginate($perPage);
-        } else {
-            $competitioncategories = CompetitionCategory::latest()->paginate($perPage);
+                                if ($item->state == '0'):
+                                    $return .= "<button class='btn btn-danger btn-sm changeStatus' title='UnBlock'  data-id=" . $item->id . " data-status='UnBlock'>Unblock / Active</button>";
+                                else:
+                                    $return .= "<button class='btn btn-success btn-sm changeStatus' title='Block' data-id=" . $item->id . " data-status='Block' >Block / Inactive</button>";
+                                endif;
+                                $return .= " <a href=" . url('admin/competition-categories/' . $item->id) . " title='View Competition'><button class='btn btn-info btn-sm'><i class='fa fa-eye' aria-hidden='true'></i></button></a>
+                                        <a href=" . url('admin/competition-categories/' . $item->id . '/edit') . " title='Edit competition'><button class='btn btn-primary btn-sm'><i class='fa fa-pencil-square-o' aria-hidden='true'></i></button></a>"
+                                        . " <button class='btn btn-danger btn-sm btnDelete' type='submit' data-remove='" . url('/admin/competition/' . $item->id) . "'><i class='fa fa-trash-o' aria-hidden='true'></i></button>";
+                                return $return;
+                            })
+                        
+                            ->rawColumns(['action','image'])
+                            ->make(true);
         }
-
-        return view('admin.competition-categories.index', compact('competitioncategories'));
+        return view('admin.competition-categories.index', ['rules' => array_keys($this->__rulesforindex)]);
     }
 
     /**
@@ -116,5 +137,11 @@ class CompetitionCategoriesController extends Controller
         CompetitionCategory::destroy($id);
 
         return redirect('admin/competition-categories')->with('flash_message', 'CompetitionCategory deleted!');
+    }
+    public function changeStatus(Request $request) {
+        $CompetitionCategory = CompetitionCategory::findOrFail($request->id);
+        $CompetitionCategory->state = $request->status == 'Block' ? '0' : '1';
+        $CompetitionCategory->save();
+        return response()->json(["success" => true, 'message' => 'Competition Category updated!']);
     }
 }

@@ -5,7 +5,7 @@
         <div class="row">
             @include('admin.sidebar')
 
-            <div class="col-md-9">
+            <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">Competitioncategories</div>
                     <div class="card-body">
@@ -13,57 +13,113 @@
                             <i class="fa fa-plus" aria-hidden="true"></i> Add New
                         </a>
 
-                        {!! Form::open(['method' => 'GET', 'url' => '/admin/competition-categories', 'class' => 'form-inline my-2 my-lg-0 float-right', 'role' => 'search'])  !!}
-                        <div class="input-group">
-                            <input type="text" class="form-control" name="search" placeholder="Search..." value="{{ request('search') }}">
-                            <span class="input-group-append">
-                                <button class="btn btn-secondary" type="submit">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </span>
-                        </div>
-                        {!! Form::close() !!}
-
-                        <br/>
-                        <br/>
-                        <div class="table-responsive">
-                            <table class="table table-borderless">
+                    <div class ="table-responsive">
+                    <table class="table table-borderless data-table" >
+                        
                                 <thead>
-                                    <tr>
-                                        <th>#</th><th>Name</th><th>Actions</th>
-                                    </tr>
+                                <tr>
+                                    <th>ID</th>
+                                    <?php foreach ($rules as $rule): ?>
+                                    <th>{{ucfirst($rule)}}</th>
+                                    <?php endforeach; ?>
+                                    <th>Action</th>
+                                </tr>
                                 </thead>
-                                <tbody>
-                                @foreach($competitioncategories as $item)
-                                    <tr>
-                                        <td>{{ $loop->iteration or $item->id }}</td>
-                                        <td>{{ $item->name }}</td>
-                                        <td>
-                                            <a href="{{ url('/admin/competition-categories/' . $item->id) }}" title="View CompetitionCategory"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i></button></a>
-                                            <a href="{{ url('/admin/competition-categories/' . $item->id . '/edit') }}" title="Edit CompetitionCategory"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a>
-                                            {!! Form::open([
-                                                'method' => 'DELETE',
-                                                'url' => ['/admin/competition-categories', $item->id],
-                                                'style' => 'display:inline'
-                                            ]) !!}
-                                                {!! Form::button('<i class="fa fa-trash-o" aria-hidden="true"></i>', array(
-                                                        'type' => 'submit',
-                                                        'class' => 'btn btn-danger btn-sm',
-                                                        'title' => 'Delete CompetitionCategory',
-                                                        'onclick'=>'return confirm("Confirm delete?")'
-                                                )) !!}
-                                            {!! Form::close() !!}
-                                        </td>
-                                    </tr>
-                                @endforeach
-                                </tbody>
                             </table>
-                            <div class="pagination-wrapper"> {!! $competitioncategories->appends(['search' => Request::get('search')])->render() !!} </div>
-                        </div>
+                    </div>
 
                     </div>
                 </div>
             </div>
         </div>
     </div>
+  <script type="text/javascript">
+        $(function () {
+            var table = $('.data-table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('competition-categories.index') }}",
+                columns: [
+                    {data: 'id', name: 'id'},
+                        <?php foreach ($rules as $rule): ?>
+                    {data: "{{$rule}}", name: "{{$rule}}"},
+                        <?php endforeach; ?>
+                    {data: 'action', name: 'action', orderable: false, searchable: false},
+                ]
+            });
+//deleting data
+            $('.data-table').on('click', '.btnDelete[data-remove]', function (e) {
+                e.preventDefault();
+                var url = $(this).data('remove');
+                swal.fire({
+                    title: "Are you sure want to remove this item?",
+                    text: "Data will be Temporary Deleted!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "Confirm",
+                    cancelButtonText: "Cancel",
+                }).then((result) => {
+                    Swal.showLoading();
+                    if (result.value) {
+                        $.ajax({
+                            url: url,
+                            type: 'DELETE',
+                            dataType: 'json',
+                            data: {method: '_DELETE', submit: true, _token: '{{csrf_token()}}'},
+                            success: function (data) {
+                                if (data == 'Success') {
+                                    swal.fire("Deleted!", "Competition Category has been deleted", "success");
+                                    table.ajax.reload(null, false);
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+            $('.data-table').on('click', '.changeStatus', function (e) {
+                e.preventDefault();
+                var id = $(this).attr('data-id');
+                var status = $(this).attr('data-status');
+                Swal.fire({
+                    title: 'Are you sure you wanted to change status?',
+                    text: "You can revert this,in case you change your mind!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, ' + status + ' it!'
+                }).then((result) => {
+                    Swal.showLoading();
+                    if (result.value) {
+                        var form_data = new FormData();
+                        form_data.append("id", id);
+                        form_data.append("status", status);
+                        form_data.append("_token", $('meta[name="csrf-token"]').attr('content'));
+                        $.ajax({
+                            url: "{{route('competition-categories.changeStatus')}}",
+                            method: "POST",
+                            data: form_data,
+                            contentType: false,
+                            cache: false,
+                            processData: false,
+                            beforeSend: function () {
+//                        Swal.showLoading();
+                            },
+                            success: function (data)
+                            {
+                                Swal.fire(
+                                    status + ' !',
+                                    'Competition Category has been ' + status + ' .',
+                                    'success'
+                                ).then(() => {
+                                    table.ajax.reload(null, false);
+                                });
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
 @endsection

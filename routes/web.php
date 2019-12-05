@@ -46,4 +46,5 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'roles'], 'roles' =>
     Route::post('game/change-status', 'admin\\GameController@changeStatus')->name('game.changeStatus');
     Route::post('news/change-status', 'admin\\NewsController@changeStatus')->name('news.changeStatus');
     Route::resource('competition-categories', 'Admin\\CompetitionCategoriesController');
+     Route::post('competition-categories/change-status', 'admin\\NewsController@changeStatus')->name('competition-categories.changeStatus');
 });
