@@ -5,16 +5,17 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 
-class Competition extends Model
+class CompetitionCategory extends Model
 {
     use LogsActivity;
     
+
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'competitions';
+    protected $table = 'competition_categories';
 
     /**
     * The database primary key value.
@@ -28,7 +29,7 @@ class Competition extends Model
      *
      * @var array
      */
-    protected $fillable = ['image', 'description', 'name', 'date', 'fee', 'prize_image', 'prize_details', 'game_id','competition_category_id'];
+    protected $fillable = ['name'];
 
     
 

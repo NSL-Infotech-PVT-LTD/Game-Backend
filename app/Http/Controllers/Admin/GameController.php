@@ -5,30 +5,50 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Game;
+use Datatables;
 use Illuminate\Http\Request;
 
 class GameController extends Controller {
 
     public static $_mediaBasePath = 'uploads/games/';
-
+    protected $__rulesforindex = ['name' => 'required','image'=>'required'];
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\View\View
      */
-    public function index(Request $request) {
-        $keyword = $request->get('search');
-        $perPage = 25;
+public function index(Request $request) {
+        if ($request->ajax()) {
+            $game = Game::all();
+//               dd($competition);
+            return Datatables::of($game)
+                            ->addIndexColumn()
+                            ->editColumn('image', function($item) {
+                                if(empty($item->image)){
+                                    return "<img width='50' src=".url('uploads/games/noimage.png').">";
+                                }else{
+                                return "<img width='50' src=".url('uploads/games/'.$item->image).">";
+                                }
+                            })
+                            ->addColumn('action', function($item) {
+                                
+                                $return = '';
 
-        if (!empty($keyword)) {
-            $game = Game::where('name', 'LIKE', "%$keyword%")
-                            ->orWhere('image', 'LIKE', "%$keyword%")
-                            ->latest()->paginate($perPage);
-        } else {
-            $game = Game::latest()->paginate($perPage);
+                                if ($item->state == '0'):
+                                    $return .= "<button class='btn btn-danger btn-sm changeStatus' title='UnBlock'  data-id=" . $item->id . " data-status='UnBlock'>UnBlock / Active</button>";
+                                else:
+                                    $return .= "<button class='btn btn-success btn-sm changeStatus' title='Block' data-id=" . $item->id . " data-status='Block' >Block / Inactive</button>";
+                                endif;
+                                $return .= " <a href=" . url('/admin/game/' . $item->id) . " title='View game'><button class='btn btn-info btn-sm'><i class='fa fa-eye' aria-hidden='true'></i></button></a>
+                                        <a href=" . url('/admin/game/' . $item->id . '/edit') . " title='Edit game'><button class='btn btn-primary btn-sm'><i class='fa fa-pencil-square-o' aria-hidden='true'></i></button></a>"
+                                        . " <button class='btn btn-danger btn-sm btnDelete' type='submit' data-remove='" . url('/admin/competition/' . $item->id) . "'><i class='fa fa-trash-o' aria-hidden='true'></i></button>";
+                                return $return;
+                            })
+                        
+                            ->rawColumns(['action','image'])
+                            ->make(true);
         }
-
-        return view('admin.game.index', compact('game'));
+        return view('admin.game.index', ['rules' => array_keys($this->__rulesforindex)]);
     }
 
     /**
@@ -120,5 +140,11 @@ class GameController extends Controller {
 
         return redirect('admin/game')->with('flash_message', 'Game deleted!');
     }
-
+    
+    public function changeStatus(Request $request) {
+        $game = Game::findOrFail($request->id);
+        $game->state = $request->status == 'Block' ? '0' : '1';
+        $game->save();
+        return response()->json(["success" => true, 'message' => 'Game updated!']);
+    }
 }

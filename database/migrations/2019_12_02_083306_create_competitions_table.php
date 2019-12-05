@@ -22,6 +22,8 @@ class CreateCompetitionsTable extends Migration {
             $table->text('prize_details')->nullable();
             $table->integer('game_id')->unsigned()->index();
             $table->foreign('game_id')->references('id')->on('games')->onDelete('cascade');
+            $table->bigInteger('competition_category_id')->unsigned()->index();
+            $table->foreign('competition_category_id')->references('id')->on('competition_categories')->onDelete('cascade');
             App\Helpers\DbExtender::defaultParams($table);
         });
     }

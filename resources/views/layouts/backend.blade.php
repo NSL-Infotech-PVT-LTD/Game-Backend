@@ -24,9 +24,25 @@
 {{--        <script src="{{ asset('template/js/serial.js') }}  "></script>--}}
 {{--        <script src="{{ asset('template/js/light.js') }} "></script>--}}
 <!-- //lined-icons -->
+
+
 <script src="{{ asset('template/js/jquery-1.10.2.min.js') }} "></script>
 <!--pie-chart--->
 {{--        <script src="{{ asset('template/js/pie-chart.js') }} " type="text/javascript"></script>--}}
+
+<!--datatable starts-->
+
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css" />
+        <link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet">
+        <link href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.0/jquery.validate.js"></script>
+        <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+
+        <!--datatable ends-->
 </head>
 <body>
     <div class="page-container">
@@ -99,6 +115,7 @@
                     <li><a href="{{ url('admin/game')}}"><i class="fa fa-rocket"></i> <span>Game</span></a></li>
                     <li><a href="{{ url('admin/competition')}}"><i class="fa fa-rocket"></i> <span>Competition</span></a></li>
                      <li><a href="{{ url('admin/news')}}"><i class="fa fa-rocket"></i> <span>News</span></a></li>
+                     <li><a href="{{ url('admin/competition-categories')}}"><i class="fa fa-rocket"></i> <span>Category</span></a></li>
                     <!--<li><a href="{{ url('admin/permissions')}}"><i class="fa fa-rocket"></i> <span>Permissions</span></a></li>-->
         <!--<li><a href="{{ url('admin/generator')}}"><i class="fa fa-bars"></i> <span>Generator</span></a></li>-->
 

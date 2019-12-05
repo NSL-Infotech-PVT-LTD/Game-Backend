@@ -47,6 +47,13 @@
     'multiple' => false]) !!}
 </div>
 
+<div class="form-group{{ $errors->has('competition_category_id') ? ' has-error' : ''}}">
+    {!! Form::label('competition_category_id', 'Competition Category:', ['class' => 'control-label']) !!}
+    {!! Form::select('competition_category_id', $competition_category, isset($competition->competition_category_id) ? $competition->competition_category_id : [], ['class' =>
+    'form-control',
+    'multiple' => false]) !!}
+</div>
+
 <div class="form-group">
     {!! Form::submit($formMode === 'edit' ? 'Update' : 'Create', ['class' => 'btn btn-primary']) !!}
 </div>

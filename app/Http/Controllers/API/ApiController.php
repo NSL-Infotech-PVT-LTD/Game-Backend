@@ -299,7 +299,7 @@ class ApiController extends \App\Http\Controllers\Controller {
     public static function __uploadImage($image, $path = null) {
         if ($path === null)
             $path = public_path('uploads');
-        $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
         $image->move($path, $imageName);
         return $imageName;
     }

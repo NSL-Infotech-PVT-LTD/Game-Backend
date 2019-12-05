@@ -6,6 +6,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Competition;
 use App\Game;
+use Datatables;
 use Illuminate\Http\Request;
 use App\Http\Controllers\API\ApiController;
 
@@ -17,26 +18,41 @@ class CompetitionController extends Controller {
      * @return \Illuminate\View\View
      */
     public static $_mediaBasePath = 'uploads/competition/';
+    protected $__rulesforindex = ['name' => 'required','image'=>'required'];
 
     public function index(Request $request) {
-        $keyword = $request->get('search');
-        $perPage = 25;
+        if ($request->ajax()) {
+            $competition = Competition::all();
+//               dd($competition);
+            return Datatables::of($competition)
+                            ->addIndexColumn()
+                            ->editColumn('image', function($item) {
+                            if(empty($item->image)) {
+                                return "<img width='50' src=".url('uploads/competition/noimage.png').">";
+                            }else{
+                            return "<img width='50' src=".url('uploads/competition/'.$item->image).">";   
+                            }
+                                
+                            })
+                            ->addColumn('action', function($item) {
+                                
+                                $return = '';
 
-        if (!empty($keyword)) {
-            $competition = Competition::where('image', 'LIKE', "%$keyword%")
-                            ->orWhere('description', 'LIKE', "%$keyword%")
-                            ->orWhere('name', 'LIKE', "%$keyword%")
-                            ->orWhere('date', 'LIKE', "%$keyword%")
-                            ->orWhere('fee', 'LIKE', "%$keyword%")
-                            ->orWhere('prize_image', 'LIKE', "%$keyword%")
-                            ->orWhere('prize_details', 'LIKE', "%$keyword%")
-                            ->orWhere('game_id', 'LIKE', "%$keyword%")
-                            ->latest()->paginate($perPage);
-        } else {
-            $competition = Competition::latest()->paginate($perPage);
+                                if ($item->state == '0'):
+                                    $return .= "<button class='btn btn-danger btn-sm changeStatus' title='UnBlock'  data-id=" . $item->id . " data-status='UnBlock'>Unblock / Active</button>";
+                                else:
+                                    $return .= "<button class='btn btn-success btn-sm changeStatus' title='Block' data-id=" . $item->id . " data-status='Block' >Block / Inactive</button>";
+                                endif;
+                                $return .= " <a href=" . url('/admin/competition/' . $item->id) . " title='View Competition'><button class='btn btn-info btn-sm'><i class='fa fa-eye' aria-hidden='true'></i></button></a>
+                                        <a href=" . url('/admin/competition/' . $item->id . '/edit') . " title='Edit competition'><button class='btn btn-primary btn-sm'><i class='fa fa-pencil-square-o' aria-hidden='true'></i></button></a>"
+                                        . " <button class='btn btn-danger btn-sm btnDelete' type='submit' data-remove='" . url('/admin/competition/' . $item->id) . "'><i class='fa fa-trash-o' aria-hidden='true'></i></button>";
+                                return $return;
+                            })
+                        
+                            ->rawColumns(['action','image'])
+                            ->make(true);
         }
-
-        return view('admin.competition.index', compact('competition'));
+        return view('admin.competition.index', ['rules' => array_keys($this->__rulesforindex)]);
     }
 
     /**
@@ -46,7 +62,8 @@ class CompetitionController extends Controller {
      */
     public function create() {
         $game = Game::get()->pluck('name', 'id');
-        return view('admin.competition.create', compact('game'));
+        $competition_category = \App\CompetitionCategory::get()->pluck('name', 'id');
+        return view('admin.competition.create', compact('game','competition_category'));
     }
 
     /**
@@ -98,8 +115,9 @@ class CompetitionController extends Controller {
     public function edit(Request $request, $id) {
         $competition = Competition::findOrFail($id);
         $game = Game::get()->pluck('name', 'id');
+        $competition_category = \App\CompetitionCategory::get()->pluck('name', 'id');
 
-        return view('admin.competition.edit', compact('competition', 'game'));
+        return view('admin.competition.edit', compact('competition', 'game','competition_category'));
     }
 
     /**
@@ -138,6 +156,13 @@ class CompetitionController extends Controller {
         Competition::destroy($id);
 
         return redirect('admin/competition')->with('flash_message', 'Competition deleted!');
+    }
+
+    public function changeStatus(Request $request) {
+        $competition = Competition::findOrFail($request->id);
+        $competition->state = $request->status == 'Block' ? '0' : '1';
+        $competition->save();
+        return response()->json(["success" => true, 'message' => 'Competition updated!']);
     }
 
 }
