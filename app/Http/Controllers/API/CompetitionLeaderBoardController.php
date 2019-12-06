@@ -38,8 +38,10 @@ class CompetitionLeaderBoardController extends ApiController {
         endif;
         try {
             $userCheck = MyModel::where('competition_id', $request->competition_id)->where('user_id', \Auth::id())->get();
-//            dd($userCheck);
+            
             if ($userCheck->isEmpty() !== true):
+//                            dd($userCheck->toArray());
+
                 $id = $userCheck->first()->id;
                 $score = $userCheck->first()->score;
                 if ($score >= $request->score)
@@ -58,6 +60,7 @@ class CompetitionLeaderBoardController extends ApiController {
                 $updateleader->save();
                 return parent::successCreated(['Message' => 'Updated Successfully', 'updateleader' => $updateleader]);
             else:
+//                dd('hello');
                 $createleader = new MyModel;
                 $input = $request->all();
                 $input['user_id'] = \Auth::id();

@@ -6,6 +6,7 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Competition;
 use App\Game;
+use App\CompitionLeadBoard;
 use Datatables;
 use Illuminate\Http\Request;
 use App\Http\Controllers\API\ApiController;
@@ -101,8 +102,16 @@ class CompetitionController extends Controller {
      */
     public function show($id) {
         $competition = Competition::findOrFail($id);
-
-        return view('admin.competition.show', compact('competition'));
+        $orderDetails = \App\CompitionLeadBoard::whereCompetitionId($id)->get();
+//        $getOnlyUpdateScroe = \App\CompitionLeadBoard::where('user_id', $id)->orderBy('score,desc')->first();
+//        dd($getOnlyUpdateScroe);
+        $userid = \App\CompitionLeadBoard::where('id', $id)->first();
+        $custom_id = $userid->user_id; 
+        if(empty($custom_id)):
+            $custom_id = 0;
+        endif;
+        $user =  \App\User::where('id' , $custom_id)->get();
+        return view('admin.competition.show', compact('competition','orderDetails','user'));
     }
 
     /**

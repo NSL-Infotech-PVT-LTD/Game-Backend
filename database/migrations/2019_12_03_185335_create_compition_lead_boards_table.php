@@ -19,6 +19,7 @@ class CreateCompitionLeadBoardsTable extends Migration {
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer('score')->nullable();
             $table->integer('count');
+            $table->enum('winner', [0,1,2])->default(2)->comment('0->Winner, 1->Loser,2->not-yet-declared');
             App\Helpers\DbExtender::defaultParams($table);
         });
     }
