@@ -7,7 +7,7 @@
 
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Game</div>
+                <div class="card-header"><b>Game</b></div>
                 <div class="card-body">
                     <a href="{{ url('/admin/game/create') }}" class="btn btn-success btn-sm" title="Add New Game">
                         <i class="fa fa-plus" aria-hidden="true"></i> Add New

@@ -7,7 +7,7 @@
 
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">News</div>
+                <div class="card-header"><b>News</b></div>
                 <div class="card-body">
                     <a href="{{ url('/admin/news/create') }}" class="btn btn-success btn-sm" title="Add New news">
                         <i class="fa fa-plus" aria-hidden="true"></i> Add New

@@ -4,25 +4,23 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
 use App\CompitionLeadBoard;
 use Illuminate\Http\Request;
 
-class CompitionLeadBoardController extends Controller
-{
+class CompitionLeadBoardController extends Controller {
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\View\View
      */
-    public function index(Request $request)
-    {
+    public function index(Request $request) {
         $keyword = $request->get('search');
         $perPage = 25;
 
         if (!empty($keyword)) {
             $compitionleadboard = CompitionLeadBoard::where('score', 'LIKE', "%$keyword%")
-                ->latest()->paginate($perPage);
+                            ->latest()->paginate($perPage);
         } else {
             $compitionleadboard = CompitionLeadBoard::latest()->paginate($perPage);
         }
@@ -35,8 +33,7 @@ class CompitionLeadBoardController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function create()
-    {
+    public function create() {
         return view('admin.compition-lead-board.create');
     }
 
@@ -47,11 +44,10 @@ class CompitionLeadBoardController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function store(Request $request)
-    {
-        
+    public function store(Request $request) {
+
         $requestData = $request->all();
-        
+
         CompitionLeadBoard::create($requestData);
 
         return redirect('admin/compition-lead-board')->with('flash_message', 'CompitionLeadBoard added!');
@@ -64,8 +60,7 @@ class CompitionLeadBoardController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function show($id)
-    {
+    public function show($id) {
         $compitionleadboard = CompitionLeadBoard::findOrFail($id);
 
         return view('admin.compition-lead-board.show', compact('compitionleadboard'));
@@ -78,8 +73,7 @@ class CompitionLeadBoardController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function edit($id)
-    {
+    public function edit($id) {
         $compitionleadboard = CompitionLeadBoard::findOrFail($id);
 
         return view('admin.compition-lead-board.edit', compact('compitionleadboard'));
@@ -93,11 +87,10 @@ class CompitionLeadBoardController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function update(Request $request, $id)
-    {
-        
+    public function update(Request $request, $id) {
+
         $requestData = $request->all();
-        
+
         $compitionleadboard = CompitionLeadBoard::findOrFail($id);
         $compitionleadboard->update($requestData);
 
@@ -111,10 +104,21 @@ class CompitionLeadBoardController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         CompitionLeadBoard::destroy($id);
 
         return redirect('admin/compition-lead-board')->with('flash_message', 'CompitionLeadBoard deleted!');
     }
+
+    public function confirmWinner(Request $request) {
+
+//        dd('found u');
+        $leadBorad = CompitionLeadBoard::findOrFail($request->id);
+        $ids = CompitionLeadBoard::where('competition_id', $leadBorad->competition_id)->get()->pluck('id')->toArray();
+        CompitionLeadBoard::whereIn('id', $ids)->update(['winner' => '2']);
+        $leadBorad->winner = '1';
+        $leadBorad->save();
+        return response()->json(["success" => true, 'message' => 'Competition updated!']);
+    }
+
 }

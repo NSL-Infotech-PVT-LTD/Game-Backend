@@ -16,10 +16,10 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-Route::get('home', function () {
-    return redirect('/admin');
-});
-//Route::get('home', 'HomeController@index')->name('home');
+//Route::get('home', function () {
+//    return redirect('/admin');
+//});
+Route::get('/home', 'HomeController@index')->name('home');
 
 
 
@@ -45,6 +45,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'roles'], 'roles' =>
     Route::post('competition/change-status', 'admin\\CompetitionController@changeStatus')->name('competition.changeStatus');
     Route::post('game/change-status', 'admin\\GameController@changeStatus')->name('game.changeStatus');
     Route::post('news/change-status', 'admin\\NewsController@changeStatus')->name('news.changeStatus');
+    Route::post('competition/confirm-winner', 'admin\\CompetitionController@confirmWinner')->name('competition.confirmWinner');
+    Route::post('competition/show', 'admin\\CompetitionController@show')->name('competition.show');
+    
     Route::resource('competition-categories', 'Admin\\CompetitionCategoriesController');
-     Route::post('competition-categories/change-status', 'admin\\NewsController@changeStatus')->name('competition-categories.changeStatus');
+    Route::post('competition-categories/change-status', 'admin\\NewsController@changeStatus')->name('competition-categories.changeStatus');
 });

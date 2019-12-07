@@ -70,7 +70,7 @@
 
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Users</div>
+                <div class="card-header"><b>Users</b></div>
                 <div class="card-body">
                     <a href="{{ url('/admin/users/create') }}" class="btn btn-success btn-sm" title="Add New User">
                         <i class="fa fa-plus" aria-hidden="true"></i> Add New

@@ -7,7 +7,7 @@
 
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Competition</div>
+                <div class="card-header"><b>Competition</b></div>
                 <div class="card-body">
             <a href="{{ url('/admin/competition/create') }}" class="btn btn-success btn-sm" title="Add New Competition">
                     <i class="fa fa-plus" aria-hidden="true"></i> Add New</a>
