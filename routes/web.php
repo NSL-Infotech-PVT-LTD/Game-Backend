@@ -39,15 +39,15 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'roles'], 'roles' =>
     Route::get('generator', ['uses' => '\Appzcoder\LaravelAdmin\Controllers\ProcessController@getGenerator']);
     Route::post('generator', ['uses' => '\Appzcoder\LaravelAdmin\Controllers\ProcessController@postGenerator']);
     Route::resource('game', 'Admin\GameController');
-    Route::resource('competition', 'Admin\\CompetitionController');
-    Route::resource('news', 'Admin\\NewsController');
-    Route::resource('compition-lead-board', 'Admin\\CompitionLeadBoardController');
-    Route::post('competition/change-status', 'admin\\CompetitionController@changeStatus')->name('competition.changeStatus');
-    Route::post('game/change-status', 'admin\\GameController@changeStatus')->name('game.changeStatus');
-    Route::post('news/change-status', 'admin\\NewsController@changeStatus')->name('news.changeStatus');
-    Route::post('competition/confirm-winner', 'admin\\CompetitionController@confirmWinner')->name('competition.confirmWinner');
-    Route::post('competition/show', 'admin\\CompetitionController@show')->name('competition.show');
+    Route::resource('competition', 'Admin\CompetitionController');
+    Route::resource('news', 'Admin\NewsController');
+    Route::resource('compition-lead-board', 'Admin\CompitionLeadBoardController');
+    Route::post('competition/change-status', 'Admin\CompetitionController@changeStatus')->name('competition.changeStatus');
+    Route::post('game/change-status', 'Admin\GameController@changeStatus')->name('game.changeStatus');
+    Route::post('news/change-status', 'Admin\NewsController@changeStatus')->name('news.changeStatus');
+    Route::post('competition/confirm-winner', 'Admin\CompetitionController@confirmWinner')->name('competition.confirmWinner');
+    Route::post('competition/show', 'Admin\CompetitionController@show')->name('competition.show');
     
-    Route::resource('competition-categories', 'Admin\\CompetitionCategoriesController');
-    Route::post('competition-categories/change-status', 'admin\\NewsController@changeStatus')->name('competition-categories.changeStatus');
+    Route::resource('competition-categories', 'Admin\CompetitionCategoriesController');
+    Route::post('competition-categories/change-status', 'Admin\NewsController@changeStatus')->name('competition-categories.changeStatus');
 });
