@@ -133,7 +133,7 @@
                     cancelButtonColor: '#d33',
                     confirmButtonText: 'Yes, ' + status + ' it!'
                 }).then((result) => {
-                    Swal.showLoading();
+                    Swal.showLoading(); 
                     if (result.value) {
                         var form_data = new FormData();
                         form_data.append("id", id);

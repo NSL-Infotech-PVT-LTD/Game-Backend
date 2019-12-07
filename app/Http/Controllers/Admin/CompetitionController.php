@@ -179,7 +179,7 @@ class CompetitionController extends Controller {
     public function update(Request $request, $id) {
         $this->validate($request, [
             'name' => 'required',
-            'fee' => 'required'
+            'fee' => 'required'  
         ]);
         $requestData = $request->all();
 

@@ -98,7 +98,7 @@
                         form_data.append("status", status);
                         form_data.append("_token", $('meta[name="csrf-token"]').attr('content'));
                         $.ajax({
-                            url: "{{route('competition.changeStatus')}}",
+                            url: "{{route('competition.changeStatus')}}", 
                             method: "POST",
                             data: form_data,
                             contentType: false,
