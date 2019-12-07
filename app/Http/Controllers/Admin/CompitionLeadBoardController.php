@@ -110,15 +110,6 @@ class CompitionLeadBoardController extends Controller {
         return redirect('admin/compition-lead-board')->with('flash_message', 'CompitionLeadBoard deleted!');
     }
 
-    public function confirmWinner(Request $request) {
 
-//        dd('found u');
-        $leadBorad = CompitionLeadBoard::findOrFail($request->id);
-        $ids = CompitionLeadBoard::where('competition_id', $leadBorad->competition_id)->get()->pluck('id')->toArray();
-        CompitionLeadBoard::whereIn('id', $ids)->update(['winner' => '2']);
-        $leadBorad->winner = '1';
-        $leadBorad->save();
-        return response()->json(["success" => true, 'message' => 'Competition updated!']);
-    }
 
 }

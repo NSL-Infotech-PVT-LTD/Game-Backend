@@ -110,8 +110,13 @@ class CompetitionController extends Controller {
                             ->addIndexColumn()
                             ->editColumn('user_id', function($item) {
                             $custom_id = $item->user_id;
-                            $user =  \App\User::where('id' , $custom_id)->get()->pluck('first_name')->toArray();
-                            return $user;
+                            if(!empty($custom_id)){
+                                $user =  \App\User::where('id' , $custom_id)->get()->pluck('first_name')->toArray();
+                                return $user;
+                            }else{
+                                return 0;
+                            }
+                            
                             })
                             ->addColumn('action', function($item) {
                                 
@@ -137,12 +142,14 @@ class CompetitionController extends Controller {
         $orderDetails = \App\CompitionLeadBoard::whereCompetitionId($id)->get();
 //        $getOnlyUpdateScroe = \App\CompitionLeadBoard::where('user_id', $id)->orderBy('score,desc')->first();
 //        dd($getOnlyUpdateScroe);
-        $userid = \App\CompitionLeadBoard::where('id', $id)->first();
-        $custom_id = $userid->user_id; 
-        if(empty($custom_id)):
-            $custom_id = 0;
-        endif;
-        $user =  \App\User::where('id' , $custom_id)->get();
+//        
+//        
+//        $userid = \App\CompitionLeadBoard::where('id', $id)->first();
+//        $custom_id = $userid->user_id; 
+//        if(empty($custom_id)):
+//            $custom_id = 0;
+//        endif;
+//        $user =  \App\User::where('id' , $custom_id)->get();
         return view('admin.competition.show', compact('competition','orderDetails','user'),['rules' => array_keys($this->__rulesforshow)]);
     }
 
