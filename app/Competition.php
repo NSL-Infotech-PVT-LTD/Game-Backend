@@ -28,7 +28,7 @@ class Competition extends Model
      *
      * @var array
      */
-    protected $fillable = ['image', 'description', 'name', 'date', 'fee', 'prize_image', 'prize_details', 'game_id','competition_category_id'];
+    protected $fillable = ['image', 'description', 'name', 'date', 'fee','prize_details', 'game_id','competition_category_id'];
 
     
 

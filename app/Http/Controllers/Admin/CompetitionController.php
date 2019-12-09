@@ -47,7 +47,7 @@ class CompetitionController extends Controller {
                                 endif;
                                 $return .= " <a href=" . url('/admin/competition/' . $item->id) . " title='View Competition'><button class='btn btn-info btn-sm'><i class='fa fa-eye' aria-hidden='true'></i></button></a>
                                         <a href=" . url('/admin/competition/' . $item->id . '/edit') . " title='Edit competition'><button class='btn btn-primary btn-sm'><i class='fa fa-pencil-square-o' aria-hidden='true'></i></button></a>"
-                                        . " <button class='btn btn-danger btn-sm btnDelete' type='submit' data-remove='" . url('/admin/competition/' . $item->id) . "'><i class='fa fa-trash-o' aria-hidden='true'></i></button>";
+                                        . " <button class='btn btn-danger btn-sm btnDelete' type='submit' data-remove='". url('/admin/competition/' . $item->id) . "'><i class='fa fa-trash-o' aria-hidden='true'></i></button>";
                                 return $return;
                             })
                         
@@ -82,12 +82,12 @@ class CompetitionController extends Controller {
             'fee' => 'required',
             'prize_details' => 'required',
             'date' => 'required',
-            'prize_image' => 'required',
+//            'prize_image' => 'required',
         ]);
 
         $requestData = $request->all();
         $requestData['image'] = ApiController::__uploadImage($request->file('image'), public_path(self::$_mediaBasePath));
-        $requestData['prize_image'] = \App\Http\Controllers\API\ApiController::__uploadImage($request->file('prize_image'), public_path('uploads/competition/prize_details'));
+//        $requestData['prize_image'] = \App\Http\Controllers\API\ApiController::__uploadImage($request->file('prize_image'), public_path('uploads/competition/prize_details'));
 //        dd($requestData);
         Competition::create($requestData);
 

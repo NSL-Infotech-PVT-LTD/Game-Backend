@@ -23,7 +23,7 @@
     {!! Form::number('fee', null, ('required' == 'required') ? ['class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!}
     {!! $errors->first('fee', '<p class="help-block">:message</p>') !!}
 </div>
-<div class="form-group{{ $errors->has('prize_image') ? 'has-error' : ''}}">
+<div class="form-group{{ $errors->has('prize_image') ? 'has-error' : ''}} hide-content">
     {!! Form::label('prize_image', 'Prize Image', ['class' => 'control-label']) !!}
     {!! Form::file('prize_image', null, ('' == 'required') ? ['class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!}
     {!! $errors->first('prize_image', '<p class="help-block">:message</p>') !!}
@@ -40,14 +40,14 @@
 </div>-->
 
 
-<div class="form-group{{ $errors->has('game_id') ? ' has-error' : ''}}">
+<div class="form-group{{ $errors->has('game_id') ? ' has-error' : ''}} hide-content">
     {!! Form::label('game_id', 'Game Id: ', ['class' => 'control-label']) !!}
     {!! Form::select('game_id', $game, isset($competition->game_id) ? $competition->game_id : [], ['class' =>
     'form-control',
     'multiple' => false]) !!}
 </div>
 
-<div class="form-group{{ $errors->has('competition_category_id') ? ' has-error' : ''}}">
+<div class="form-group{{ $errors->has('competition_category_id') ? ' has-error' : ''}} hide-content">
     {!! Form::label('competition_category_id', 'Competition Category:', ['class' => 'control-label']) !!}
     {!! Form::select('competition_category_id', $competition_category, isset($competition->competition_category_id) ? $competition->competition_category_id : [], ['class' =>
     'form-control',

@@ -52,6 +52,7 @@
             $('.data-table').on('click', '.btnDelete[data-remove]', function (e) {
                 e.preventDefault();
                 var url = $(this).data('remove');
+                
                 swal.fire({
                     title: "Are you sure want to remove this item?",
                     text: "Data will be Temporary Deleted!",
@@ -69,9 +70,11 @@
                             dataType: 'json',
                             data: {method: '_DELETE', submit: true, _token: '{{csrf_token()}}'},
                             success: function (data) {
+                               
                                 if (data == 'Success') {
                                     swal.fire("Deleted!", "Competition has been deleted", "success");
                                     table.ajax.reload(null, false);
+                                    
                                 }
                             }
                         });

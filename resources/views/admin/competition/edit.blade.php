@@ -1,5 +1,9 @@
 @extends('layouts.backend')
-
+<style>
+    .hide-content{
+        display:none;
+    }
+</style>
 @section('content')
     <div class="container">
         <div class="row">
