@@ -116,12 +116,11 @@ class PreviouswinnerController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function update(Request $request, $id)
-    {
-        
+    public function update(Request $request, $id){
         $requestData = $request->all();
-        
         $previouswinner = Previouswinner::findOrFail($id);
+        if (isset($request->image))
+            $requestData['image'] = \App\Http\Controllers\API\ApiController::__uploadImage($request->file('image'), public_path(self::$_mediaBasePath));
         $previouswinner->update($requestData);
 
         return redirect('admin/previouswinner')->with('flash_message', 'Previouswinner updated!');
@@ -138,7 +137,8 @@ class PreviouswinnerController extends Controller
     {
         Previouswinner::destroy($id);
 
-        return redirect('admin/previouswinner')->with('flash_message', 'Previouswinner deleted!');
+//        return redirect('admin/previouswinner')->with('flash_message', 'Previouswinner deleted!');
+        return response()->json(["success" => true, 'message' => 'Previous Winner deleted!']);
     }
     
     public function changeStatus(Request $request) {
