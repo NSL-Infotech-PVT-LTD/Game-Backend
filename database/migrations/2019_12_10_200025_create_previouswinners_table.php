@@ -17,7 +17,7 @@ class CreatePreviouswinnersTable extends Migration
             $table->string('description')->nullable();
             $table->string('image')->nullable();
             App\Helpers\DbExtender::defaultParams($table);
-            $table->softDeletes();
+            
             });
     }
 
