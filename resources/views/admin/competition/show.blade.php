@@ -40,7 +40,7 @@
                                             <img width="50" src="<?= url(App\Http\Controllers\Admin\CompetitionController::$_mediaBasePath . $competition->image) ?>">
                                         <?php else: ?>
                                                            <!--<span>-</span>-->
-                                            <img width="50" src="<?= url(App\Http\Controllers\Admin\CompetitionController::$_mediaBasePath . 'noimage.png') ?>">
+                                            <img width="50" src="<?= url('noimage.png'); ?>">
                                         <?php endif; ?>    
                                     </td>
                                 </tr>

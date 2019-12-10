@@ -31,7 +31,7 @@ class CompetitionController extends Controller {
                             ->addIndexColumn()
                             ->editColumn('image', function($item) {
                                 if (empty($item->image)) {
-                                    return "<img width='50' src=" . url('uploads/competition/noimage.png') . ">";
+                                    return "<img width='50' src=" . url('noimage.png') . ">"; 
                                 } else {
                                     return "<img width='50' src=" . url('uploads/competition/' . $item->image) . ">";
                                 }

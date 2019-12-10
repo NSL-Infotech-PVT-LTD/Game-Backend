@@ -37,11 +37,11 @@
                                     <tr>
                                         <th> Image </th>
                                         <td> 
-        <?php if (file_exists(public_path(App\Http\Controllers\Admin\NewsController::$_mediaBasePath . $news->image))): ?>
+        <?php if (file_exists(public_path(App\Http\Controllers\Admin\NewsController::$_mediaBasePath . $news->image)) && !empty($news->image)): ?>
         <img width="50" src="<?= url(App\Http\Controllers\Admin\NewsController::$_mediaBasePath . $news->image) ?>">
                                         <?php else: ?>
                                             <!--<span>-</span>-->
-        <img width="50" src="<?= url(App\Http\Controllers\Admin\NewsController::$_mediaBasePath . 'noimage.png') ?>">
+        <img width="50" src="<?= url('noimage.png') ?>">
                                         <?php endif; ?>                            
                                         </td>
                                     </tr>
