@@ -26,7 +26,7 @@ class UsersController extends Controller {
             $user = User::all();
 //               
             return Datatables::of($user)
-                            ->addIndexColumn()
+//                            ->addIndexColumn()
 //                            ->editColumn('image', function($item) {
 //                                if (empty($item->image)) {
 //                                    return "<img width='50' src=" . url('uploads/news/noimage.png') . ">";

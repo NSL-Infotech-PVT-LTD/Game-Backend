@@ -37,7 +37,7 @@
                                         <?php
                                         if ($attribute == 'image'):
 
-                                            if (file_exists(public_path('uploads\users\\' . $user->image)) && !empty($user->image)) {
+                                            if (file_exists(public_path(App\Http\Controllers\Admin\UsersController::$_mediaBasePath . $user->image)) && !empty($user->image)) {
                                                 echo "<td><img width='150' src=" . url('uploads/users/' . $user->image) . "></td>";
                                             } else {
                                                 echo "<td><img width='150' src=" . url('noimage.png') . "></td>";
