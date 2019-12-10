@@ -68,8 +68,8 @@
                             dataType: 'json',
                             data: {method: '_DELETE', submit: true, _token: '{{csrf_token()}}'},
                             success: function (data) {
-                                if (data == 'Success') {
-                                    swal.fire("Deleted!", "Competition Category has been deleted", "success");
+                                if (data.success) {
+                                    swal.fire("Deleted!", data.message, "success");
                                     table.ajax.reload(null, false);
                                 }
                             }

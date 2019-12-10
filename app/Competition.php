@@ -4,11 +4,13 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Competition extends Model
-{
+class Competition extends Model {
+
     use LogsActivity;
-    
+    use SoftDeletes;
+
     /**
      * The database table used by the model.
      *
@@ -17,10 +19,10 @@ class Competition extends Model
     protected $table = 'competitions';
 
     /**
-    * The database primary key value.
-    *
-    * @var string
-    */
+     * The database primary key value.
+     *
+     * @var string
+     */
     protected $primaryKey = 'id';
 
     /**
@@ -28,9 +30,7 @@ class Competition extends Model
      *
      * @var array
      */
-    protected $fillable = ['image', 'description', 'name', 'date', 'fee','prize_details', 'game_id','competition_category_id'];
-
-    
+    protected $fillable = ['image', 'description', 'name', 'date', 'fee', 'prize_details', 'game_id', 'competition_category_id'];
 
     /**
      * Change activity log event description
@@ -39,8 +39,8 @@ class Competition extends Model
      *
      * @return string
      */
-    public function getDescriptionForEvent($eventName)
-    {
+    public function getDescriptionForEvent($eventName) {
         return __CLASS__ . " model has been {$eventName}";
     }
+
 }

@@ -75,63 +75,19 @@
                     <a href="{{ url('/admin/users/create') }}" class="btn btn-success btn-sm" title="Add New User">
                         <i class="fa fa-plus" aria-hidden="true"></i> Add New
                     </a>
-
-                    {!! Form::open(['method' => 'GET', 'url' => '/admin/users', 'class' => 'form-inline my-2 my-lg-0 float-right', 'role' => 'search'])  !!}
-                    <div class="input-group">
-                        <input type="text" class="form-control" name="search" placeholder="Search...">
-                        <span class="input-group-append">
-                            <button class="btn btn-secondary" type="submit">
-                                <i class="fa fa-search"></i>
-                            </button>
-                        </span>
-                    </div>
-                    {!! Form::close() !!}
-
-                    <br/>
-                    <br/>
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
+                        <div class ="table-responsive">
+                    <table class="table table-borderless data-table" >
+                        
+                                <thead>
                                 <tr>
-                                    <th>ID</th><th>Name</th><th>Email</th> <th>Activate Status</th><th>Actions</th>
+                                    <th>ID</th>
+                                    <?php foreach ($rules as $rule): ?>
+                                    <th>{{ucfirst($rule)}}</th>
+                                    <?php endforeach; ?>
+                                    <th>Action</th>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($users as $item)
-                                <tr>
-                                    <td>{{ $item->id }}</td>
-                                    <td><a href="{{ url('/admin/users', $item->id) }}">{{ $item->fullname }}</a></td><td>{{ $item->email }}</td>
-                                    <td>
-                                        <label class="switch">
-                                            <input type="checkbox" <?php if ($item->status) {
-    echo 'checked';
-} ?> data-id="{{$item->id}}" class="updateStatus">
-                                            <span class="slider round"></span>
-                                        </label>
-
-                                    </td>
-
-                                    <td>
-                                        <a href="{{ url('/admin/users/' . $item->id) }}" title="View User"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i></button></a>
-                                        <a href="{{ url('/admin/users/' . $item->id . '/edit') }}" title="Edit User"><button class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button></a>
-                                        {!! Form::open([
-                                        'method' => 'DELETE',
-                                        'url' => ['/admin/users', $item->id],
-                                        'style' => 'display:inline'
-                                        ]) !!}
-                                        {!! Form::button('<i class="fa fa-trash-o" aria-hidden="true"></i>', array(
-                                        'type' => 'submit',
-                                        'class' => 'btn btn-danger btn-sm',
-                                        'title' => 'Delete User',
-                                        'onclick'=>'return confirm("Confirm delete?")'
-                                        )) !!}
-                                        {!! Form::close() !!}
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                        <div class="pagination"> {!! $users->appends(['search' => Request::get('search')])->render() !!} </div>
+                                </thead>
+                            </table>
                     </div>
 
                 </div>
@@ -141,30 +97,120 @@
 </div>
 
 <script>
-    $('.updateStatus').on('click',function(event){
-// 	event.preventDefault();
-        var th =$(this);
-        th.prop('checked',false);
-        var id = $(this).attr('data-id');
-        $.ajax({
-            url: "updateUserStatus?id="+id,
-            type: 'GET',
-            success: function(res) {
-                // alert(res.status);
-                if(res.status==false){
-                    // $(this).attr("checked");
-                    th.prop('checked',false);
-                    Swal.fire(
-                        'Notify',
-                        res.message,
-                        'error'
-                    );
-                }else{
-                    th.prop('checked',true);
-                }
-            }
+//    $('.updateStatus').on('click',function(event){
+//// 	event.preventDefault();
+//        var th =$(this);
+//        th.prop('checked',false);
+//        var id = $(this).attr('data-id');
+//        $.ajax({
+//            url: "updateUserStatus?id="+id,
+//            type: 'GET',
+//            success: function(res) {
+//                // alert(res.status);
+//                if(res.status==false){
+//                    // $(this).attr("checked");
+//                    th.prop('checked',false);
+//                    Swal.fire(
+//                        'Notify',
+//                        res.message,
+//                        'error'
+//                    );
+//                }else{
+//                    th.prop('checked',true);
+//                }
+//            }
+//        });
+//    });
+    
+    
+    $(function () {
+            var table = $('.data-table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('users.index') }}",
+                columns: [
+                    {data: 'id', name: 'id'},
+                        <?php foreach ($rules as $rule): ?>
+                    {data: "{{$rule}}", name: "{{$rule}}"},
+                        <?php endforeach; ?>
+                    {data: 'action', name: 'action', orderable: false, searchable: false},
+                ]
+            });
+//deleting data
+            $('.data-table').on('click', '.btnDelete[data-remove]', function (e) {
+                e.preventDefault();
+                var url = $(this).data('remove');
+                
+                swal.fire({
+                    title: "Are you sure want to remove this item?",
+                    text: "Data will be Temporary Deleted!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "Confirm",
+                    cancelButtonText: "Cancel",
+                }).then((result) => {
+                    Swal.showLoading();
+                    if (result.value) {
+                        $.ajax({
+                            url: url,
+                            type: 'DELETE',
+                            dataType: 'json',
+                            data: {method: '_DELETE', submit: true, _token: '{{csrf_token()}}'},
+                            success: function (data) {
+                                if (data.success) {
+                                    swal.fire("Deleted!", data.message, "success");
+                                    table.ajax.reload(null, false);
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+            $('.data-table').on('click', '.changeStatus', function (e) {
+                e.preventDefault();
+                var id = $(this).attr('data-id');
+                var status = $(this).attr('data-status');
+                Swal.fire({
+                    title: 'Are you sure you wanted to change status?',
+                    text: "You can revert this,in case you change your mind!",
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, ' + status + ' it!'
+                }).then((result) => {
+                    Swal.showLoading();
+                    if (result.value) {
+                        var form_data = new FormData();
+                        form_data.append("id", id);
+                        form_data.append("status", status);
+                        form_data.append("_token", $('meta[name="csrf-token"]').attr('content'));
+                        $.ajax({
+                            url: "{{route('users.changeStatus')}}", 
+                            method: "POST",
+                            data: form_data,
+                            contentType: false,
+                            cache: false,
+                            processData: false,
+                            beforeSend: function () {
+//                        Swal.showLoading();
+                            },
+                            success: function (data)
+                            {
+                                Swal.fire(
+                                    status + ' !',
+                                    'User has been ' + status + ' .',
+                                    'success'
+                                ).then(() => {
+                                    table.ajax.reload(null, false);
+                                });
+                            }
+                        });
+                    }
+                });
+            });
         });
-    });
 
 </script>
 @endsection

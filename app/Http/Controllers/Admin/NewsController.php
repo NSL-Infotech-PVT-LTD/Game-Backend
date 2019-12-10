@@ -43,7 +43,7 @@ class newsController extends Controller {
                                 endif;
                                 $return .= " <a href=" . url('/admin/news/' . $item->id) . " title='View News'><button class='btn btn-info btn-sm'><i class='fa fa-eye' aria-hidden='true'></i></button></a>
                                         <a href=" . url('/admin/news/' . $item->id . '/edit') . " title='Edit news'><button class='btn btn-primary btn-sm'><i class='fa fa-pencil-square-o' aria-hidden='true'></i></button></a>"
-                                        . " <button class='btn btn-danger btn-sm btnDelete' type='submit' data-remove='" . url('/admin/competition/' . $item->id) . "'><i class='fa fa-trash-o' aria-hidden='true'></i></button>";
+                                        . " <button class='btn btn-danger btn-sm btnDelete' type='submit' data-remove='" . url('/admin/news/' . $item->id) . "'><i class='fa fa-trash-o' aria-hidden='true'></i></button>";
                                 return $return;
                             })
                             ->rawColumns(['action', 'image'])
@@ -131,8 +131,8 @@ class newsController extends Controller {
      */
     public function destroy($id) {
         News::destroy($id);
-
-        return redirect('admin/news')->with('flash_message', 'news deleted!');
+        return response()->json(["success" => true, 'message' => 'News has been deleted']);
+//        return redirect('admin/news')->with('flash_message', 'news deleted!');
     }
 
     public function changeStatus(Request $request) {

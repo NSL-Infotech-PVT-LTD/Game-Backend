@@ -41,7 +41,7 @@ class CompetitionCategoriesController extends Controller
                                 endif;
                                 $return .= " <a href=" . url('admin/competition-categories/' . $item->id) . " title='View Competition'><button class='btn btn-info btn-sm'><i class='fa fa-eye' aria-hidden='true'></i></button></a>
                                         <a href=" . url('admin/competition-categories/' . $item->id . '/edit') . " title='Edit competition'><button class='btn btn-primary btn-sm'><i class='fa fa-pencil-square-o' aria-hidden='true'></i></button></a>"
-                                        . " <button class='btn btn-danger btn-sm btnDelete' type='submit' data-remove='" . url('/admin/competition/' . $item->id) . "'><i class='fa fa-trash-o' aria-hidden='true'></i></button>";
+                                        . " <button class='btn btn-danger btn-sm btnDelete' type='submit' data-remove='" . url('/admin/competition-categories/' . $item->id) . "'><i class='fa fa-trash-o' aria-hidden='true'></i></button>";
                                 return $return;
                             })
                         
@@ -136,7 +136,8 @@ class CompetitionCategoriesController extends Controller
     {
         CompetitionCategory::destroy($id);
 
-        return redirect('admin/competition-categories')->with('flash_message', 'CompetitionCategory deleted!');
+//        return redirect('admin/competition-categories')->with('flash_message', 'CompetitionCategory deleted!');
+        return response()->json(["success" => true, 'message' => 'Competition Category has been deleted']);
     }
     public function changeStatus(Request $request) {
         $CompetitionCategory = CompetitionCategory::findOrFail($request->id);

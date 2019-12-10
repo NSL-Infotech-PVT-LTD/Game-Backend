@@ -137,8 +137,8 @@ public function index(Request $request) {
      */
     public function destroy($id) {
         Game::destroy($id);
-
-        return redirect('admin/game')->with('flash_message', 'Game deleted!');
+        return response()->json(["success" => true, 'message' => 'Game has been deleted']);
+//        return redirect('admin/game')->with('flash_message', 'Game deleted!');
     }
     
     public function changeStatus(Request $request) {

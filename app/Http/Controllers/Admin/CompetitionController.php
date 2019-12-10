@@ -202,8 +202,7 @@ class CompetitionController extends Controller {
      */
     public function destroy($id) {
         Competition::destroy($id);
-
-        return redirect('admin/competition')->with('flash_message', 'Competition deleted!');
+        return response()->json(["success" => true, 'message' => 'Competition has been deleted']);
     }
 
     public function changeStatus(Request $request) {

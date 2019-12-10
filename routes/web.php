@@ -45,6 +45,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'roles'], 'roles' =>
     Route::post('competition/change-status', 'Admin\CompetitionController@changeStatus')->name('competition.changeStatus');
     Route::post('game/change-status', 'Admin\GameController@changeStatus')->name('game.changeStatus');
     Route::post('news/change-status', 'Admin\NewsController@changeStatus')->name('news.changeStatus');
+    Route::post('users/change-status', 'Admin\UsersController@changeStatus')->name('users.changeStatus');
     Route::post('competition/confirm-winner', 'Admin\CompetitionController@confirmWinner')->name('competition.confirmWinner');
     Route::post('competition/show', 'Admin\CompetitionController@show')->name('competition.show');
     
