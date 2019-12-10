@@ -12,14 +12,14 @@ class User extends Authenticatable {
     use HasApiTokens,
         Notifiable,
         HasRoles;
-   
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'first_name','last_name', 'email', 'password','status','profile_image','dob','mobile',
+        'first_name', 'last_name', 'email', 'password', 'status', 'image', 'dob', 'mobile',
     ];
 
     /**
@@ -39,26 +39,24 @@ class User extends Authenticatable {
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
-
-    protected $appends = array('role','fullname');
-
+    protected $appends = array('role', 'fullname');
 
     public function getFullNameAttribute() {
-         try {
-           
-            return $this->first_name.' '.$this->last_name;
+        try {
+
+            return $this->first_name . ' ' . $this->last_name;
         } catch (Exception $ex) {
             return [];
         }
     }
+
     public function getRoleAttribute() {
         try {
             $rolesID = \DB::table('role_user')->where('user_id', $this->id)->pluck('role_id');
             if ($rolesID->isEmpty() !== true):
                 $role = Role::whereIn('id', $rolesID);
                 if ($role->get()->isEmpty() !== true)
-                    return $role->select('name','id')->with('permission')->first();
+                    return $role->select('name', 'id')->with('permission')->first();
             endif;
             return [];
         } catch (Exception $ex) {
@@ -66,14 +64,15 @@ class User extends Authenticatable {
         }
     }
 
-    public static function usersIdByPermissionName($name){
+    public static function usersIdByPermissionName($name) {
 
-        $permissions = \App\Permission::where('name','like','%'.$name.'%')->get();
-        if($permissions->isEmpty())
+        $permissions = \App\Permission::where('name', 'like', '%' . $name . '%')->get();
+        if ($permissions->isEmpty())
             return [];
-        $role = \DB::table('permission_role')->where('permission_id',$permissions->first()->id)->get();
-        if($role->isEmpty())
+        $role = \DB::table('permission_role')->where('permission_id', $permissions->first()->id)->get();
+        if ($role->isEmpty())
             return [];
-        return \DB::table('role_user')->whereIN('role_id',$role->pluck('role_id'))->pluck('user_id')->toArray();
+        return \DB::table('role_user')->whereIN('role_id', $role->pluck('role_id'))->pluck('user_id')->toArray();
     }
+
 }

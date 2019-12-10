@@ -19,25 +19,25 @@ class CompetitionController extends Controller {
      * @return \Illuminate\View\View
      */
     public static $_mediaBasePath = 'uploads/competition/';
-    protected $__rulesforindex = ['name' => 'required','image'=>'required'];
-    protected $__rulesforshow = ['user_id'=>'required','score'=>'required','created_at'=>'required'];
+    protected $__rulesforindex = ['name' => 'required', 'image' => 'required'];
+    protected $__rulesforshow = ['user_id' => 'required', 'score' => 'required', 'created_at' => 'required'];
+
     public function index(Request $request) {
-        
+
         if ($request->ajax()) {
             $competition = Competition::all();
 //               dd($competition);
             return Datatables::of($competition)
                             ->addIndexColumn()
                             ->editColumn('image', function($item) {
-                            if(empty($item->image)) {
-                                return "<img width='50' src=".url('uploads/competition/noimage.png').">";
-                            }else{
-                            return "<img width='50' src=".url('uploads/competition/'.$item->image).">";   
-                            }
-                                
+                                if (empty($item->image)) {
+                                    return "<img width='50' src=" . url('uploads/competition/noimage.png') . ">";
+                                } else {
+                                    return "<img width='50' src=" . url('uploads/competition/' . $item->image) . ">";
+                                }
                             })
                             ->addColumn('action', function($item) {
-                                
+
                                 $return = '';
 
                                 if ($item->state == '0'):
@@ -47,11 +47,10 @@ class CompetitionController extends Controller {
                                 endif;
                                 $return .= " <a href=" . url('/admin/competition/' . $item->id) . " title='View Competition'><button class='btn btn-info btn-sm'><i class='fa fa-eye' aria-hidden='true'></i></button></a>
                                         <a href=" . url('/admin/competition/' . $item->id . '/edit') . " title='Edit competition'><button class='btn btn-primary btn-sm'><i class='fa fa-pencil-square-o' aria-hidden='true'></i></button></a>"
-                                        . " <button class='btn btn-danger btn-sm btnDelete' type='submit' data-remove='". url('/admin/competition/' . $item->id) . "'><i class='fa fa-trash-o' aria-hidden='true'></i></button>";
+                                        . " <button class='btn btn-danger btn-sm btnDelete' type='submit' data-remove='" . url('/admin/competition/' . $item->id) . "'><i class='fa fa-trash-o' aria-hidden='true'></i></button>";
                                 return $return;
                             })
-                        
-                            ->rawColumns(['action','image'])
+                            ->rawColumns(['action', 'image'])
                             ->make(true);
         }
         return view('admin.competition.index', ['rules' => array_keys($this->__rulesforindex)]);
@@ -65,7 +64,7 @@ class CompetitionController extends Controller {
     public function create() {
         $game = Game::get()->pluck('name', 'id');
         $competition_category = \App\CompetitionCategory::get()->pluck('name', 'id');
-        return view('admin.competition.create', compact('game','competition_category'));
+        return view('admin.competition.create', compact('game', 'competition_category'));
     }
 
     /**
@@ -101,56 +100,31 @@ class CompetitionController extends Controller {
      *
      * @return \Illuminate\View\View
      */
-    public function show(Request $request,$id) {
-        
-         if ($request->ajax()) {
+    public function show(Request $request, $id) {
+        if ($request->ajax()) {
             $leadBoard = CompitionLeadBoard::all();
-//               dd($competition);
             return Datatables::of($leadBoard)
                             ->addIndexColumn()
                             ->editColumn('user_id', function($item) {
-                            $custom_id = $item->user_id;
-                            if(!empty($custom_id)){
-                                $user =  \App\User::where('id' , $custom_id)->get()->pluck('first_name')->toArray();
-                                return $user;
-                            }else{
-                                return 0;
-                            }
-                            
+                                return isset($item->user_id) ? \App\User::where('id', $item->user_id)->first()->first_name : '';
                             })
                             ->addColumn('action', function($item) {
-                                
                                 $return = '';
-
-                            if ($item->winner == '0'):
-                                    $return .= "<button class='btn btn-warning btn-sm changeStatus' title='UnBlock'  data-id=" . $item->id . " data-status='confirm'>Not Yet declared</button>";
-                            elseif(($item->winner == '1')):
-                                    $return .= "<button class='btn btn-info btn-sm ' title='Block'  data-status='Block' >Game Winner</button>";
-                                
-                            elseif(($item->winner == '2')):
-                                    $return .= "<button class='btn btn-danger btn-sm ' title='Block'  data-status='Block' >Loser</button>";    
+                                if ($item->winner == '0'):
+                                    $return .= "<button class='btn btn-warning btn-sm changeStatus'   data-id=" . $item->id . " data-status='confirm'>Mark as winner</button>";
+                                elseif (($item->winner == '1')):
+                                    $return .= "<button class='btn btn-info btn-sm '   data-status='Block' >Game Winner</button>";
+                                elseif (($item->winner == '2')):
+                                    $return .= "<button class='btn btn-danger btn-sm ' title='Block'  data-status='Block' >Better luck next time</button>";
                                 endif;
-                               
-
                                 return $return;
                             })
-                        
-                            ->rawColumns(['action','image'])
+                            ->rawColumns(['action', 'image'])
                             ->make(true);
-         }
+        }
         $competition = Competition::findOrFail($id);
         $orderDetails = \App\CompitionLeadBoard::whereCompetitionId($id)->get();
-//        $getOnlyUpdateScroe = \App\CompitionLeadBoard::where('user_id', $id)->orderBy('score,desc')->first();
-//        dd($getOnlyUpdateScroe);
-//        
-//        
-//        $userid = \App\CompitionLeadBoard::where('id', $id)->first();
-//        $custom_id = $userid->user_id; 
-//        if(empty($custom_id)):
-//            $custom_id = 0;
-//        endif;
-//        $user =  \App\User::where('id' , $custom_id)->get();
-        return view('admin.competition.show', compact('competition','orderDetails','user'),['rules' => array_keys($this->__rulesforshow)]);
+        return view('admin.competition.show', compact('competition', 'orderDetails', 'user'), ['rules' => array_keys($this->__rulesforshow)]);
     }
 
     /**
@@ -165,7 +139,7 @@ class CompetitionController extends Controller {
         $game = Game::get()->pluck('name', 'id');
         $competition_category = \App\CompetitionCategory::get()->pluck('name', 'id');
 
-        return view('admin.competition.edit', compact('competition', 'game','competition_category'));
+        return view('admin.competition.edit', compact('competition', 'game', 'competition_category'));
     }
 
     /**
@@ -179,7 +153,7 @@ class CompetitionController extends Controller {
     public function update(Request $request, $id) {
         $this->validate($request, [
             'name' => 'required',
-            'fee' => 'required'  
+            'fee' => 'required'
         ]);
         $requestData = $request->all();
 
@@ -207,13 +181,13 @@ class CompetitionController extends Controller {
 
     public function changeStatus(Request $request) {
         $competition = Competition::findOrFail($request->id);
-        
+
         $competition->state = $request->status == 'Block' ? '0' : '1';
         $competition->save();
         return response()->json(["success" => true, 'message' => 'Competition updated!']);
     }
-    
-        public function confirmWinner(Request $request) {
+
+    public function confirmWinner(Request $request) {
 
 //        dd('found u');
         $leadBorad = CompitionLeadBoard::findOrFail($request->id);
@@ -223,5 +197,5 @@ class CompetitionController extends Controller {
         $leadBorad->save();
         return response()->json(["success" => true, 'message' => 'Competition updated!']);
     }
-    
+
 }
