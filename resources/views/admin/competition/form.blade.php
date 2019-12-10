@@ -41,13 +41,13 @@
 
 
 <div class="form-group{{ $errors->has('game_id') ? ' has-error' : ''}} hide-content">
-    {!! Form::label('game_id', 'Game Id: ', ['class' => 'control-label']) !!}
+    {!! Form::label('game_id', 'Games: ', ['class' => 'control-label']) !!}
     {!! Form::select('game_id', $game, isset($competition->game_id) ? $competition->game_id : [], ['class' =>
     'form-control',
     'multiple' => false]) !!}
 </div>
 
-<div class="form-group{{ $errors->has('competition_category_id') ? ' has-error' : ''}} hide-content">
+<div class="form-group{{ $errors->has('competition_category_id') ? ' has-error' : ''}} ">
     {!! Form::label('competition_category_id', 'Competition Category:', ['class' => 'control-label']) !!}
     {!! Form::select('competition_category_id', $competition_category, isset($competition->competition_category_id) ? $competition->competition_category_id : [], ['class' =>
     'form-control',

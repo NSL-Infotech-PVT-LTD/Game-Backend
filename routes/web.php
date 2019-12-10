@@ -51,4 +51,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'roles'], 'roles' =>
     
     Route::resource('competition-categories', 'Admin\CompetitionCategoriesController');
     Route::post('competition-categories/change-status', 'Admin\NewsController@changeStatus')->name('competition-categories.changeStatus');
+    Route::resource('previouswinner', 'Admin\PreviouswinnerController');
+    Route::post('previouswinner/change-status', 'Admin\PreviouswinnerController@changeStatus')->name('previouswinner.changeStatus');
 });
+

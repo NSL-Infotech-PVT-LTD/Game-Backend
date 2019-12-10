@@ -117,7 +117,9 @@
                     <li><a href="{{ url('admin/news')}}"><i class="fa fa-rocket"></i> <span>News</span></a></li>
                     <li><a href="{{ url('admin/competition-categories')}}"><i class="fa fa-rocket"></i> <span>Competition Category</span></a></li>
                                    <!--<li><a href="{{ url('admin/permissions')}}"><i class="fa fa-rocket"></i> <span>Permissions</span></a></li>-->
-                       <!--<li><a href="{{ url('admin/generator')}}"><i class="fa fa-bars"></i> <span>Generator</span></a></li>-->
+                    <li><a href="{{ url('admin/previouswinner')}}"><i class="fa fa-rocket"></i> <span>Previous Winner</span></a></li>
+
+   <!--<li><a href="{{ url('admin/generator')}}"><i class="fa fa-bars"></i> <span>Generator</span></a></li>-->
 
                 </ul>
             </div>
