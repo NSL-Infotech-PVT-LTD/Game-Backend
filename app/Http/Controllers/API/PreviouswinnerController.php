@@ -10,7 +10,7 @@ use App\Previouswinner as MyModel;
 class PreviouswinnerController extends ApiController {
 
     public function getItems(Request $request) {
-        $rules = ['search' => '','title' => '','limit' => ''];
+        $rules = ['search' => '','title' => '','limit' => '','limit'=>''];
 //        dd($request->all());
         $validateAttributes = parent::validateAttributes($request, 'POST', $rules, array_keys($rules), false);
         if ($validateAttributes):
