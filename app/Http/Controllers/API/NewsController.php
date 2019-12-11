@@ -10,7 +10,7 @@ use App\News as MyModel;
 class NewsController extends ApiController {
 
     public function getItems(Request $request) {
-        $rules = ['search' => ''];
+        $rules = ['search' => '', 'title'=> ''];
 //        dd($request->all());
         $validateAttributes = parent::validateAttributes($request, 'POST', $rules, array_keys($rules), false);
         if ($validateAttributes):
@@ -19,9 +19,9 @@ class NewsController extends ApiController {
         try {
             $model = new MyModel;
             $perPage = isset($request->limit) ? $request->limit : 20;
-            if (isset($request->search))
-                $model = $model->Where('name', 'LIKE', "%$request->search%");
-            $model = $model->orderBy('id', 'desc');
+            if (isset($request->title))
+                $model = $model->Where('title', 'LIKE', "%$request->title%");
+                $model = $model->orderBy('id', 'desc');
             return parent::success($model->paginate($perPage));
         } catch (\Exception $ex) {
             return parent::error($ex->getMessage());
