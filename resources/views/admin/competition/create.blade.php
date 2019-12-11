@@ -40,14 +40,8 @@
 
 
 <script>
-
-
 var numInputs = document.querySelectorAll('input[type="number"]');
-
-// Loop through the collection and call addListener on each element
 Array.prototype.forEach.call(numInputs, addListener); 
-
-
 function addListener(elm,index){
   elm.setAttribute('min', 0);  // set the min attribute on each field
   
@@ -61,7 +55,5 @@ function addListener(elm,index){
   });
   
 }
-
-
 </script>
 @endsection

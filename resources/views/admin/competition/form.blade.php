@@ -15,9 +15,10 @@
 </div>
 <div class="form-group{{ $errors->has('date') ? 'has-error' : ''}}">
     {!! Form::label('date', 'Date', ['class' => 'control-label']) !!}
-    {!! Form::date('date', null, ('' == 'required') ? ['class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!}
+    {!! Form::date('date', null, ('' == 'required') ? ['class' => 'form-control','required' => 'required'] : ['class' => 'form-control']) !!}
     {!! $errors->first('date', '<p class="help-block">:message</p>') !!}
 </div>
+
 <div class="form-group{{ $errors->has('fee') ? 'has-error' : ''}}">
     {!! Form::label('fee', 'Fee', ['class' => 'control-label']) !!}
     {!! Form::number('fee', null, ('required' == 'required') ? ['class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!}
