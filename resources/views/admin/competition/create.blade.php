@@ -36,4 +36,32 @@
             </div>
         </div>
     </div>
+
+
+
+<script>
+
+
+var numInputs = document.querySelectorAll('input[type="number"]');
+
+// Loop through the collection and call addListener on each element
+Array.prototype.forEach.call(numInputs, addListener); 
+
+
+function addListener(elm,index){
+  elm.setAttribute('min', 0);  // set the min attribute on each field
+  
+  elm.addEventListener('keypress', function(e){  // add listener to each field 
+     var key = !isNaN(e.charCode) ? e.charCode : e.keyCode;
+     str = String.fromCharCode(key); 
+    if (str.localeCompare('-') === 0){
+       event.preventDefault();
+    }
+    
+  });
+  
+}
+
+
+</script>
 @endsection
