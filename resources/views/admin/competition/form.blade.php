@@ -13,10 +13,15 @@
     {!! Form::text('name', null, ('required' == 'required') ? ['class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!}
     {!! $errors->first('name', '<p class="help-block">:message</p>') !!}
 </div>
-<div class="form-group{{ $errors->has('date') ? 'has-error' : ''}}">
+<!--<div class="form-group{{ $errors->has('date') ? 'has-error' : ''}}">
     {!! Form::label('date', 'Date', ['class' => 'control-label']) !!}
     {!! Form::date('date', null, ('' == 'required') ? ['class' => 'form-control','required' => 'required'] : ['class' => 'form-control']) !!}
     {!! $errors->first('date', '<p class="help-block">:message</p>') !!}
+</div>-->
+<div class="form-group">
+    <label for="date" class="control-label">Date</label>
+    <input class="form-control" name="date" type="date" id="date" onkeydown="return false">
+    
 </div>
 
 <div class="form-group{{ $errors->has('fee') ? 'has-error' : ''}}">

@@ -40,6 +40,7 @@
 
 
 <script>
+
 var numInputs = document.querySelectorAll('input[type="number"]');
 Array.prototype.forEach.call(numInputs, addListener); 
 function addListener(elm,index){
