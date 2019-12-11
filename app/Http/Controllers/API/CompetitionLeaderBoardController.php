@@ -10,7 +10,7 @@ use App\CompitionLeadBoard as MyModel;
 class CompetitionLeaderBoardController extends ApiController {
 
     public function getItems(Request $request) {
-        $rules = ['search' => ''];
+        $rules = ['search' => '', 'limit' => '', 'name' => ''];
         $validateAttributes = parent::validateAttributes($request, 'POST', $rules, array_keys($rules), false);
         if ($validateAttributes):
             return $validateAttributes;
@@ -19,7 +19,9 @@ class CompetitionLeaderBoardController extends ApiController {
             $model = new MyModel;
             $perPage = isset($request->limit) ? $request->limit : 20;
             if (isset($request->search))
-                $model = $model->Where('name', 'LIKE', "%$request->search%");
+                $model = $model->Where('name', 'LIKE', "%$request->name%");
+            if (isset($request->name))
+                $model = $model->Where('name', 'LIKE', "%$request->name%");
             $model = $model->orderBy('id', 'desc');
             return parent::success($model->paginate($perPage));
         } catch (\Exception $ex) {
@@ -38,7 +40,7 @@ class CompetitionLeaderBoardController extends ApiController {
         endif;
         try {
             $userCheck = MyModel::where('competition_id', $request->competition_id)->where('user_id', \Auth::id())->get();
-            
+
             if ($userCheck->isEmpty() !== true):
 //                            dd($userCheck->toArray());
 

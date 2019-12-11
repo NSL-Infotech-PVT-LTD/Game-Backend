@@ -10,7 +10,7 @@ use App\News as MyModel;
 class NewsController extends ApiController {
 
     public function getItems(Request $request) {
-        $rules = ['search' => '', 'title'=> ''];
+        $rules = ['search' => '', 'title'=> '','limit' => ''];
 //        dd($request->all());
         $validateAttributes = parent::validateAttributes($request, 'POST', $rules, array_keys($rules), false);
         if ($validateAttributes):
