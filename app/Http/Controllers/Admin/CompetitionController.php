@@ -113,9 +113,9 @@ class CompetitionController extends Controller {
                                 if ($item->winner == '0'):
                                     $return .= "<button class='btn btn-warning btn-sm changeStatus'   data-id=" . $item->id . " data-status='confirm'>Mark as winner</button>";
                                 elseif (($item->winner == '1')):
-                                    $return .= "<button class='btn btn-info btn-sm '   data-status='Block' >Game Winner</button>";
+                                    $return .= "<button class='btn btn-info btn-sm '>Game Winner</button>";
                                 elseif (($item->winner == '2')):
-                                    $return .= "<button class='btn btn-danger btn-sm ' title='Block'  data-status='Block' >Better luck next time</button>";
+                                    $return .= "<button class='btn btn-danger btn-sm '>Better luck next time</button>";
                                 endif;
                                 return $return;
                             })

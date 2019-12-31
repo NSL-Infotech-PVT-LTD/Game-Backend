@@ -3607,8 +3607,8 @@ button.btn.btn-default.tip {
     margin-left: 0px!important;
 }
 .form-control {
-    color: #C5C5CF !important;
-}
+    color: #000000 !important;  
+} 
 input[type="date"] {
     width: 95%;
     font-size: 16px !important;

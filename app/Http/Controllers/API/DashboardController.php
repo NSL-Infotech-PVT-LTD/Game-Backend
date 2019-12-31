@@ -1,7 +1,5 @@
 <?php
-
 namespace App\Http\Controllers\API;
-
 use Illuminate\Http\Request;
 use Validator;
 use DB;
@@ -9,8 +7,6 @@ use DB;
 class DashboardController extends ApiController {
 
     public function getItems(Request $request) {
-//        $rules = ['search' => '', 'name' => '', 'limit' => ''];
-//        dd($request->all());
         $validateAttributes = parent::validateAttributes($request, 'GET');
         if ($validateAttributes):
             return $validateAttributes;
