@@ -76,7 +76,7 @@ class AuthController extends ApiController {
      * @return \Illuminate\Http\Response
      */
     public function register(Request $request) {
-        $rules = ['first_name' => 'required','last_name' => 'required', 'email' => 'required|email|unique:users', 'password' => 'required', 'c_password' => 'required|same:password','mobile'=>'','country'=>'','image'=>'','image_url'=>''];
+        $rules = ['first_name' => 'required', 'last_name' => 'required', 'email' => 'required|email|unique:users', 'password' => 'required', 'c_password' => 'required|same:password', 'mobile' => '', 'country' => '', 'image' => '', 'image_url' => ''];
         $rules = array_merge($this->requiredParams, $rules);
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -85,19 +85,19 @@ class AuthController extends ApiController {
         }
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
-        
+
         if (isset($request->image))
             $input['image'] = parent::__uploadImage($request->file('image'), public_path(\App\Http\Controllers\Admin\UsersController::$_mediaBasePath));
         $user = User::create($input);
         $success['token'] = $user->createToken('MyApp')->accessToken;
-        $success['user'] = $user;
 
         $lastId = $user->id;
         $selectClientRole = Role::where('name', 'App-Users')->first();
         $assignRole = DB::table('role_user')->insert(
                 ['user_id' => $lastId, 'role_id' => $selectClientRole->id]
         );
-
+        $success['user'] = User::where('id', $user->id)->select('first_name', 'last_name', 'email', 'password', 'status', 'image', 'mobile', 'image_url')->first();
+//        dd($user);
         // Add user device details for firbase
         parent::addUserDeviceData($user, $request);
 //        if ($user->status != 1) {
@@ -105,7 +105,6 @@ class AuthController extends ApiController {
 //        }
         return parent::success($success, $this->successStatus);
     }
-        
 
     public function resetPassword(Request $request, Factory $view) {
         //Validating attributes
