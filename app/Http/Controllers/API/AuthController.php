@@ -59,9 +59,9 @@ class AuthController extends ApiController {
             $user = \App\User::find(Auth::user()->id);
             $success['token'] = $user->createToken('MyApp')->accessToken;
             $success['user'] = $user;
-            if ($user->status != 1) {
-                return parent::error('Please contact admin to activate your account', 200);
-            }
+//            if ($user->status != 1) {
+//                return parent::error('Please contact admin to activate your account', 200);
+//            }
             // Add user device details for firbase
             parent::addUserDeviceData($user, $request);
             return parent::success($success, $this->successStatus);
@@ -105,7 +105,7 @@ class AuthController extends ApiController {
 //        }
         return parent::success($success, $this->successStatus);
     }
-
+        
 
     public function resetPassword(Request $request, Factory $view) {
         //Validating attributes

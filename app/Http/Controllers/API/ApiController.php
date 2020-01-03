@@ -153,7 +153,7 @@ class ApiController extends \App\Http\Controllers\Controller {
 
     public static function error($validatorMessage, $errorCode = 422, $messageIndex = true) {
         if ($messageIndex === true):
-            $validatorMessage = ['message' => [$validatorMessage]];
+            $validatorMessage = ['message' => $validatorMessage];
         else:
             $validatorMessage = ['message' => $validatorMessage];
         endif;
