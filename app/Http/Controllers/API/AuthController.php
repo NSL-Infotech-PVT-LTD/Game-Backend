@@ -106,6 +106,53 @@ class AuthController extends ApiController {
         return parent::success($success, $this->successStatus);
     }
 
+    public function MyProfile(Request $request) {
+        $rules = ['search' => '', 'limit' => '', 'id' => ''];
+        $validateAttributes = parent::validateAttributes($request, 'POST', $rules, array_keys($rules), false);
+        if ($validateAttributes):
+            return $validateAttributes;
+        endif;
+        try {
+            $model = User::Where('id', Auth::id())->select('first_name', 'last_name', 'email', 'image', 'image_url')->get();
+            return parent::success($model);
+        } catch (\Exception $ex) {
+            return parent::error($ex->getMessage());
+        }
+    }
+
+    public function ProfileUpdate(Request $request) {
+        $user = \App\User::findOrFail(\Auth::id());
+
+        if ($user->get()->isEmpty())
+            return parent::error('User Not found');
+//        dd($user->hasRole(''));
+//        if ($user->hasRole('App-Users') === false)
+//            return parent::error('Please use valid auth token');
+        $rules = ['first_name' => '', 'last_name' => '', 'email' => '', 'image' => '', 'country' => '', 'mobile' => ''];
+        $rules = array_merge($this->requiredParams, $rules);
+        $validateAttributes = parent::validateAttributes($request, 'POST', $rules, array_keys($rules), false);
+        if ($validateAttributes):
+            return $validateAttributes;
+        endif;
+        try {
+            $input = $request->all();
+            if (isset($request->image)):
+                $input['image'] = parent::__uploadImage($request->file('image'), public_path('uploads/users/image'));
+            endif;
+            $abc = $request->first_name;
+            
+//            $input['password'] = Hash::make($request->password);
+            $user->fill($input);
+            $user->save();
+
+            // Add user device details for firbase
+            parent::addUserDeviceData($user, $request);
+            return parent::successCreated(['Message' => 'Updated Successfully', 'user' => $user]);
+        } catch (\Exception $ex) {
+            return parent::error($ex->getMessage());
+        }
+    }
+
     public function resetPassword(Request $request, Factory $view) {
         //Validating attributes
         $rules = ['email' => 'required'];

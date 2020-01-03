@@ -30,4 +30,6 @@ Route::group(['middleware' => ['auth:api', 'roles'], 'namespace' => 'API'], func
     Route::post('category', 'CompetitionCategoryController@getItems');
     Route::post('previouswinner', 'PreviouswinnerController@getItems');
     Route::get('DashboardController', 'DashboardController@getItems');
+    Route::post('getprofile', 'AuthController@MyProfile');
+    Route::post('updateprofile', 'AuthController@ProfileUpdate');
 });
