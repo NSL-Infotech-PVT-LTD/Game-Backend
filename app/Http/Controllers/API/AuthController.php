@@ -76,7 +76,7 @@ class AuthController extends ApiController {
      * @return \Illuminate\Http\Response
      */
     public function register(Request $request) {
-        $rules = ['first_name' => 'required', 'last_name' => 'required', 'email' => 'required|email|unique:users', 'password' => 'required', 'c_password' => 'required|same:password', 'mobile' => '', 'country' => '', 'image' => '', 'image_url' => ''];
+        $rules = ['first_name' => '', 'last_name' => '', 'email' => 'required|email|unique:users', 'password' => 'required', 'c_password' => 'required|same:password', 'mobile' => '', 'country' => '', 'image' => '', 'image_url' => ''];
         $rules = array_merge($this->requiredParams, $rules);
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
