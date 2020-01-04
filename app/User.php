@@ -9,6 +9,7 @@ use Laravel\Passport\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable {
+
     use SoftDeletes;
     use HasApiTokens,
         Notifiable,
@@ -20,8 +21,8 @@ class User extends Authenticatable {
      * @var array
      */
     protected $fillable = [
-        'first_name', 'last_name', 'email', 'password', 'status', 'image', 'mobile','image_url'
-    ];
+        'first_name', 'last_name', 'email', 'password', 'status', 'image', 'mobile', 'image_url'
+        , 'social_type', 'social_id', 'social_password'];
 
     /**
      * The attributes that should be hidden for arrays.

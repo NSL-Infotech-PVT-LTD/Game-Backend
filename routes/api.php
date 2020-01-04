@@ -19,6 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('login', 'API\AuthController@login');
 Route::post('register', 'API\AuthController@register');
+Route::post('social/register', 'API\AuthController@socialRegister');
 Route::post('forget-password', 'API\AuthController@resetPassword');
 
 Route::group(['middleware' => ['auth:api', 'roles'], 'namespace' => 'API'], function() {

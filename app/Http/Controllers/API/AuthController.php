@@ -106,6 +106,35 @@ class AuthController extends ApiController {
         return parent::success($success, $this->successStatus);
     }
 
+    public function socialRegister(Request $request) {
+        $rules = ['social_type' => '', 'social_id' => '', 'social_password' => ''];
+
+        $rules = array_merge($this->requiredParams, $rules);
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            $errors = self::formatValidator($validator);
+            return parent::error($errors, 200);
+        }
+        $input = $request->all();
+        $user = User::create($input);
+        $success['token'] = $user->createToken('MyApp')->accessToken;
+
+        $lastId = $user->id;
+        $selectClientRole = Role::where('name', 'App-Users')->first();
+        $assignRole = DB::table('role_user')->insert(
+                ['user_id' => $lastId, 'role_id' => $selectClientRole->id]
+        );
+
+        $success['user'] = User::where('id', $user->id)->select('first_name', 'last_name', 'email', 'password', 'status', 'image', 'mobile', 'image_url', 'social_type', 'social_id', 'social_password')->first();
+//        dd($user);
+        // Add user device details for firbase
+        parent::addUserDeviceData($user, $request);
+//        if ($user->status != 1) {
+//            return parent::error('Please contact admin to activate your account', 200);
+//        }
+        return parent::success($success, $this->successStatus);
+    }
+
     public function MyProfile(Request $request) {
         $rules = ['search' => '', 'limit' => '', 'id' => ''];
         $validateAttributes = parent::validateAttributes($request, 'POST', $rules, array_keys($rules), false);
@@ -140,7 +169,7 @@ class AuthController extends ApiController {
                 $input['image'] = parent::__uploadImage($request->file('image'), public_path('uploads/users/image'));
             endif;
             $abc = $request->first_name;
-            
+
 //            $input['password'] = Hash::make($request->password);
             $user->fill($input);
             $user->save();
