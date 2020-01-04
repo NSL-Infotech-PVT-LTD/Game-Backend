@@ -107,7 +107,7 @@ class AuthController extends ApiController {
     }
 
     public function socialRegister(Request $request) {
-        $rules = ['social_type' => '', 'social_id' => '', 'social_password' => ''];
+        $rules = ['first_name'=>'','last_name'=>'','email'=>'','mobile'=>'','social_type' => '', 'social_id' => '', 'social_password' => ''];
 
         $rules = array_merge($this->requiredParams, $rules);
         $validator = Validator::make($request->all(), $rules);
