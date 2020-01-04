@@ -107,7 +107,7 @@ class AuthController extends ApiController {
     }
 
     public function socialRegister(Request $request) {
-        $rules = ['first_name'=>'','last_name'=>'','email'=>'','mobile'=>'','social_type' => '', 'social_id' => '', 'social_password' => ''];
+        $rules = ['first_name' => '', 'last_name' => '', 'email' => 'required', 'mobile' => '', 'social_type' => '', 'social_id' => '', 'social_password' => ''];
 
         $rules = array_merge($this->requiredParams, $rules);
         $validator = Validator::make($request->all(), $rules);
@@ -116,6 +116,19 @@ class AuthController extends ApiController {
             return parent::error($errors, 200);
         }
         $input = $request->all();
+        $isUser = User::where('email', request('email'));
+        if ($isUser->get()->isEmpty() != true) {
+            $user = \App\User::find($isUser->first()->id);
+            $success['token'] = $user->createToken('MyApp')->accessToken;
+            $success['user'] = $user;
+//            if ($user->status != 1) {
+//                return parent::error('Please contact admin to activate your account', 200);
+//            }
+            // Add user device details for firbase
+            parent::addUserDeviceData($user, $request);
+            return parent::success($success, $this->successStatus);
+        }
+//        dd($isUser->get()->isEmpty());
         $user = User::create($input);
         $success['token'] = $user->createToken('MyApp')->accessToken;
 
@@ -132,7 +145,7 @@ class AuthController extends ApiController {
 //        if ($user->status != 1) {
 //            return parent::error('Please contact admin to activate your account', 200);
 //        }
-        return parent::success($success, $this->successStatus);
+        return parent::successCreated($success, 201);
     }
 
     public function MyProfile(Request $request) {
