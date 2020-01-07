@@ -5,27 +5,29 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use Validator;
 use DB;
-use App\Previouswinner as MyModel;
+use Auth;
+use App\CompetitionUser as MyModel;
 
-class PreviouswinnerController extends ApiController {
+class CompetitionUserController extends ApiController {
 
-    public function getItems(Request $request) {
+    public function GetMyCompetition(Request $request) {
         $rules = ['search' => '', 'limit' => ''];
-//        dd($request->all());
+        $perPage = isset($request->limit) ? $request->limit : 20;
         $validateAttributes = parent::validateAttributes($request, 'POST', $rules, array_keys($rules), false);
         if ($validateAttributes):
             return $validateAttributes;
         endif;
         try {
             $model = new MyModel;
-            $perPage = isset($request->limit) ? $request->limit : 20;
-            if (isset($request->search))
-                $model = $model->Where('title', 'LIKE', "%$request->search%");
-            $model = $model->orderBy('id', 'desc');
+            $GetUserCompetition = $model->where('player_id', Auth::id())->get();
+            if ($GetUserCompetition->isEmpty() === true):
+                throw new \Exception('Data Not Found');
+            endif;
             return parent::success($model->paginate($perPage));
         } catch (\Exception $ex) {
             return parent::error($ex->getMessage());
         }
     }
+
 
 }

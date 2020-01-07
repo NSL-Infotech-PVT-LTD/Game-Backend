@@ -28,11 +28,14 @@ Route::group(['middleware' => ['auth:api', 'roles'], 'namespace' => 'API'], func
     Route::post('competitions', 'CompetitionController@getItems');
     Route::post('news', 'NewsController@getItems');
     Route::post('update/leaderboard', 'CompetitionLeaderBoardController@updateleaderboard');
-    Route::post('user-competition', 'CompetitionLeaderBoardController@UserCompetition');
-    Route::post('get-competition', 'CompetitionLeaderBoardController@GetLeaderBoardById');
+//    Route::post('user-competition', 'CompetitionLeaderBoardController@UserCompetition');
+//    Route::post('get-competition', 'CompetitionLeaderBoardController@GetLeaderBoardById');
     Route::post('category', 'CompetitionCategoryController@getItems');
     Route::post('previouswinner', 'PreviouswinnerController@getItems');
-    Route::get('DashboardController', 'DashboardController@getItems');
-    Route::post('getprofile', 'AuthController@MyProfile');
+    Route::get('Dashboard', 'DashboardController@getItems');
+    Route::get('getprofile', 'AuthController@MyProfile');
     Route::post('updateprofile', 'AuthController@ProfileUpdate');
+    Route::post('user-competition', 'CompetitionUserController@GetMyCompetition');
+    Route::post('get-competition', 'CompetitionController@getItem');
+    
 });

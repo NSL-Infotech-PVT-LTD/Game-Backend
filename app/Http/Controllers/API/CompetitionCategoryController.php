@@ -4,10 +4,11 @@ namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
 use App\CompetitionCategory as MyModel;
-class CompetitionCategoryController extends ApiController
-{
-        public function getItems(Request $request) {
-        $rules = ['search' => ''];
+
+class CompetitionCategoryController extends ApiController {
+
+    public function getItems(Request $request) {
+        $rules = ['search' => '', 'limit' => ''];
 //        dd($request->all());
         $validateAttributes = parent::validateAttributes($request, 'POST', $rules, array_keys($rules), false);
         if ($validateAttributes):
@@ -24,4 +25,5 @@ class CompetitionCategoryController extends ApiController
             return parent::error($ex->getMessage());
         }
     }
+
 }

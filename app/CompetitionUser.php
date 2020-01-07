@@ -6,24 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class CompitionLeadBoard extends Model
-{
+class CompetitionUser extends Model {
+
     use LogsActivity;
     use SoftDeletes;
-    
 
     /**
-     * The database table used by the model.
+     * The database primary key value.
      *
      * @var string
      */
-    protected $table = 'compition_lead_boards';
-
-    /**
-    * The database primary key value.
-    *
-    * @var string
-    */
     protected $primaryKey = 'id';
 
     /**
@@ -31,9 +23,7 @@ class CompitionLeadBoard extends Model
      *
      * @var array
      */
-    protected $fillable = ['score','competition_id','created_by','count'];
-
-    
+    protected $fillable = ['name'];
 
     /**
      * Change activity log event description
@@ -42,15 +32,8 @@ class CompitionLeadBoard extends Model
      *
      * @return string
      */
-    
-      public function get_competition() {
-        
-       return $this->hasMany(\App\Competition::class, 'id', 'competition_id')->select('id','name','image','description');
-     
-    }
-    
-    public function getDescriptionForEvent($eventName)
-    {
+    public function getDescriptionForEvent($eventName) {
         return __CLASS__ . " model has been {$eventName}";
     }
+
 }

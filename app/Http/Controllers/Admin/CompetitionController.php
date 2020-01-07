@@ -101,29 +101,9 @@ class CompetitionController extends Controller {
      * @return \Illuminate\View\View
      */
     public function show(Request $request, $id) {
-        if ($request->ajax()) {
-            $leadBoard = CompitionLeadBoard::all();
-            return Datatables::of($leadBoard)
-                            ->addIndexColumn()
-                            ->editColumn('user_id', function($item) {
-                                return isset($item->user_id) ? \App\User::where('id', $item->user_id)->first()->first_name : '';
-                            })
-                            ->addColumn('action', function($item) {
-                                $return = '';
-                                if ($item->winner == '0'):
-                                    $return .= "<button class='btn btn-warning btn-sm changeStatus'   data-id=" . $item->id . " data-status='confirm'>Mark as winner</button>";
-                                elseif (($item->winner == '1')):
-                                    $return .= "<button class='btn btn-info btn-sm '>Game Winner</button>";
-                                elseif (($item->winner == '2')):
-                                    $return .= "<button class='btn btn-danger btn-sm '>Better luck next time</button>";
-                                endif;
-                                return $return;
-                            })
-                            ->rawColumns(['action', 'image'])
-                            ->make(true);
-        }
+ 
         $competition = Competition::findOrFail($id);
-        $orderDetails = \App\CompitionLeadBoard::whereCompetitionId($id)->get();
+//        $orderDetails = \App\CompitionLeadBoard::whereCompetitionId($id)->get();
         return view('admin.competition.show', compact('competition', 'orderDetails', 'user'), ['rules' => array_keys($this->__rulesforshow)]);
     }
 

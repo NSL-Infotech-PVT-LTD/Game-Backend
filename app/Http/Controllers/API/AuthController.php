@@ -116,6 +116,7 @@ class AuthController extends ApiController {
             return parent::error($errors, 200);
         }
         $input = $request->all();
+        $input['password'] = bcrypt($input['password']);
         $isUser = User::where('email', request('email'));
         if ($isUser->get()->isEmpty() != true) {
             $user = \App\User::find($isUser->first()->id);
@@ -129,6 +130,7 @@ class AuthController extends ApiController {
             return parent::success($success, $this->successStatus);
         }
 //        dd($isUser->get()->isEmpty());
+         $input['password'] = bcrypt($input['password']);
         $user = User::create($input);
         $success['token'] = $user->createToken('MyApp')->accessToken;
 
@@ -149,8 +151,8 @@ class AuthController extends ApiController {
     }
 
     public function MyProfile(Request $request) {
-        $rules = ['search' => '', 'limit' => '', 'id' => ''];
-        $validateAttributes = parent::validateAttributes($request, 'POST', $rules, array_keys($rules), false);
+        $rules = [];
+        $validateAttributes = parent::validateAttributes($request, 'GET', $rules, array_keys($rules), false);
         if ($validateAttributes):
             return $validateAttributes;
         endif;

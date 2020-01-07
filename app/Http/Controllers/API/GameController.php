@@ -10,7 +10,7 @@ use App\Game as MyModel;
 class GameController extends ApiController {
 
     public function getItems(Request $request) {
-        $rules = ['search' => '', 'name' => '', 'limit' => ''];
+        $rules = ['search' => '', 'limit' => ''];
 //        dd($request->all());
         $validateAttributes = parent::validateAttributes($request, 'POST', $rules, array_keys($rules), false);
         if ($validateAttributes):
@@ -19,8 +19,6 @@ class GameController extends ApiController {
         try {
             $model = new MyModel;
             $perPage = isset($request->limit) ? $request->limit : 20;
-            if (isset($request->name))
-                $model = $model->Where('name', 'LIKE', "%$request->name%");
             if (isset($request->search))
                 $model = $model->Where('name', 'LIKE', "%$request->search%");
             $model = $model->orderBy('id', 'desc');
