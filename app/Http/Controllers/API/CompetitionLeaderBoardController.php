@@ -39,9 +39,13 @@ class CompetitionLeaderBoardController extends ApiController {
             return $validateAttributes;
         endif;
         try {
+
             $userCheck = MyModel::where('competition_id', $request->competition_id)->where('created_by', \Auth::id())->get();
+            
+
 
             if ($userCheck->isEmpty() !== true):
+
 //                            dd($userCheck->toArray());
 
                 $id = $userCheck->first()->id;
@@ -55,7 +59,7 @@ class CompetitionLeaderBoardController extends ApiController {
                 endif;
                 $input = $request->all();
                 $updateleader = MyModel::findOrFail($id);
-                $input['user_id'] = \Auth::id();
+                $input['created_by'] = \Auth::id();
                 $input['count'] = '2';
                 $updateleader->fill($input);
 
@@ -65,7 +69,7 @@ class CompetitionLeaderBoardController extends ApiController {
 //                dd('hello');
                 $createleader = new MyModel;
                 $input = $request->all();
-                $input['user_id'] = \Auth::id();
+                $input['created_by'] = \Auth::id();
                 $input['count'] = '1';
                 $createleader = MyModel::create($input);
                 return parent::successCreated(['message' => 'Created Successfully', 'createleader' => $createleader]);
@@ -75,6 +79,8 @@ class CompetitionLeaderBoardController extends ApiController {
         }
     }
 
+    
+    
     public function UserCompetition(Request $request) {
         $rules = ['search' => ''];
         $validateAttributes = parent::validateAttributes($request, 'POST', $rules, array_keys($rules), false);
@@ -94,15 +100,15 @@ class CompetitionLeaderBoardController extends ApiController {
     }
 
     public function GetLeaderBoardById(Request $request) {
-        $rules = ['search' => '','id'=>'required'];
+        $rules = ['search' => '', 'id' => 'required'];
         $validateAttributes = parent::validateAttributes($request, 'POST', $rules, array_keys($rules), false);
         if ($validateAttributes):
             return $validateAttributes;
         endif;
         try {
-            if(isset($request->id))
-            $GetCompetition = MyModel::where('id',$request->id)->get();
-            if ($GetCompetition->isEmpty() === true):   
+            if (isset($request->id))
+                $GetCompetition = MyModel::where('id', $request->id)->get();
+            if ($GetCompetition->isEmpty() === true):
                 throw new \Exception('User Does Not exist');
             endif;
             return parent::success($GetCompetition);
