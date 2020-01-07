@@ -1,7 +1,6 @@
 <?php
 
 namespace App\Http\Controllers\API;
-
 use Illuminate\Http\Request;
 use Validator;
 use DB;
@@ -107,7 +106,7 @@ class AuthController extends ApiController {
     }
 
     public function socialRegister(Request $request) {
-        $rules = ['first_name' => '', 'last_name' => '', 'email' => 'required', 'mobile' => '', 'social_type' => '', 'social_id' => '', 'social_password' => ''];
+        $rules = ['first_name' => '', 'last_name' => '', 'email' => 'required','password'=>'', 'mobile' => '', 'social_type' => '', 'social_id' => '', 'social_password' => ''];
 
         $rules = array_merge($this->requiredParams, $rules);
         $validator = Validator::make($request->all(), $rules);
@@ -116,7 +115,7 @@ class AuthController extends ApiController {
             return parent::error($errors, 200);
         }
         $input = $request->all();
-        $input['password'] = bcrypt($input['password']);
+//        $input['password'] = bcrypt($input['password']);
         $isUser = User::where('email', request('email'));
         if ($isUser->get()->isEmpty() != true) {
             $user = \App\User::find($isUser->first()->id);
