@@ -31,7 +31,7 @@ class CompitionLeadBoard extends Model
      *
      * @var array
      */
-    protected $fillable = ['score','competition_id','user_id','count'];
+    protected $fillable = ['score','competition_id','created_by','count'];
 
     
 
@@ -42,6 +42,13 @@ class CompitionLeadBoard extends Model
      *
      * @return string
      */
+    
+      public function get_competition() {
+        
+       return $this->hasMany(\App\Competition::class, 'id', 'competition_id')->select('id','name','image','description');
+     
+    }
+    
     public function getDescriptionForEvent($eventName)
     {
         return __CLASS__ . " model has been {$eventName}";

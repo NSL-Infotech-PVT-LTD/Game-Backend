@@ -39,7 +39,7 @@ class CompetitionLeaderBoardController extends ApiController {
             return $validateAttributes;
         endif;
         try {
-            $userCheck = MyModel::where('competition_id', $request->competition_id)->where('user_id', \Auth::id())->get();
+            $userCheck = MyModel::where('competition_id', $request->competition_id)->where('created_by', \Auth::id())->get();
 
             if ($userCheck->isEmpty() !== true):
 //                            dd($userCheck->toArray());
@@ -70,6 +70,42 @@ class CompetitionLeaderBoardController extends ApiController {
                 $createleader = MyModel::create($input);
                 return parent::successCreated(['message' => 'Created Successfully', 'createleader' => $createleader]);
             endif;
+        } catch (\Exception $ex) {
+            return parent::error($ex->getMessage());
+        }
+    }
+
+    public function UserCompetition(Request $request) {
+        $rules = ['search' => ''];
+        $validateAttributes = parent::validateAttributes($request, 'POST', $rules, array_keys($rules), false);
+        if ($validateAttributes):
+            return $validateAttributes;
+        endif;
+        try {
+            $UserCompetition = MyModel::where('created_by', \Auth::id())->with('get_competition')->get();
+//            dd($UserCompetition);
+            if ($UserCompetition->isEmpty() === true):
+                throw new \Exception('No Competition...');
+            endif;
+            return parent::success($UserCompetition);
+        } catch (\Exception $ex) {
+            return parent::error($ex->getMessage());
+        }
+    }
+
+    public function GetLeaderBoardById(Request $request) {
+        $rules = ['search' => '','id'=>'required'];
+        $validateAttributes = parent::validateAttributes($request, 'POST', $rules, array_keys($rules), false);
+        if ($validateAttributes):
+            return $validateAttributes;
+        endif;
+        try {
+            if(isset($request->id))
+            $GetCompetition = MyModel::where('id',$request->id)->get();
+            if ($GetCompetition->isEmpty() === true):   
+                throw new \Exception('User Does Not exist');
+            endif;
+            return parent::success($GetCompetition);
         } catch (\Exception $ex) {
             return parent::error($ex->getMessage());
         }

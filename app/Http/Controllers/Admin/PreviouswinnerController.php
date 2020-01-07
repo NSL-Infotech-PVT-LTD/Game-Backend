@@ -72,6 +72,9 @@ class PreviouswinnerController extends Controller
      */
     public function store(Request $request)
     {
+         $this->validate($request, [
+            'image' => 'required',
+        ]);
         $requestData = $request->all();
         if (isset($request->image))
             $requestData['image'] = ApiController::__uploadImage($request->file('image'), public_path(self::$_mediaBasePath));

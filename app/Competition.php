@@ -39,6 +39,7 @@ class Competition extends Model {
      *
      * @return string
      */
+  
     public function getDescriptionForEvent($eventName) {
         return __CLASS__ . " model has been {$eventName}";
     }
