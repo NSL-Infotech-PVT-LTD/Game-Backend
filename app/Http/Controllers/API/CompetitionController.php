@@ -43,4 +43,22 @@ class CompetitionController extends ApiController {
         }
     }
 
+    public function CheckStatusCompetition(Request $request) {
+
+        $rules = ['id' => 'required|exists:competitions,id'];
+        $validateAttributes = parent::validateAttributes($request, 'POST', $rules, array_keys($rules), false);
+        if ($validateAttributes):
+            return $validateAttributes;
+        endif;
+        try {
+            
+            if (MyModel::where('id', $request->id)->whereDate('date', '=', \Carbon\Carbon::now())->get()->isEmpty() != true)
+                return parent::success(['message' => 'Ready To Go']);
+            else
+                return parent::error('Not Started Yet');
+        } catch (\Exception $ex) {
+            return parent::error($ex->getMessage());
+        }
+    }
+
 }
