@@ -75,8 +75,9 @@ class CompetitionUserController extends ApiController {
             return $validateAttributes;
         endif;
         try {
-//            dd($competition->fee);
-            $competitionUser = MyModel::where('id', $request->competition_id)->where('player_id', Auth::id())->get();
+//            dd(Auth::id());
+            $competitionUser = MyModel::where('competition_id', $request->competition_id)->where('player_id', Auth::id())->get();
+//            dd($competitionUser->isEmpty());
             if ($competitionUser->isEmpty())
                 return parent::error('No competion found for this player');
 //            dd($request->score <= $competitionUser->first()->score);
