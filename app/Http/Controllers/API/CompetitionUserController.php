@@ -73,11 +73,11 @@ class CompetitionUserController extends ApiController {
 //            $modelsend = null;
             if ($model->isEmpty() != true):
                 $modelUpdate = MyModel::findOrFail($model->first()->id);
-                $modelUpdate->update(['payment_param_2' => json_encode($charge)]);
-                
+                $modelUpdate->update(['payment_param_2' => json_encode($charge), 'state' => '0']);
+
 //                $modelUpdate->save();
             else:
-                MyModel::create(['player_id' => Auth::id(), 'competition_id' => $request->competition_id, 'payment_param_1' => json_encode($charge)]);
+                MyModel::create(['player_id' => Auth::id(), 'competition_id' => $request->competition_id, 'payment_param_1' => json_encode($charge), 'state' => '0']);
             endif;
             return parent::successCreated(['message' => 'Payment Successfully', 'data' => \App\Competition::whereId($request->competition_id)->first()]);
         } catch (\Exception $ex) {
@@ -102,6 +102,7 @@ class CompetitionUserController extends ApiController {
                 return parent::success('current score is greater than requested score');
             $model = MyModel::find($competitionUser->first()->id);
             $model->score = $request->score;
+            $model->state = '1';
             $model->save();
             return parent::success(['message' => 'Updated Successfully']);
         } catch (\Exception $ex) {

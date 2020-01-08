@@ -32,7 +32,7 @@ class Competition extends Model {
      * @var array
      */
     protected $appends = array('readyto_go', 'my_competition_status', 'competition_date_status', 'is_going_live');
-    protected $fillable = ['image', 'description', 'name', 'date', 'fee', 'prize_details', 'game_id', 'competition_category_id'];
+    protected $fillable = ['state', 'image', 'description', 'name', 'date', 'fee', 'prize_details', 'game_id', 'competition_category_id'];
 
     /**
      * Change activity log event description
@@ -74,8 +74,12 @@ class Competition extends Model {
 //        dd($model->toArray());
             if ($model->isEmpty())
                 return 'Not_Enroll_Yet';
+            if ($model->first()->payment_param_2 !== null && $model->first()->state == 0)
+                return 'Payed_One';
             if ($model->first()->payment_param_2 !== null)
                 return 'Max_Allowance';
+            if ($model->first()->payment_param_1 !== null && $model->first()->state == 1)
+                return 'Enrolled_once';
             if ($model->first()->payment_param_1 !== null)
                 return 'Payed_One';
             return 'NAN';
