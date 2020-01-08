@@ -156,7 +156,8 @@ class AuthController extends ApiController {
             return $validateAttributes;
         endif;
         try {
-            $model = User::Where('id', Auth::id())->get();
+            $model = User::Where('id', Auth::id())->first();
+//            dd($model->toArray());
             return parent::success($model);
         } catch (\Exception $ex) {
             return parent::error($ex->getMessage());
