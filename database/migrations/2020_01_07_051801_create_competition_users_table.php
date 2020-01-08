@@ -20,6 +20,8 @@ class CreateCompetitionUsersTable extends Migration {
             $table->foreign('player_id')->references('id')->on('users')->onDelete('cascade');
             $table->Integer('competition_id')->unsigned()->index();
             $table->foreign('competition_id')->references('id')->on('competitions')->onDelete('cascade');
+            $table->text('payment_param_1')->nullable();
+            $table->text('payment_param_2')->nullable();
             App\Helpers\DbExtender::defaultParams($table);
         });
     }

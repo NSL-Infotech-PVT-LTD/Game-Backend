@@ -37,12 +37,16 @@ class CompetitionUserController extends ApiController {
         endif;
         try {
             $competition = \App\Competition::where('id', $request->competition_id)->first();
+//            dd('s');
             $model = MyModel::where('competition_id', $request->competition_id)->where('player_id', Auth::id())->get();
             $fee = $competition->fee;
-            if ($model->count() > 1)
-                return parent::error('Max Allowance to play this game is reached');
-            if ($model->count() == 1)
-                $fee = $fee / 2;
+//            dd($model->isEmpty() != true);
+            if ($model->isEmpty() != true):
+                if ($model->first()->payment_param_2 != null)
+                    return parent::error('Max Allowance to play this game is reached');
+                if ($model->first()->payment_param_1 != null)
+                    $fee = $fee / 2;
+            endif;
 //            dd(env('STRIPE_SECRET_KEY'));
             \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
             $charge = \Stripe\Charge::create([
@@ -51,8 +55,14 @@ class CompetitionUserController extends ApiController {
                         "source" => $request->token,
                         "description" => $request->competition_id . ' Fees for competition',
             ]);
-            MyModel::create(['player_id' => Auth::id(), 'competition_id' => $request->competition_id, 'params' => json_encode($charge)]);
-            return parent::successCreated(['message' => 'payment Successfully']);
+            if ($model->isEmpty() != true):
+                $modelUpdate = MyModel::findOrFail($model->first()->id);
+                $modelUpdate->update(['payment_param_2' => json_encode($charge)]);
+//                $modelUpdate->save();
+            else:
+                MyModel::create(['player_id' => Auth::id(), 'competition_id' => $request->competition_id, 'payment_param_1' => json_encode($charge)]);
+            endif;
+            return parent::successCreated(['message' => 'Payment Successfully']);
         } catch (\Exception $ex) {
             return parent::error($ex->getMessage());
         }
