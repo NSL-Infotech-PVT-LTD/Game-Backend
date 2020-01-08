@@ -30,6 +30,7 @@ class Competition extends Model {
      *
      * @var array
      */
+    protected $appends = array('readyto_go');
     protected $fillable = ['image', 'description', 'name', 'date', 'fee', 'prize_details', 'game_id', 'competition_category_id'];
 
     /**
@@ -39,7 +40,10 @@ class Competition extends Model {
      *
      * @return string
      */
-  
+   public function getReadytoGoAttribute($value) {
+     return  \Carbon\Carbon::createFromTimeStamp(strtotime($this->date))->diffForHumans();
+    }
+    
     public function getDescriptionForEvent($eventName) {
         return __CLASS__ . " model has been {$eventName}";
     }
