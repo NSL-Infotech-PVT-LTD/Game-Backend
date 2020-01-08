@@ -48,7 +48,7 @@ class Competition extends Model {
             $current = \Carbon\Carbon::now();
             return $date->diffInSeconds($current);
         else:
-            return '0';
+            return 0;
         endif;
     }
 
