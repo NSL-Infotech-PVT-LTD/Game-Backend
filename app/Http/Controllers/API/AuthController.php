@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\API;
+
 use Illuminate\Http\Request;
 use Validator;
 use DB;
@@ -95,7 +96,7 @@ class AuthController extends ApiController {
         $assignRole = DB::table('role_user')->insert(
                 ['user_id' => $lastId, 'role_id' => $selectClientRole->id]
         );
-        $success['user'] = User::where('id', $user->id)->select('first_name', 'last_name', 'email', 'password', 'status', 'image', 'mobile','country','image_url','social_id','	social_type')->first();
+        $success['user'] = User::where('id', $user->id)->select('first_name', 'last_name', 'email', 'password', 'status', 'image', 'mobile', 'country', 'image_url', 'social_id', '	social_type')->first();
 //        dd($user);
         // Add user device details for firbase
         parent::addUserDeviceData($user, $request);
@@ -106,7 +107,7 @@ class AuthController extends ApiController {
     }
 
     public function socialRegister(Request $request) {
-        $rules = ['first_name' => '', 'last_name' => '', 'email' => 'required','password'=>'', 'mobile' => '', 'social_type' => '', 'social_id' => '', 'social_password' => ''];
+        $rules = ['first_name' => '', 'last_name' => '', 'email' => 'required', 'password' => '', 'mobile' => '', 'social_type' => '', 'social_id' => '', 'social_password' => ''];
 
         $rules = array_merge($this->requiredParams, $rules);
         $validator = Validator::make($request->all(), $rules);
@@ -129,7 +130,7 @@ class AuthController extends ApiController {
             return parent::success($success, $this->successStatus);
         }
 //        dd($isUser->get()->isEmpty());
-         $input['password'] = bcrypt($input['password']);
+        $input['password'] = bcrypt($input['password']);
         $user = User::create($input);
         $success['token'] = $user->createToken('MyApp')->accessToken;
 
@@ -139,7 +140,7 @@ class AuthController extends ApiController {
                 ['user_id' => $lastId, 'role_id' => $selectClientRole->id]
         );
 
-        $success['user'] = User::where('id', $user->id)->select('first_name', 'last_name', 'email', 'password', 'status', 'image', 'mobile','country', 'image_url', 'social_type', 'social_id', 'social_password')->first();
+        $success['user'] = User::where('id', $user->id)->select('first_name', 'last_name', 'email', 'password', 'status', 'image', 'mobile', 'country', 'image_url', 'social_type', 'social_id', 'social_password')->first();
 //        dd($user);
         // Add user device details for firbase
         parent::addUserDeviceData($user, $request);
@@ -156,7 +157,8 @@ class AuthController extends ApiController {
             return $validateAttributes;
         endif;
         try {
-            $model = User::Where('id', Auth::id())->first();
+            $model = User::Where('id', Auth::id())->select('id', 'first_name', 'last_name', 'email', 'password', 'status', 'image', 'mobile', 'country', 'image_url'
+                            , 'social_type', 'social_id', 'social_password')->first();
 //            dd($model->toArray());
             return parent::success($model);
         } catch (\Exception $ex) {
@@ -183,13 +185,8 @@ class AuthController extends ApiController {
             if (isset($request->image)):
                 $input['image'] = parent::__uploadImage($request->file('image'), public_path('uploads/users/image'));
             endif;
-            $abc = $request->first_name;
-
-//            $input['password'] = Hash::make($request->password);
             $user->fill($input);
             $user->save();
-
-            // Add user device details for firbase
             parent::addUserDeviceData($user, $request);
             return parent::successCreated(['Message' => 'Updated Successfully', 'user' => $user]);
         } catch (\Exception $ex) {
