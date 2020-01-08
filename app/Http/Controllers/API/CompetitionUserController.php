@@ -98,10 +98,11 @@ class CompetitionUserController extends ApiController {
             if ($competitionUser->isEmpty())
                 return parent::error('No competion found for this player');
 //            dd($request->score <= $competitionUser->first()->score);
-            if ($request->score <= $competitionUser->first()->score)
-                return parent::success('current score is greater than requested score');
             $model = MyModel::find($competitionUser->first()->id);
-            $model->score = $request->score;
+            if ($request->score <= $competitionUser->first()->score)
+                ''; //return parent::success('current score is greater than requested score');
+            else
+                $model->score = $request->score;
             $model->state = '1';
             $model->save();
             return parent::success(['message' => 'Updated Successfully']);
