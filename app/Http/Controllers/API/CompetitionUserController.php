@@ -23,6 +23,7 @@ class CompetitionUserController extends ApiController {
             endif;
             $model = \App\Competition::whereIn('id', $GetUserCompetition->pluck('competition_id')->toArray());
             $perPage = isset($request->limit) ? $request->limit : 20;
+            
             return parent::success($model->paginate($perPage));
         } catch (\Exception $ex) {
             return parent::error($ex->getMessage());
