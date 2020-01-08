@@ -95,7 +95,7 @@ class AuthController extends ApiController {
         $assignRole = DB::table('role_user')->insert(
                 ['user_id' => $lastId, 'role_id' => $selectClientRole->id]
         );
-        $success['user'] = User::where('id', $user->id)->select('first_name', 'last_name', 'email', 'password', 'status', 'image', 'mobile', 'image_url')->first();
+        $success['user'] = User::where('id', $user->id)->select('first_name', 'last_name', 'email', 'password', 'status', 'image', 'mobile','country','image_url','social_id','	social_type')->first();
 //        dd($user);
         // Add user device details for firbase
         parent::addUserDeviceData($user, $request);
@@ -139,7 +139,7 @@ class AuthController extends ApiController {
                 ['user_id' => $lastId, 'role_id' => $selectClientRole->id]
         );
 
-        $success['user'] = User::where('id', $user->id)->select('first_name', 'last_name', 'email', 'password', 'status', 'image', 'mobile', 'image_url', 'social_type', 'social_id', 'social_password')->first();
+        $success['user'] = User::where('id', $user->id)->select('first_name', 'last_name', 'email', 'password', 'status', 'image', 'mobile','country', 'image_url', 'social_type', 'social_id', 'social_password')->first();
 //        dd($user);
         // Add user device details for firbase
         parent::addUserDeviceData($user, $request);
