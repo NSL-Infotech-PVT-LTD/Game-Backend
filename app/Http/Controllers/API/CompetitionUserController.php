@@ -12,17 +12,17 @@ class CompetitionUserController extends ApiController {
 
     public function GetMyCompetition(Request $request) {
         $rules = ['search' => '', 'limit' => ''];
-        $perPage = isset($request->limit) ? $request->limit : 20;
         $validateAttributes = parent::validateAttributes($request, 'POST', $rules, array_keys($rules), false);
         if ($validateAttributes):
             return $validateAttributes;
         endif;
         try {
-            $model = new MyModel;
-            $GetUserCompetition = $model->where('player_id', Auth::id())->get();
+            $GetUserCompetition = MyModel::where('player_id', Auth::id())->get();
             if ($GetUserCompetition->isEmpty() === true):
                 throw new \Exception('Data Not Found');
             endif;
+            $model = \App\Competition::whereIn('id', $GetUserCompetition->pluck('competition_id')->toArray());
+            $perPage = isset($request->limit) ? $request->limit : 20;
             return parent::success($model->paginate($perPage));
         } catch (\Exception $ex) {
             return parent::error($ex->getMessage());
@@ -104,7 +104,7 @@ class CompetitionUserController extends ApiController {
             else
                 $model->score = $request->score;
             $model->state = '1';
-            $model->save();           
+            $model->save();
             return parent::success(['message' => 'Updated Successfully']);
         } catch (\Exception $ex) {
             return parent::error($ex->getMessage());
