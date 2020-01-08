@@ -31,7 +31,7 @@ class Competition extends Model {
      *
      * @var array
      */
-    protected $appends = array('readyto_go', 'my_competition_status', 'competition_date_status');
+    protected $appends = array('readyto_go', 'my_competition_status', 'competition_date_status', 'is_going_live');
     protected $fillable = ['image', 'description', 'name', 'date', 'fee', 'prize_details', 'game_id', 'competition_category_id'];
 
     /**
@@ -41,6 +41,17 @@ class Competition extends Model {
      *
      * @return string
      */
+    public function getIsGoingLiveAttribute($value) {
+//        $date = \Carbon\Carbon::createFromFormat('Y-m-d', $this->date)->subDays(1)->toDateString();
+        if (\Carbon\Carbon::createFromFormat('Y-m-d', $this->date)->subDays(1)->toDateString() == \Carbon\Carbon::now()->toDateString()):
+            $date = \Carbon\Carbon::createFromFormat('Y-m-d h:i:s', date("Y-m-d h:i:s", strtotime($this->date)));
+            $current = \Carbon\Carbon::now();
+            return $date->diffInSeconds($current);
+        else:
+            return '0';
+        endif;
+    }
+
     public function getCompetitionDateStatusAttribute($value) {
         try {
 //            dd(\Carbon\Carbon::now()->toDateString());
