@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Game;
 
 class Competition extends Model {
 
@@ -40,10 +41,20 @@ class Competition extends Model {
      *
      * @return string
      */
-   public function getReadytoGoAttribute($value) {
-     return  \Carbon\Carbon::createFromTimeStamp(strtotime($this->date))->diffForHumans();
+    public function getReadytoGoAttribute($value) {
+        return \Carbon\Carbon::createFromTimeStamp(strtotime($this->date))->diffForHumans();
     }
-    
+
+    public function game() {
+
+        return $this->hasOne(Game::class, 'id', 'game_id')->select('id', 'name','image');
+    }
+
+    public function category() {
+
+        return $this->hasOne(CompetitionCategory::class, 'id', 'competition_category_id')->select('id', 'name');
+    }
+
     public function getDescriptionForEvent($eventName) {
         return __CLASS__ . " model has been {$eventName}";
     }

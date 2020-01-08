@@ -2,26 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/xampp/htdocs/win_chunks/routes/api.php</file>
-            <file>file:/C:/xampp/htdocs/win_chunks/database/migrations/2014_10_12_000000_create_users_table.php</file>
-            <file>file:/C:/xampp/htdocs/win_chunks/app/Http/Controllers/API/NewsController.php</file>
-            <file>file:/C:/xampp/htdocs/win_chunks/database/migrations/2019_12_02_073740_create_competition_categories_table.php</file>
-            <file>file:/C:/xampp/htdocs/win_chunks/app/Http/Controllers/API/AuthController.php</file>
-            <file>file:/C:/xampp/htdocs/win_chunks/app/Http/Controllers/API/CompetitionCategoryController.php</file>
-            <file>file:/C:/xampp/htdocs/win_chunks/app/Competition.php</file>
-            <file>file:/C:/xampp/htdocs/win_chunks/app/Http/Controllers/Admin/CompetitionController.php</file>
-            <file>file:/C:/xampp/htdocs/win_chunks/database/migrations/2019_12_02_083306_create_competitions_table.php</file>
-            <file>file:/C:/xampp/htdocs/win_chunks/app/Http/Controllers/API/CompetitionUserController.php</file>
-            <file>file:/C:/xampp/htdocs/win_chunks/app/Http/Controllers/API/PreviouswinnerController.php</file>
-            <file>file:/C:/xampp/htdocs/win_chunks/app/Http/Controllers/API/GameController.php</file>
-            <file>file:/C:/xampp/htdocs/win_chunks/app/Http/Controllers/API/CompetitionController.php</file>
-            <file>file:/C:/xampp/htdocs/win_chunks/database/migrations/2020_01_07_051801_create_competition_users_table.php</file>
-            <file>file:/C:/xampp/htdocs/win_chunks/app/CompetitionCategory.php</file>
-            <file>file:/C:/xampp/htdocs/win_chunks/app/Http/Controllers/API/ApiController.php</file>
-            <file>file:/C:/xampp/htdocs/win_chunks/app/Http/Controllers/API/DashboardController.php</file>
-            <file>file:/C:/xampp/htdocs/win_chunks/app/CompetitionUser.php</file>
-            <file>file:/C:/xampp/htdocs/win_chunks/app/Helpers/DbExtender.php</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

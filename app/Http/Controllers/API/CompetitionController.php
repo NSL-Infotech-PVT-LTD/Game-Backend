@@ -23,7 +23,7 @@ class CompetitionController extends ApiController {
                 $model = $model->Where('name', 'LIKE', "%$request->search%");
             if (isset($request->category_id))
                 $model = $model->Where('competition_category_id', "%$request->category_id%");
-            $model = $model->orderBy('id', 'desc');
+            $model = $model->select('id','image', 'description', 'name', 'date', 'fee', 'prize_details', 'game_id', 'competition_category_id')->with(['game','category'])->orderBy('id', 'desc');
             return parent::success($model->paginate($perPage));
         } catch (\Exception $ex) {
             return parent::error($ex->getMessage());
