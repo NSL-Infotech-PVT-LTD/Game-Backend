@@ -70,7 +70,6 @@ class Competition extends Model {
             return 'NAN';
         } catch (\Exception $ex) {
             return 'NAN';
-            
         }
     }
 
