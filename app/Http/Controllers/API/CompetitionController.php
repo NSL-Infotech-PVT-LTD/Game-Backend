@@ -37,7 +37,7 @@ class CompetitionController extends ApiController {
             return $validateAttributes;
         endif;
         try {
-            return parent::success(MyModel::select('id','image', 'description', 'name', 'date', 'fee', 'prize_details', 'game_id', 'competition_category_id')->where('id', $request->id)->first());
+            return parent::success(MyModel::select('id','image', 'description', 'name', 'date', 'fee', 'prize_details', 'game_id', 'competition_category_id')->with(['game','category'])->where('id', $request->id)->first());
         } catch (\Exception $ex) {
             return parent::error($ex->getMessage());
         }
