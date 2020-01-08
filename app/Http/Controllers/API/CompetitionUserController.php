@@ -104,7 +104,7 @@ class CompetitionUserController extends ApiController {
             else
                 $model->score = $request->score;
             $model->state = '1';
-            $model->save();
+            $model->save();           
             return parent::success(['message' => 'Updated Successfully']);
         } catch (\Exception $ex) {
             return parent::error($ex->getMessage());
