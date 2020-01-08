@@ -23,7 +23,7 @@ class CompetitionUser extends Model {
      *
      * @var array
      */
-    protected $fillable = ['player_id','competition_id'];
+    protected $fillable = ['player_id', 'competition_id', 'score', 'status','params','state'];
 
     /**
      * Change activity log event description
