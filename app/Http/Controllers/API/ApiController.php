@@ -201,48 +201,76 @@ class ApiController extends \App\Http\Controllers\Controller {
         }
     }
 
-    public static function pushNotofication($data = [], $deviceToken) {
+//    public function pushNotificationiOS($data, $devicetokens, $customData = null) {
+//        foreach ($devicetokens as $devicetoken):
+//            self::pushNotificationAPN($data, $devicetoken, $customData);
+//        endforeach;
+//        return true;
+//    }
+
+    public static function pushNotificationsMultipleUsers($data = [], $userIds, $customData = null, $type = 'all') {
+        foreach ($userIds as $userId):
+            self::pushNotification($data, $userId, $customData, $type);
+        endforeach;
+        return true;
+    }
+
+    public static function pushNotification($data = [], $userId, $customData = null, $type = 'all') {
+//        if (User::whereId($userId)->where('is_notify', '1')->get()->isEmpty())
+//            return true;
+//        if (User::whereId($userId)->where('is_login', '1')->get()->isEmpty())
+//            return true;
+        switch ($type):
+            case 'apn':
+                foreach (\App\UserDevice::whereUserId($userId)->whereType('ios')->get() as $userDevice):
+                    self::pushNotificationAPN($data, $userDevice->token, $customData);
+                endforeach;
+                break;
+            case 'FCM':
+                foreach (\App\UserDevice::whereUserId($userId)->whereType('android')->get() as $userDevice):
+                    self::pushNotoficationFCM($data, $userDevice->token, $customData);
+                endforeach;
+                break;
+            default :
+                foreach (\App\UserDevice::whereUserId($userId)->whereType('ios')->get() as $userDevice):
+                    self::pushNotificationAPN($data, $userDevice->token, $customData);
+                endforeach;
+                foreach (\App\UserDevice::whereUserId($userId)->whereType('android')->get() as $userDevice):
+                    self::pushNotoficationFCM($data, $userDevice->token, $customData);
+                endforeach;
+                break;
+        endswitch;
+        return true;
+    }
+
+    public static function pushNotoficationFCM($data = [], $deviceToken, $customData = null) {
         // FCM
         $optionBuilder = new OptionsBuilder();
         $optionBuilder->setTimeToLive(60 * 20);
+//        $notificationBuilder = new PayloadNotificationBuilder();
         $notificationBuilder = new PayloadNotificationBuilder($data['title']);
-        $notificationBuilder->setBody($data['body'])->setSound('default');
+        $notificationBuilder->setBody($data['body']);
+        $notificationBuilder->setSound('default');
 
         $dataBuilder = new PayloadDataBuilder();
-        $dataBuilder->addData(['a_data' => 'my_data']);
+        if (!is_null($customData))
+            $dataBuilder->addData(array_merge($data, $customData));
+//            $dataBuilder->addData(['messageInfo' => array_merge($data, $customData)]);
 
         $option = $optionBuilder->build();
         $notification = $notificationBuilder->build();
         $data = $dataBuilder->build();
 
 //        $deviceToken = "dRyHOgfdDMA:APA91bFr-dj3_sDe3z7R3d30X12k6n4NnFWuyvbsh4xGRr-s0j2RfpKplfrc0rms5ZZ0aZu6taho3ZbGn_xvtSPdq0QBTcXTRjo94g2L5X5snSuJUW4yt-TfH5WRbEqYoKAktSkLPN5X";
+//        $deviceToken = "cA_6C2aiXVg:APA91bEEzu-t3RkUunF92nlBlINK91ma5Absq-f2uOozgFuZ28xMNonX9luzvZ_ReQmrcSdoH6S7PQUaIAxiHakkE2R_UsmvDOOGhzuE_9vk-Bm2YjbvejcPcw6uko6iesWExOC6HXm4";
 
         $downstreamResponse = FCM::sendTo($deviceToken, $option, $notification, $data);
+//        dd($downstreamResponse);
 //        $downstreamResponse->numberFailure();
         return $downstreamResponse->numberSuccess() == '1' ? true : false;
     }
 
-//    public function pushNotificationiOS($data, $devicetokens, $customData = null) {
-//        foreach ($devicetokens as $devicetoken):
-//            self::pushNotifyiOS($data, $devicetoken, $customData);
-//        endforeach;
-//        return true;
-//    }
-
-    public static function pushNotificationiOSMultipleUsers($data = [], $userIds, $customData = null) {
-        foreach ($userIds as $userId):
-            self::pushNotificationiOS($data, $userId,$customData);
-        endforeach;
-        return true;
-    }
-    public static function pushNotificationiOS($data = [], $userId, $customData = null) {
-        foreach (\App\UserDevice::whereUserId($userId)->get() as $userDevice):
-            self::pushNotifyiOS($data, $userDevice->token);
-        endforeach;
-        return true;
-    }
-
-    private static function pushNotifyiOS($data, $devicetoken, $customData = null) {
+    private static function pushNotificationAPN($data, $devicetoken, $customData = null) {
         //return true;
         $deviceToken = $devicetoken;
         $ctx = stream_context_create();
@@ -299,7 +327,7 @@ class ApiController extends \App\Http\Controllers\Controller {
     public static function __uploadImage($image, $path = null) {
         if ($path === null)
             $path = public_path('uploads');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
+        $imageName = time() . '.' . $image->getClientOriginalExtension();
         $image->move($path, $imageName);
         return $imageName;
     }
@@ -388,7 +416,7 @@ class ApiController extends \App\Http\Controllers\Controller {
 
         // Check errors
         if ($response) {
-
+            
         } else {
             $error = curl_error($curl) . '(' . curl_errno($curl) . ')';
             echo $error . "\n";
