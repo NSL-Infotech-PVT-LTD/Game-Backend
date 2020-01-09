@@ -27,6 +27,7 @@ class Kernel extends ConsoleKernel {
     protected function schedule(Schedule $schedule) {
         // $schedule->command('inspire')
         //          ->hourly();
+        
         $schedule->command('notify_competition:before')->everyMinute();
         $schedule->command('notify_competition:start')->everyMinute();
         $schedule->command('notify_competition:end')->everyMinute();
