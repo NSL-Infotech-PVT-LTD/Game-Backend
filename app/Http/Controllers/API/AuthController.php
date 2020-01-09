@@ -242,30 +242,30 @@ class AuthController extends ApiController {
         }
     }
 
-    public function userUpdate(Request $request) {
-        $user = \App\User::findOrFail(\Auth::id());
-        if ($user->get()->isEmpty())
-            return parent::error('User Not found');
-        $rules = ['name' => '', 'dob' => '', 'mobile' => '', 'profile_image' => ''];
-        $validateAttributes = parent::validateAttributes($request, 'POST', $rules, array_keys($rules), false);
-        if ($validateAttributes):
-            return $validateAttributes;
-        endif;
-        try {
-            $input = $request->all();
-//            $input['password'] = Hash::make($request->password);
-            if (isset($request->profile_image)):
-                $input['profile_image'] = parent::__uploadImage($request->file('profile_image'), public_path('uploads/user/profile_image'));
-            endif;
-//            var_dump(json_decode($input['category_id']));
-//            dd('s');
-            $user->fill($input);
-            $user->save();
-            return parent::successCreated(['Message' => 'Updated Successfully', 'user' => $user]);
-        } catch (\Exception $ex) {
-            return parent::error($ex->getMessage());
-        }
-    }
+//    public function userUpdate(Request $request) {
+//        $user = \App\User::findOrFail(\Auth::id());
+//        if ($user->get()->isEmpty())
+//            return parent::error('User Not found');
+//        $rules = ['name' => '', 'dob' => '', 'mobile' => '', 'profile_image' => ''];
+//        $validateAttributes = parent::validateAttributes($request, 'POST', $rules, array_keys($rules), false);
+//        if ($validateAttributes):
+//            return $validateAttributes;
+//        endif;
+//        try {
+//            $input = $request->all();
+////            $input['password'] = Hash::make($request->password);
+//            if (isset($request->profile_image)):
+//                $input['profile_image'] = parent::__uploadImage($request->file('profile_image'), public_path('uploads/user/profile_image'));
+//            endif;
+////            var_dump(json_decode($input['category_id']));
+////            dd('s');
+//            $user->fill($input);
+//            $user->save();
+//            return parent::successCreated(['Message' => 'Updated Successfully', 'user' => $user]);
+//        } catch (\Exception $ex) {
+//            return parent::error($ex->getMessage());
+//        }
+//    }
 
     public function userUpdatePassword(Request $request) {
         $user = \App\User::findOrFail(\Auth::id());
