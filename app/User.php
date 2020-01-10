@@ -41,13 +41,29 @@ class User extends Authenticatable {
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-    protected $appends = array('role', 'fullname');
+    protected $appends = array('role', 'fullname', 'participateGames', 'wonGames');
+
+    public function getParticipateGamesAttribute() {
+        try {
+            return CompetitionUser::where('player_id', \Auth::id())->get()->count();
+        } catch (\Exception $ex) {
+            return 0;
+        }
+    }
+
+    public function getWonGamesAttribute() {
+        try {
+            return CompetitionUser::where('status', 'winner')->where('player_id', \Auth::id())->get()->count();
+        } catch (\Exception $ex) {
+            return 0;
+        }
+    }
 
     public function getFullNameAttribute() {
         try {
 
             return $this->first_name . ' ' . $this->last_name;
-        } catch (Exception $ex) {
+        } catch (\Exception $ex) {
             return [];
         }
     }
