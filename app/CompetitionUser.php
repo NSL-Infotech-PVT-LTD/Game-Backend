@@ -36,4 +36,12 @@ class CompetitionUser extends Model {
         return __CLASS__ . " model has been {$eventName}";
     }
 
+    public function competition() {
+        return $this->hasOne(Competition::class, 'id', 'competition_id')->select('id', 'name', 'image', 'description', 'date', 'fee', 'prize_details', 'game_id', 'competition_category_id');
+    }
+
+    public function player() {
+        return $this->hasOne(User::class, 'id', 'player_id')->select('id', 'first_name', 'last_name', 'image');
+    }
+
 }

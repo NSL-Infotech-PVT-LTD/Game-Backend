@@ -10,6 +10,26 @@ use App\CompetitionUser as MyModel;
 
 class CompetitionUserController extends ApiController {
 
+    public function getMyCompetitionUsers(Request $request) {
+        $rules = ['search' => '', 'limit' => '', 'competition_id' => 'required|exists:competitions,id'];
+        $validateAttributes = parent::validateAttributes($request, 'POST', $rules, array_keys($rules), false);
+        if ($validateAttributes):
+            return $validateAttributes;
+        endif;
+        try {
+            $model = MyModel::where('player_id', Auth::id());
+            if ($model->get()->isEmpty() === true):
+                throw new \Exception('Data Not Found');
+            endif;
+            $model = $model->select('id','player_id', 'competition_id', 'score', 'status')->with(['competition', 'player']);
+            $perPage = isset($request->limit) ? $request->limit : 20;
+
+            return parent::success($model->paginate($perPage));
+        } catch (\Exception $ex) {
+            return parent::error($ex->getMessage());
+        }
+    }
+
     public function GetMyCompetition(Request $request) {
         $rules = ['search' => '', 'limit' => ''];
         $validateAttributes = parent::validateAttributes($request, 'POST', $rules, array_keys($rules), false);
