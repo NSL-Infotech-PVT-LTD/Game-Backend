@@ -21,7 +21,9 @@ class CompetitionUserController extends ApiController {
             if ($model->get()->isEmpty() === true):
                 throw new \Exception('Data Not Found');
             endif;
-            $model = $model->select('id','player_id', 'competition_id', 'score', 'status')->with(['competition', 'player']);
+            $model = $model->select('id', 'player_id', 'competition_id', 'score', 'status')->with(['competition', 'player']);
+            if (isset($request->competition_id))
+                $model = $model->where('competition_id', $request->competition_id);
             $perPage = isset($request->limit) ? $request->limit : 20;
 
             return parent::success($model->paginate($perPage));
