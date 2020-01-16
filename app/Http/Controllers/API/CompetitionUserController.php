@@ -102,8 +102,12 @@ class CompetitionUserController extends ApiController {
             else:
                 MyModel::create(['player_id' => Auth::id(), 'competition_id' => $request->competition_id, 'payment_param_1' => json_encode($charge), 'state' => '0']);
             endif;
+<<<<<<< HEAD
             \App\Http\Controllers\API\ApiController::pushNotificationsMultipleUsers(['title' => "Enrolled for competition", 'body' => "You're successfully enrolled for competition"], [\Auth::id()], ['target_id' => $request->competition_id, 'target_type' => 'Competition'], 'FCM');
             return parent::successCreated(['message' => 'Payment Successfully', 'data' => \App\Competition::whereId($request->competition_id)->first()]);
+=======
+            return parent::successCreated(['message' => 'Thankyou for registering for the game']);
+>>>>>>> 1f607c4666c3e57d1aae7ad1f21b394dbe357d4c
         } catch (\Exception $ex) {
             return parent::error($ex->getMessage());
         }
