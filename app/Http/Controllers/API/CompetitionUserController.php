@@ -62,7 +62,7 @@ class CompetitionUserController extends ApiController {
             else:
                 MyModel::create(['player_id' => Auth::id(), 'competition_id' => $request->competition_id, 'payment_param_1' => json_encode($charge)]);
             endif;
-            
+               
             return parent::successCreated(['message' => 'Thankyou for registering for the game']); 
         } catch (\Exception $ex) {
             return parent::error($ex->getMessage());
