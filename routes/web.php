@@ -43,6 +43,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'roles'], 'roles' =>
     Route::resource('news', 'Admin\NewsController');
     Route::resource('compition-lead-board', 'Admin\CompitionLeadBoardController');
     Route::post('competition/change-status', 'Admin\CompetitionController@changeStatus')->name('competition.changeStatus');
+    Route::post('competition/hot-competition', 'Admin\CompetitionController@hotCompetition')->name('competition.hotCompetition');
     Route::post('game/change-status', 'Admin\GameController@changeStatus')->name('game.changeStatus');
     Route::post('news/change-status', 'Admin\NewsController@changeStatus')->name('news.changeStatus');
     Route::post('users/change-status', 'Admin\UsersController@changeStatus')->name('users.changeStatus');
