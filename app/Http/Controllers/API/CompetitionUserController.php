@@ -46,7 +46,7 @@ class CompetitionUserController extends ApiController {
                     return parent::error('Max Allowance to play this game is reached');
                 if ($model->first()->payment_param_1 != null)
                     $fee = $fee / 2;
-            endif;
+            endif; 
 //            dd(env('STRIPE_SECRET_KEY'));
             \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
             $charge = \Stripe\Charge::create([
