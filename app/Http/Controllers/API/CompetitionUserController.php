@@ -66,6 +66,8 @@ class CompetitionUserController extends ApiController {
             return parent::successCreated(['message' => 'Thankyou for registering for the game']); 
         } catch (\Exception $ex) {
             return parent::error($ex->getMessage());
+            
+            
         }
     }
 
