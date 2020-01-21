@@ -163,7 +163,7 @@
             },
             success: function (data)
             {
-                
+                location.reload();
             }
         });
     });

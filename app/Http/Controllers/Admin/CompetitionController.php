@@ -201,7 +201,7 @@ class CompetitionController extends Controller {
     public function AllhotCompetition(Request $request) {
 
         if ($request->ajax()) {
-            $competition = Competition::all();
+            $competition = Competition::where('hot_competitions','1')->get();
 //               dd($competition);
             return Datatables::of($competition)
                             ->addIndexColumn()
