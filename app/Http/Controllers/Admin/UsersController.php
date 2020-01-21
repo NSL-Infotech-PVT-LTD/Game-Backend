@@ -5,14 +5,16 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Role;
 use App\User;
+use App\CompetitionUser;
 use Illuminate\Http\Request;
 use Auth;
 use Datatables;
+
 class UsersController extends Controller {
 
-
     public static $_mediaBasePath = 'uploads/users/';
-      protected $__rulesforindex = ['first_name' => 'required', 'email' => 'required'];
+    protected $__rulesforindex = ['first_name' => 'required', 'email' => 'required'];
+
     /**
      * Display a listing of the resource.
      *
@@ -27,31 +29,25 @@ class UsersController extends Controller {
 //               
             return Datatables::of($user)
 //                            ->addIndexColumn()
-//                            ->editColumn('image', function($item) {
-//                                if (empty($item->image)) {
-//                                    return "<img width='50' src=" . url('uploads/news/noimage.png') . ">";
-//                                } else {
-//                                    return "<img width='50' src=" . url('uploads/news/' . $item->image) . ">";
-//                                }
-//                            })
+                            ->addColumn('transaction', function($item) {
+                                return '<a class="btn btn-primary" href=' . url("admin/transaction/" . $item->id) . '>Payment Details</a>';
+                            })
                             ->addColumn('action', function($item) {
 
                                 $return = '';
-            // BLOCK AND UN-BLOCK CODE==========> 
-                                           
+                                // BLOCK AND UN-BLOCK CODE==========> 
 //                                if ($item->status == '0'):
 //                                    $return .= "<button  class='btn btn-danger btn-sm changeStatus' title='UnBlock'  data-id=" . $item->id . " data-status='UnBlock'>UnBlock / Active</button>";
 //                                else:
 //                                    $return .= "<button class='btn btn-success btn-sm changeStatus' title='Block' data-id=" . $item->id . " data-status='Block' >Block / Inactive</button>";
 //                                endif;
-                               
-            // END BLOCK AND UN-BLOCK CODE=======>                                
+                                // END BLOCK AND UN-BLOCK CODE=======>                                
                                 $return .= " <a href=" . url('/admin/users/' . $item->id) . " title='View News'><button class='btn btn-info btn-sm'><i class='fa fa-eye' aria-hidden='true'></i></button></a>";
 //                                    <a href=" . url('/admin/users/' . $item->id . '/edit') . " title='Edit news'><button class='btn btn-primary btn-sm'><i class='fa fa-pencil-square-o' aria-hidden='true'></i></button></a>"
 //                                        . " <button class='btn btn-danger btn-sm btnDelete' type='submit' data-remove='" . url('/admin/users/' . $item->id) . "'><i class='fa fa-trash-o' aria-hidden='true'></i></button>
                                 return $return;
                             })
-                            ->rawColumns(['action'])
+                            ->rawColumns(['action', 'transaction'])
                             ->make(true);
         }
 
@@ -153,7 +149,7 @@ class UsersController extends Controller {
 
         $data = $request->except('password');
         if ($request->has('password')) {
-            if(!empty($request->password))
+            if (!empty($request->password))
                 $data['password'] = bcrypt($request->password);
         }
 
@@ -182,16 +178,21 @@ class UsersController extends Controller {
         return redirect('admin/users')->with('flash_message', 'User deleted!');
     }
 
-    
     public function changeStatus(Request $request) {
-       
+
         $user = User::findOrFail($request->id);
         $user->status = $request->status == 'Block' ? '0' : '1';
         $user->save();
         return response()->json(["success" => true, 'message' => 'User updated!']);
     }
-    
-    
+
+    public function abc($id) {
+
+        $UserCompetition = CompetitionUser::where('player_id', 39)->first();
+      
+       return view('admin.transaction.index', compact('UserCompetition'));
+    }
+
 //    function updateUserStatus(Request $request) {
 //        $selectUser = User::where('id', $request->input('id'))->with('roles')->first();
 ////        dd($selectUser->roles->pluck('name'));
@@ -209,5 +210,4 @@ class UsersController extends Controller {
 //            return ['status'=>true,'message'=>'status activated'];
 //        }
 //    }
-
 }

@@ -58,8 +58,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'roles'], 'roles' =>
 //    Route::resource('hotcompetition', 'Admin\CompetitionController@gethotCompetition');
     Route::post('previouswinner/change-status', 'Admin\PreviouswinnerController@changeStatus')->name('previouswinner.changeStatus');
     Route::get('hot-competition', 'Admin\CompetitionController@AllhotCompetition');
-//     Route::post('hot-competition', 'Admin\CompetitionController@AllhotCompetition');
+
     Route::resource('banners', 'Admin\BannersController');
+    Route::get('transaction/{id}', 'Admin\UsersController@abc');
+    
 });
 
 
