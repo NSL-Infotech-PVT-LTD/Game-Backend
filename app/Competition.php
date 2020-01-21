@@ -31,8 +31,8 @@ class Competition extends Model {
      *
      * @var array
      */
-    protected $appends = array('readyto_go', 'my_competition_status', 'competition_date_status', 'is_going_live');
-    protected $fillable = ['state', 'image', 'description', 'name', 'date', 'fee', 'prize_details', 'game_id', 'competition_category_id'];
+    protected $appends = ['readyto_go', 'my_competition_status', 'competition_date_status', 'is_going_live'];
+    protected $fillable = ['image', 'description', 'name', 'date', 'fee', 'prize_details', 'game_id', 'competition_category_id', 'hot_competitions', 'sequential_fee'];
 
     /**
      * Change activity log event description

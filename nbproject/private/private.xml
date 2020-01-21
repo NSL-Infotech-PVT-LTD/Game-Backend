@@ -2,6 +2,19 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group/>
+        <group>
+            <file>file:/C:/xampp/htdocs/win_chunks/app/Http/Controllers/API/CompetitionUserController.php</file>
+            <file>file:/C:/xampp/htdocs/win_chunks/routes/api.php</file>
+            <file>file:/C:/xampp/htdocs/win_chunks/database/migrations/2020_01_21_025451_create_banners_table.php</file>
+            <file>file:/C:/xampp/htdocs/win_chunks/app/Http/Controllers/API/MetasController.php</file>
+            <file>file:/C:/xampp/htdocs/win_chunks/resources/views/layouts/backend.blade.php</file>
+            <file>file:/C:/xampp/htdocs/win_chunks/app/Competition.php</file>
+            <file>file:/C:/xampp/htdocs/win_chunks/routes/web.php</file>
+            <file>file:/C:/xampp/htdocs/win_chunks/app/Http/Controllers/Admin/CompetitionController.php</file>
+            <file>file:/C:/xampp/htdocs/win_chunks/app/Http/Controllers/API/ApiController.php</file>
+            <file>file:/C:/xampp/htdocs/win_chunks/app/Http/Controllers/API/BannersController.php</file>
+            <file>file:/C:/xampp/htdocs/win_chunks/resources/views/admin/competition/form.blade.php</file>
+            <file>file:/C:/xampp/htdocs/win_chunks/database/migrations/2020_01_21_100910_create_metas_table.php</file>
+        </group>
     </open-files>
 </project-private>

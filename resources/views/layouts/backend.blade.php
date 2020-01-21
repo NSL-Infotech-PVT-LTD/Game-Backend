@@ -114,12 +114,18 @@
                     <!--<li><a href="{{ url('admin/roles')}}"><i class="fa fa-rocket"></i> <span>Roles</span></a></li>-->
                     <!--<li><a href="{{ url('admin/game')}}"><i class="fa fa-rocket"></i> <span>Game</span></a></li>-->
                     <li><a href="{{ url('admin/competition')}}"><i class="fa fa-rocket"></i> <span>Competition</span></a></li>
+                    <li><a href="{{ url('admin/hot-competition')}}"><i class="fa fa-rocket"></i> <span>Hot Competition</span></a></li>
                     <li><a href="{{ url('admin/news')}}"><i class="fa fa-rocket"></i> <span>News</span></a></li>
                     <li><a href="{{ url('admin/competition-categories')}}"><i class="fa fa-rocket"></i> <span>Competition Category</span></a></li>
                                    <!--<li><a href="{{ url('admin/permissions')}}"><i class="fa fa-rocket"></i> <span>Permissions</span></a></li>-->
                     <li><a href="{{ url('admin/previouswinner')}}"><i class="fa fa-rocket"></i> <span>Previous Winner</span></a></li>
 
-   <!--<li><a href="{{ url('admin/generator')}}"><i class="fa fa-bars"></i> <span>Generator</span></a></li>-->
+                    <li><a href="{{ url('admin/banners')}}"><i class="fa fa-rocket"></i> <span>Banner</span></a></li>
+<!--                    <li><a href="{{ url('admin/metas')}}"><i class="fa fa-rocket"></i> <span>Meta</span></a></li>-->
+                    <li><a href="{{ url('admin/privacy_policy')}}"><i class="fa fa-rocket"></i> <span>Privacy Policy</span></a></li>
+                    <li><a href="{{ url('admin/terms_and_condition')}}"><i class="fa fa-rocket"></i> <span>Terms and conditions</span></a></li>
+
+  <!--<li><a href="{{ url('admin/generator')}}"><i class="fa fa-bars"></i> <span>Generator</span></a></li>-->
 
                 </ul>
             </div>

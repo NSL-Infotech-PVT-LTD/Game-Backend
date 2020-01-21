@@ -31,10 +31,28 @@ class CompetitionController extends Controller {
                             ->addIndexColumn()
                             ->editColumn('image', function($item) {
                                 if (empty($item->image)) {
-                                    return "<img width='50' src=" . url('noimage.png') . ">"; 
+                                    return "<img width='50' src=" . url('noimage.png') . ">";
                                 } else {
                                     return "<img width='50' src=" . url('uploads/competition/' . $item->image) . ">";
                                 }
+                            })
+                            ->addColumn('hot', function($item) {
+                                $return = '';
+                                if ($item->hot_competitions == 1) {
+
+                                    $return .= "<label class='switch'>
+     <input type='checkbox' name='hot_competition'  class='hot_competition' data-id='" . $item->id . "' checked data-status='$item->hot_competitions'>
+  <span class='slider round'></span>
+</label>";
+                                } else {
+
+                                    $return .= "<label class='switch'>
+     <input type='checkbox' name='hot_competition' class='hot_competition' data-status='$item->hot_competitions' data-id='" . $item->id . "' >
+  <span class='slider round'></span>
+</label>";
+                                }
+
+                                return $return;
                             })
                             ->addColumn('action', function($item) {
 
@@ -50,7 +68,7 @@ class CompetitionController extends Controller {
                                         . " <button class='btn btn-danger btn-sm btnDelete' type='submit' data-remove='" . url('/admin/competition/' . $item->id) . "'><i class='fa fa-trash-o' aria-hidden='true'></i></button>";
                                 return $return;
                             })
-                            ->rawColumns(['action', 'image'])
+                            ->rawColumns(['action', 'image', 'hot'])
                             ->make(true);
         }
         return view('admin.competition.index', ['rules' => array_keys($this->__rulesforindex)]);
@@ -80,12 +98,16 @@ class CompetitionController extends Controller {
             'image' => 'required',
             'fee' => 'required',
             'prize_details' => 'required',
-            'date' => 'required',
-//            'prize_image' => 'required',
+            'date' => 'required'
         ]);
-
+        
+//        dd($request->all());
         $requestData = $request->all();
+        if (isset($request->hot_competition)):
+            $requestData['hot_competition'] = $request->hot_competition;
+        endif;
         $requestData['image'] = ApiController::__uploadImage($request->file('image'), public_path(self::$_mediaBasePath));
+
 //        $requestData['prize_image'] = \App\Http\Controllers\API\ApiController::__uploadImage($request->file('prize_image'), public_path('uploads/competition/prize_details'));
 //        dd($requestData);
         Competition::create($requestData);
@@ -101,7 +123,7 @@ class CompetitionController extends Controller {
      * @return \Illuminate\View\View
      */
     public function show(Request $request, $id) {
- 
+
         $competition = Competition::findOrFail($id);
 //        $orderDetails = \App\CompitionLeadBoard::whereCompetitionId($id)->get();
         return view('admin.competition.show', compact('competition', 'orderDetails', 'user'), ['rules' => array_keys($this->__rulesforshow)]);
@@ -166,6 +188,59 @@ class CompetitionController extends Controller {
         $competition->save();
         return response()->json(["success" => true, 'message' => 'Competition updated!']);
     }
+
+    public function hotCompetition(Request $request) {
+        $competition = Competition::findOrFail($request->url);
+        if ($request->status == 0) {
+            $competition->hot_competitions = $request->status == '1' ? '0' : '1';
+        } else if ($request->status == 1) {
+            $competition->hot_competitions = $request->status == '0' ? '1' : '0';
+        }
+
+//    dd($competition->hot_competitions);
+        $competition->save();
+        return response()->json(["success" => true, 'message' => 'Competition updated as hot!']);
+    }
+
+    public function AllhotCompetition(Request $request) {
+
+        if ($request->ajax()) {
+            $competition = Competition::where('hot_competitions', '1')->get();
+//               dd($competition);
+            return Datatables::of($competition)
+                            ->addIndexColumn()
+                            ->editColumn('image', function($item) {
+                                if (empty($item->image)) {
+                                    return "<img width='50' src=" . url('noimage.png') . ">";
+                                } else {
+                                    return "<img width='50' src=" . url('uploads/competition/' . $item->image) . ">";
+                                }
+                            })
+                            ->addColumn('hot', function($item) {
+                                $return = '';
+                                if ($item->hot_competitions == 1) {
+
+                                    $return .= "<label class='switch'>
+     <input type='checkbox' name='hot_competition'  class='hot_competition' data-id='" . $item->id . "' checked data-status='$item->hot_competitions'>
+  <span class='slider round'></span>
+</label>";
+                                }
+
+                                return $return;
+                            })
+                            ->rawColumns(['image', 'hot'])
+                            ->make(true);
+        }
+
+        return view('admin.competition.hotcompetition', ['rules' => array_keys($this->__rulesforindex)]);
+    }
+
+//        public function hotcompetitionindex(Request $request) {
+//        return view('admin.competition.hotcompetition', ['rules' => array_keys($this->__rulesforindex)]);
+//    }
+
+
+
 
     public function confirmWinner(Request $request) {
 
