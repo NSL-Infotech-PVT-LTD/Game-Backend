@@ -188,7 +188,7 @@ class UsersController extends Controller {
 
     public function abc($id) {
 
-        $UserCompetition = CompetitionUser::where('player_id', 39)->first();
+        $UserCompetition = CompetitionUser::where('player_id', 39)->get();
       
        return view('admin.transaction.index', compact('UserCompetition'));
     }

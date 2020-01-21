@@ -98,12 +98,16 @@ class CompetitionController extends Controller {
             'image' => 'required',
             'fee' => 'required',
             'prize_details' => 'required',
-            'date' => 'required',
-//            'prize_image' => 'required',
+            'date' => 'required'
         ]);
-
+        
+//        dd($request->all());
         $requestData = $request->all();
+        if (isset($request->hot_competition)):
+            $requestData['hot_competition'] = $request->hot_competition;
+        endif;
         $requestData['image'] = ApiController::__uploadImage($request->file('image'), public_path(self::$_mediaBasePath));
+
 //        $requestData['prize_image'] = \App\Http\Controllers\API\ApiController::__uploadImage($request->file('prize_image'), public_path('uploads/competition/prize_details'));
 //        dd($requestData);
         Competition::create($requestData);
@@ -201,7 +205,7 @@ class CompetitionController extends Controller {
     public function AllhotCompetition(Request $request) {
 
         if ($request->ajax()) {
-            $competition = Competition::where('hot_competitions','1')->get();
+            $competition = Competition::where('hot_competitions', '1')->get();
 //               dd($competition);
             return Datatables::of($competition)
                             ->addIndexColumn()
@@ -220,7 +224,7 @@ class CompetitionController extends Controller {
      <input type='checkbox' name='hot_competition'  class='hot_competition' data-id='" . $item->id . "' checked data-status='$item->hot_competitions'>
   <span class='slider round'></span>
 </label>";
-                                } 
+                                }
 
                                 return $return;
                             })
