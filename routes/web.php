@@ -40,6 +40,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'roles'], 'roles' =>
     Route::post('generator', ['uses' => '\Appzcoder\LaravelAdmin\Controllers\ProcessController@postGenerator']);
     Route::resource('game', 'Admin\GameController');
     Route::resource('competition', 'Admin\CompetitionController');
+    Route::any('hotcompetition', 'Admin\CompetitionController@AllhotCompetition')->name('competition.hotcompetition');
+
     Route::resource('news', 'Admin\NewsController');
     Route::resource('compition-lead-board', 'Admin\CompitionLeadBoardController');
     Route::post('competition/change-status', 'Admin\CompetitionController@changeStatus')->name('competition.changeStatus');
@@ -49,10 +51,18 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'roles'], 'roles' =>
     Route::post('users/change-status', 'Admin\UsersController@changeStatus')->name('users.changeStatus');
     Route::post('competition/confirm-winner', 'Admin\CompetitionController@confirmWinner')->name('competition.confirmWinner');
     Route::post('competition/show', 'Admin\CompetitionController@show')->name('competition.show');
-    
+
     Route::resource('competition-categories', 'Admin\CompetitionCategoriesController');
     Route::post('competition-categories/change-status', 'Admin\NewsController@changeStatus')->name('competition-categories.changeStatus');
     Route::resource('previouswinner', 'Admin\PreviouswinnerController');
+//    Route::resource('hotcompetition', 'Admin\CompetitionController@gethotCompetition');
     Route::post('previouswinner/change-status', 'Admin\PreviouswinnerController@changeStatus')->name('previouswinner.changeStatus');
+    Route::get('hot-competition', 'Admin\CompetitionController@AllhotCompetition');
+//     Route::post('hot-competition', 'Admin\CompetitionController@AllhotCompetition');
+    Route::resource('banners', 'Admin\BannersController');
 });
+
+
+
+
 

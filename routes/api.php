@@ -41,5 +41,5 @@ Route::group(['middleware' => ['auth:api', 'roles'], 'namespace' => 'API'], func
     
     Route::post('play-competition', 'CompetitionUserController@playCompetitionCreate');
     Route::post('play-competition-update', 'CompetitionUserController@playCompetitionUpdate');
-    
+    Route::post('banners', 'BannersController@getItems');
 });
