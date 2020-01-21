@@ -34,6 +34,7 @@ Route::group(['middleware' => ['auth:api', 'roles'], 'namespace' => 'API'], func
     Route::post('category', 'CompetitionCategoryController@getItems');
     Route::post('previouswinner', 'PreviouswinnerController@getItems');
     Route::get('Dashboard', 'DashboardController@getItems');
+    Route::get('test-push', 'DashboardController@testPush');
     Route::get('getprofile', 'AuthController@MyProfile');
     Route::post('updateprofile', 'AuthController@ProfileUpdate');
     Route::post('user-competition', 'CompetitionUserController@GetMyCompetition');
