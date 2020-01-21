@@ -29,5 +29,4 @@ class DashboardController extends ApiController {
             return parent::error($ex->getMessage());
         }
     }
-
 }
