@@ -4,29 +4,26 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
 use App\Meta as MyModel;
 use Illuminate\Http\Request;
+use Validator;
+class MetasController extends ApiController {
 
-class MetasController extends ApiController
-{
-    public function getItems(Request $request) {
-        $rules = ['limit' => '', 'search' => '','id'=>'required|exists:metas,id'];
-//        dd($request->all());
-        $validateAttributes = parent::validateAttributes($request, 'POST', $rules, array_keys($rules), false);
-        if ($validateAttributes):
-            return $validateAttributes;
-        endif;
-        try {
-            $model = new MyModel;
-//            $perPage = isset($request->limit) ? $request->limit : 20;
-            if (isset($request->search))
-                $model = $model->Where('meta_content', 'LIKE', "%$request->search%");
-            if($request->id)
-            $model = $model->where('id', $request->id)->first();
-            return parent::success($model);
-        } catch (\Exception $ex) {
-            return parent::error($ex->getMessage());
+    public function getMeta(Request $request) {
+        $validator = Validator::make($request->all(), [
+                    'meta_key' => 'required',
+        ]);
+        if ($validator->fails()) {
+            $errors = parent::formatValidator($validator);
+            return parent::error($errors, 200);
+        }
+        $details = MyModel::where('meta_key', $request->input('meta_key'))->first();
+        //dd($details);
+        if (count($details) > 0) {
+            return parent::success($details, $this->successStatus);
+        } else {
+            return parent::error('No ' . $request->input('meta_key') . ' Found', 200);
         }
     }
+
 }

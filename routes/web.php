@@ -62,7 +62,8 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'roles'], 'roles' =>
     Route::resource('banners', 'Admin\BannersController');
     Route::get('transaction/{id}', 'Admin\UsersController@abc');
     Route::resource('metas', 'Admin\MetasController');
-    
+    Route::get('privacy_policy', 'Admin\MetasController@privacy_policy');
+    Route::get('terms_and_condition', 'Admin\MetasController@terms_and_condition');
 });
 
 

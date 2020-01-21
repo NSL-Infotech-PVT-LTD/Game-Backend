@@ -231,10 +231,11 @@ class ApiController extends \App\Http\Controllers\Controller {
 
     public static function pushNotificationiOSMultipleUsers($data = [], $userIds, $customData = null) {
         foreach ($userIds as $userId):
-            self::pushNotificationiOS($data, $userId,$customData);
+            self::pushNotificationiOS($data, $userId, $customData);
         endforeach;
         return true;
     }
+
     public static function pushNotificationiOS($data = [], $userId, $customData = null) {
         foreach (\App\UserDevice::whereUserId($userId)->get() as $userDevice):
             self::pushNotifyiOS($data, $userDevice->token);
@@ -299,7 +300,7 @@ class ApiController extends \App\Http\Controllers\Controller {
     public static function __uploadImage($image, $path = null) {
         if ($path === null)
             $path = public_path('uploads');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
+        $imageName = time() . '.' . $image->getClientOriginalExtension();
         $image->move($path, $imageName);
         return $imageName;
     }
@@ -388,7 +389,7 @@ class ApiController extends \App\Http\Controllers\Controller {
 
         // Check errors
         if ($response) {
-
+            
         } else {
             $error = curl_error($curl) . '(' . curl_errno($curl) . ')';
             echo $error . "\n";
@@ -416,6 +417,14 @@ class ApiController extends \App\Http\Controllers\Controller {
             $userDevice->save();
         endif;
         return true;
+    }
+
+    public function formatValidator($validator) {
+        $messages = $validator->getMessageBag();
+        foreach ($messages->keys() as $key) {
+            $errors[] = $messages->get($key)['0'];
+        }
+        return $errors[0];
     }
 
 }

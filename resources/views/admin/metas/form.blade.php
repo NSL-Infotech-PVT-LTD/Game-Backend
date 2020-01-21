@@ -1,4 +1,4 @@
-<div class="form-group{{ $errors->has('meta_key') ? 'has-error' : ''}}">
+<div style="display:none" class="form-group{{ $errors->has('meta_key') ? 'has-error' : ''}}">
     {!! Form::label('meta_key', 'Meta Key', ['class' => 'control-label']) !!}
     {!! Form::text('meta_key', null, ('' == 'required') ? ['class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!}
     {!! $errors->first('meta_key', '<p class="help-block">:message</p>') !!}
