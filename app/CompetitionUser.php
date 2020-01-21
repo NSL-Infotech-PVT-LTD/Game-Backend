@@ -17,7 +17,6 @@ class CompetitionUser extends Model {
      * @var string
      */
     protected $primaryKey = 'id';
-
     /**
      * Attributes that should be mass-assignable.
      *
