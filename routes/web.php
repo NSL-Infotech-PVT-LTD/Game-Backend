@@ -60,7 +60,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'roles'], 'roles' =>
     Route::get('hot-competition', 'Admin\CompetitionController@AllhotCompetition');
 
     Route::resource('banners', 'Admin\BannersController');
-    Route::get('transaction/{id}', 'Admin\UsersController@abc');
+    Route::get('transaction/{id}', 'Admin\UsersController@transaction');
     Route::resource('metas', 'Admin\MetasController');
     Route::get('privacy_policy', 'Admin\MetasController@privacy_policy');
     Route::get('terms_and_condition', 'Admin\MetasController@terms_and_condition');

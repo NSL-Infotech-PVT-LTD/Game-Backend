@@ -18,13 +18,15 @@
                             <th>id</th>
                             <th>Amount</th>
                             <th>Balance Transaction</th>
+                            <th>Competition</th>
                         </tr>
                         <?php foreach ($UserCompetition as $items) { ?>
                         
                         <tr>
                             <th><?php echo $items['id']; ?></th>
                             <th><?php $json = json_decode($items['payment_param_1']); $amt = $json->amount ; echo '$'.$amt/100;?></th>
-                            <th><?php $json = json_decode($items['payment_param_1']); echo '$'.$json->balance_transaction ; ?></th>
+                            <th><?php $json = json_decode($items['payment_param_1']); echo $json->balance_transaction ; ?></th>
+                        
                         </tr>
                     <?php } ?>
                                 </thead>

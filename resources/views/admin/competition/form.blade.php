@@ -29,6 +29,11 @@
     {!! Form::number('fee', null, ('required' == 'required') ? ['class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!}
     {!! $errors->first('fee', '<p class="help-block">:message</p>') !!}
 </div>
+<div class="form-group{{ $errors->has('fee') ? 'has-error' : ''}}">
+    {!! Form::label('sequential_fee', 'Sequential_fee', ['class' => 'control-label']) !!}
+    {!! Form::number('sequential_fee', null, ('required' == 'required') ? ['class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!}
+    {!! $errors->first('sequential_fee', '<p class="help-block">:message</p>') !!}
+</div>
 <div class="form-group{{ $errors->has('prize_image') ? 'has-error' : ''}} hide-content">
     {!! Form::label('prize_image', 'Prize Image', ['class' => 'control-label']) !!}
     {!! Form::file('prize_image', null, ('' == 'required') ? ['class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!}

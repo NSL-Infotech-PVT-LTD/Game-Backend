@@ -186,11 +186,14 @@ class UsersController extends Controller {
         return response()->json(["success" => true, 'message' => 'User updated!']);
     }
 
-    public function abc($id) {
+    public function transaction($id) {
 
         $UserCompetition = CompetitionUser::where('player_id', 39)->get();
-      
-       return view('admin.transaction.index', compact('UserCompetition'));
+       
+        
+//        $getCompetition = \App\Competition::where('id', $compId)->value('name');
+
+        return view('admin.transaction.index', compact('UserCompetition', 'getCompetition'));
     }
 
 //    function updateUserStatus(Request $request) {
