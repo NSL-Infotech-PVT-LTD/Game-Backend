@@ -245,69 +245,69 @@ class ApiController extends \App\Http\Controllers\Controller {
         return true;
     }
 
-//    public static function pushNotoficationFCM($data = [], $deviceToken, $customData = null) {
-//        // FCM
-//        $optionBuilder = new OptionsBuilder();
-//        $optionBuilder->setTimeToLive(60 * 20);
-////        $notificationBuilder = new PayloadNotificationBuilder();
-//        $notificationBuilder = new PayloadNotificationBuilder($data['title']);
-//        $notificationBuilder->setBody($data['body']);
-//        $notificationBuilder->setSound('default');
-//
-//        $dataBuilder = new PayloadDataBuilder();
-//        if (!is_null($customData))
-//            $dataBuilder->addData(array_merge($data, $customData));
-////            $dataBuilder->addData(['messageInfo' => array_merge($data, $customData)]);
-//
-//        $option = $optionBuilder->build();
-//        $notification = $notificationBuilder->build();
-//        $data = $dataBuilder->build();
-//
-////        $deviceToken = "dRyHOgfdDMA:APA91bFr-dj3_sDe3z7R3d30X12k6n4NnFWuyvbsh4xGRr-s0j2RfpKplfrc0rms5ZZ0aZu6taho3ZbGn_xvtSPdq0QBTcXTRjo94g2L5X5snSuJUW4yt-TfH5WRbEqYoKAktSkLPN5X";
-////        $deviceToken = "cA_6C2aiXVg:APA91bEEzu-t3RkUunF92nlBlINK91ma5Absq-f2uOozgFuZ28xMNonX9luzvZ_ReQmrcSdoH6S7PQUaIAxiHakkE2R_UsmvDOOGhzuE_9vk-Bm2YjbvejcPcw6uko6iesWExOC6HXm4";
-//
-//        $downstreamResponse = FCM::sendTo($deviceToken, $option, $notification, $data);
-////        dd($downstreamResponse);
-////        $downstreamResponse->numberFailure();
-//        return $downstreamResponse->numberSuccess() == '1' ? true : false;
-//    }
     public static function pushNotoficationFCM($data = [], $deviceToken, $customData = null) {
-        try {
-            $url = "https://fcm.googleapis.com/fcm/send";
-            $token = $deviceToken;
-//            $token = "cHA2LPPxGVs:APA91bFefDwEDUARxnYGWIVzSgG4AgpBJaCBOdIjbEXug9ZihqvIH9Jn0nxvRYarj1Nx9RfP2bpDj2a6koskm7cn5cFgV9FuXcIHO0Tdnl_CFPdbFuGEyS559dfor6we_mgUoOHdB-7O";
-            $token = "dy_8_yHs3-8:APA91bE8ufn76u1PnnTxq5pI5qL1iDQV-GRvxhVflIhlBwVdUqwHo92-iVAhgZ6-xr-wg_WCgZWC4oazJm74eMs08BQ6LcACH_6A7UA-IrQP8MHVVWlaVpkEvM5lPIShsp8Qp3CGVJy-";
-//            dd($token); 
-            $serverKey = env('FCM_SERVER_KEY');
-            $dataToSend = ['messageInfo' => array_merge($data, $customData)];
+        // FCM
+        $optionBuilder = new OptionsBuilder();
+        $optionBuilder->setTimeToLive(60 * 20);
+//        $notificationBuilder = new PayloadNotificationBuilder();
+        $notificationBuilder = new PayloadNotificationBuilder($data['title']);
+        $notificationBuilder->setBody($data['body']);
+        $notificationBuilder->setSound('default');
 
-//            $title = $data['title'];
-//            $body = $data['body'];
-//        $notification = array('title' => $title, 'text' => $body, 'sound' => 'default', 'badge' => '1');
-//        $arrayToSend = array('to' => $token, 'notification' => $notification, 'priority' => 'high', 'data' => $dataToSend);
-            $arrayToSend = array('to' => $token, 'data' => $dataToSend);
-            $json = json_encode($arrayToSend);
-            $headers = array();
-            $headers[] = 'Content-Type: application/json';
-            $headers[] = 'Authorization: key=' . $serverKey;
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $url);
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-            //Send the request
-            $response = curl_exec($ch);
-            dd($ch);
-            //Close request
-            if ($response === FALSE) {
-                die('FCM Send Error: ' . curl_error($ch));
-            }
-            curl_close($ch);
-            return true;
-        } catch (\Exception $ex) {
-            return true;
-        }
+        $dataBuilder = new PayloadDataBuilder();
+        if (!is_null($customData))
+            $dataBuilder->addData(array_merge($data, $customData));
+//            $dataBuilder->addData(['messageInfo' => array_merge($data, $customData)]);
+
+        $option = $optionBuilder->build();
+        $notification = $notificationBuilder->build();
+        $data = $dataBuilder->build();
+
+//     $token = "cHA2LPPxGVs:APA91bFefDwEDUARxnYGWIVzSgG4AgpBJaCBOdIjbEXug9ZihqvIH9Jn0nxvRYarj1Nx9RfP2bpDj2a6koskm7cn5cFgV9FuXcIHO0Tdnl_CFPdbFuGEyS559dfor6we_mgUoOHdB-7O";
+        $token = "dy_8_yHs3-8:APA91bE8ufn76u1PnnTxq5pI5qL1iDQV-GRvxhVflIhlBwVdUqwHo92-iVAhgZ6-xr-wg_WCgZWC4oazJm74eMs08BQ6LcACH_6A7UA-IrQP8MHVVWlaVpkEvM5lPIShsp8Qp3CGVJy-";
+        $downstreamResponse = FCM::sendTo($deviceToken, $option, $notification, $data);
+//        dd($downstreamResponse);
+//        $downstreamResponse->numberFailure();
+        return $downstreamResponse->numberSuccess() == '1' ? true : false;
     }
+
+//    public static function pushNotoficationFCM($data = [], $deviceToken, $customData = null) {
+//        try {
+//            $url = "https://fcm.googleapis.com/fcm/send";
+//            $token = $deviceToken;
+////            $token = "cHA2LPPxGVs:APA91bFefDwEDUARxnYGWIVzSgG4AgpBJaCBOdIjbEXug9ZihqvIH9Jn0nxvRYarj1Nx9RfP2bpDj2a6koskm7cn5cFgV9FuXcIHO0Tdnl_CFPdbFuGEyS559dfor6we_mgUoOHdB-7O";
+//            $token = "dy_8_yHs3-8:APA91bE8ufn76u1PnnTxq5pI5qL1iDQV-GRvxhVflIhlBwVdUqwHo92-iVAhgZ6-xr-wg_WCgZWC4oazJm74eMs08BQ6LcACH_6A7UA-IrQP8MHVVWlaVpkEvM5lPIShsp8Qp3CGVJy-";
+////            dd($token); 
+//            $serverKey = env('FCM_SERVER_KEY');
+//            $dataToSend = ['messageInfo' => array_merge($data, $customData)];
+//
+////            $title = $data['title'];
+////            $body = $data['body'];
+////        $notification = array('title' => $title, 'text' => $body, 'sound' => 'default', 'badge' => '1');
+////        $arrayToSend = array('to' => $token, 'notification' => $notification, 'priority' => 'high', 'data' => $dataToSend);
+//            $arrayToSend = array('to' => $token, 'data' => $dataToSend);
+//            $json = json_encode($arrayToSend);
+//            $headers = array();
+//            $headers[] = 'Content-Type: application/json';
+//            $headers[] = 'Authorization: key=' . $serverKey;
+//            $ch = curl_init();
+//            curl_setopt($ch, CURLOPT_URL, $url);
+//            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+//            curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
+//            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+//            //Send the request
+//            $response = curl_exec($ch);
+//            dd($ch);
+//            //Close request
+//            if ($response === FALSE) {
+//                die('FCM Send Error: ' . curl_error($ch));
+//            }
+//            curl_close($ch);
+//            return true;
+//        } catch (\Exception $ex) {
+//            return true;
+//        }
+//    }
 
     private static function pushNotificationAPN($data, $devicetoken, $customData = null) {
         //return true;
