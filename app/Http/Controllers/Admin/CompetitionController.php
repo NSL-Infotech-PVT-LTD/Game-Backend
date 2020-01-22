@@ -273,10 +273,10 @@ class CompetitionController extends Controller {
             unset($losserIds[$key]);
         }
         \App\CompetitionUser::whereIn('id', $competitionUser->pluck('id')->toArray())->update(['status' => 'looser']);
-        \App\Http\Controllers\API\ApiController::pushNotificationsMultipleUsers(['title' => "Competition Result Declair", 'body' => "Oh !!! You Lose the Game, Better Luck Next time"], $losserIds, ['target_id' => $leadBorad->competition_id, 'target_type' => 'Competition'], 'FCM');
+        \App\Http\Controllers\API\ApiController::pushNotificationsMultipleUsers(['title' => "Competition Result Declair", 'body' => "Oh !!! You Lose the Game, Better Luck Next time"], $losserIds, ['target_id' => $leadBorad->competition_id, 'target_type' => 'LeaderBoard'], 'FCM');
         $leadBorad->status = 'winner';
         $leadBorad->save();
-        \App\Http\Controllers\API\ApiController::pushNotificationsMultipleUsers(['title' => "Competition Result Declair", 'body' => "Yeah !!! You Won the Game"], [$winnerId], ['target_id' => $leadBorad->competition_id, 'target_type' => 'Competition'], 'FCM');
+        \App\Http\Controllers\API\ApiController::pushNotificationsMultipleUsers(['title' => "Competition Result Declair", 'body' => "Yeah !!! You Won the Game"], [$winnerId], ['target_id' => $leadBorad->competition_id, 'target_type' => 'LeaderBoard'], 'FCM');
         return response()->json(["success" => true, 'message' => 'Competition updated!']);
     }
 
