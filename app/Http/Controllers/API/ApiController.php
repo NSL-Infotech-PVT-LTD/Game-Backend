@@ -227,12 +227,14 @@ class ApiController extends \App\Http\Controllers\Controller {
                 endforeach;
                 break;
             case 'FCM':
-                foreach (\App\UserDevice::whereUserId($userId)->whereType('android')->get() as $userDevice):
+//                dd(\App\UserDevice::whereUserId($userId)->get()->toArray());
+                foreach (\App\UserDevice::whereUserId($userId)->get() as $userDevice):
                     self::pushNotoficationFCM($data, $userDevice->token, $customData);
                 endforeach;
                 break;
             default :
                 foreach (\App\UserDevice::whereUserId($userId)->whereType('ios')->get() as $userDevice):
+//                dd($userDevice);
                     self::pushNotificationAPN($data, $userDevice->token, $customData);
                 endforeach;
                 foreach (\App\UserDevice::whereUserId($userId)->whereType('android')->get() as $userDevice):
@@ -273,7 +275,9 @@ class ApiController extends \App\Http\Controllers\Controller {
         try {
             $url = "https://fcm.googleapis.com/fcm/send";
             $token = $deviceToken;
+//            $token = "cHA2LPPxGVs:APA91bFefDwEDUARxnYGWIVzSgG4AgpBJaCBOdIjbEXug9ZihqvIH9Jn0nxvRYarj1Nx9RfP2bpDj2a6koskm7cn5cFgV9FuXcIHO0Tdnl_CFPdbFuGEyS559dfor6we_mgUoOHdB-7O";
             $token = "dy_8_yHs3-8:APA91bE8ufn76u1PnnTxq5pI5qL1iDQV-GRvxhVflIhlBwVdUqwHo92-iVAhgZ6-xr-wg_WCgZWC4oazJm74eMs08BQ6LcACH_6A7UA-IrQP8MHVVWlaVpkEvM5lPIShsp8Qp3CGVJy-";
+//            dd($token);
             $serverKey = env('FCM_SERVER_KEY');
             $dataToSend = ['messageInfo' => array_merge($data, $customData)];
 
@@ -293,7 +297,7 @@ class ApiController extends \App\Http\Controllers\Controller {
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
             //Send the request
             $response = curl_exec($ch);
-//            dd($ch);
+            dd($ch);
             //Close request
             if ($response === FALSE) {
                 die('FCM Send Error: ' . curl_error($ch));
