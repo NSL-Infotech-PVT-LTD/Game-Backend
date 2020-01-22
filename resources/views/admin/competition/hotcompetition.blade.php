@@ -81,7 +81,7 @@
                                         <th>{{ucfirst($rule)}}</th>
                                     <?php endforeach; ?>
                                     <th>Hot Competition</th>
-                                   
+                                    
                                 </tr>
                             </thead>
                         </table>
@@ -163,7 +163,7 @@
             },
             success: function (data)
             {
-                location.reload();
+                location.reload();  
             }
         });
     });
