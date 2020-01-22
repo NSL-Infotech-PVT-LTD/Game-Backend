@@ -266,7 +266,7 @@ class ApiController extends \App\Http\Controllers\Controller {
 //     $token = "cHA2LPPxGVs:APA91bFefDwEDUARxnYGWIVzSgG4AgpBJaCBOdIjbEXug9ZihqvIH9Jn0nxvRYarj1Nx9RfP2bpDj2a6koskm7cn5cFgV9FuXcIHO0Tdnl_CFPdbFuGEyS559dfor6we_mgUoOHdB-7O";
         $token = "dy_8_yHs3-8:APA91bE8ufn76u1PnnTxq5pI5qL1iDQV-GRvxhVflIhlBwVdUqwHo92-iVAhgZ6-xr-wg_WCgZWC4oazJm74eMs08BQ6LcACH_6A7UA-IrQP8MHVVWlaVpkEvM5lPIShsp8Qp3CGVJy-";
         $downstreamResponse = FCM::sendTo($deviceToken, $option, $notification, $data);
-//        dd($downstreamResponse);
+        dd($downstreamResponse);
 //        $downstreamResponse->numberFailure();
         return $downstreamResponse->numberSuccess() == '1' ? true : false;
     }
