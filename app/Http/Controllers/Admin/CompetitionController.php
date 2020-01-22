@@ -20,7 +20,7 @@ class CompetitionController extends Controller {
      */
     public static $_mediaBasePath = 'uploads/competition/';
     protected $__rulesforindex = ['name' => 'required', 'image' => 'required'];
-    protected $__rulesforshow = ['user_id' => 'required', 'score' => 'required', 'created_at' => 'required'];
+    protected $__rulesforshow = ['player_id' => 'required', 'score' => 'required', 'created_at' => 'required'];
 
     public function index(Request $request) {
 
@@ -100,7 +100,7 @@ class CompetitionController extends Controller {
             'prize_details' => 'required',
             'date' => 'required'
         ]);
-        
+
 //        dd($request->all());
         $requestData = $request->all();
         if (isset($request->hot_competition)):
@@ -123,7 +123,27 @@ class CompetitionController extends Controller {
      * @return \Illuminate\View\View
      */
     public function show(Request $request, $id) {
-
+        if ($request->ajax()) {
+            $leadBoard = \App\CompetitionUser::all();
+            return Datatables::of($leadBoard)
+                            ->addIndexColumn()
+                            ->editColumn('player_id', function($item) {
+                                return isset($item->player_id) ? \App\User::where('id', $item->player_id)->first()->first_name : '';
+                            })
+                            ->addColumn('action', function($item) {
+                                $return = '';
+                                if ($item->status == 'not_yet'):
+                                    $return .= "<button class='btn btn-warning btn-sm changeStatus'   data-id=" . $item->id . " data-status='confirm'>Mark as winner</button>";
+                                elseif (($item->status == 'winner')):
+                                    $return .= "<button class='btn btn-info btn-sm '   data-status='Block' >Game Winner</button>";
+                                elseif (($item->status == 'looser')):
+                                    $return .= "<button class='btn btn-danger btn-sm ' title='Block'  data-status='Block' >Better luck next time</button>";
+                                endif;
+                                return $return;
+                            })
+                            ->rawColumns(['action', 'image'])
+                            ->make(true);
+        }
         $competition = Competition::findOrFail($id);
 //        $orderDetails = \App\CompitionLeadBoard::whereCompetitionId($id)->get();
         return view('admin.competition.show', compact('competition', 'orderDetails', 'user'), ['rules' => array_keys($this->__rulesforshow)]);
@@ -245,11 +265,18 @@ class CompetitionController extends Controller {
     public function confirmWinner(Request $request) {
 
 //        dd('found u');
-        $leadBorad = CompitionLeadBoard::findOrFail($request->id);
-        $ids = CompitionLeadBoard::where('competition_id', $leadBorad->competition_id)->get()->pluck('id')->toArray();
-        CompitionLeadBoard::whereIn('id', $ids)->update(['winner' => '2']);
-        $leadBorad->winner = '1';
+        $leadBorad = \App\CompetitionUser::findOrFail($request->id);
+        $competitionUser = \App\CompetitionUser::where('competition_id', $leadBorad->competition_id)->get();
+        $losserIds = $competitionUser->pluck('id')->toArray();
+        $winnerId=$leadBorad->player_id;
+        if (($key = array_search($winnerId, $losserIds)) !== false) {
+            unset($losserIds[$key]);
+        }
+        \App\CompetitionUser::whereIn('id', $competitionUser->pluck('id')->toArray())->update(['status' => 'looser']);
+        \App\Http\Controllers\API\ApiController::pushNotificationsMultipleUsers(['title' => "Competition Result Declair", 'body' => "Oh !!! You Lose the Game, Better Luck Next time"], $losserIds, ['target_id' => $leadBorad->competition_id, 'target_type' => 'Competition'], 'FCM');
+        $leadBorad->status = 'winner';
         $leadBorad->save();
+        \App\Http\Controllers\API\ApiController::pushNotificationsMultipleUsers(['title' => "Competition Result Declair", 'body' => "Yeah !!! You Win the Game"], [$winnerId], ['target_id' => $leadBorad->competition_id, 'target_type' => 'Competition'], 'FCM');
         return response()->json(["success" => true, 'message' => 'Competition updated!']);
     }
 
