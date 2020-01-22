@@ -15,10 +15,9 @@ class CreateCompetitionUserPaymentsTable extends Migration
     {
         Schema::create('competition_user_payments', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('user_id')->unsigned()->index();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-             $table->Integer('competition_id')->unsigned()->index();
-            $table->foreign('competition_id')->references('id')->on('competitions')->onDelete('cascade');
+          
+             $table->bigInteger('competition_user_id')->unsigned()->index();
+            $table->foreign('competition_user_id')->references('id')->on('competition_users')->onDelete('cascade');
             $table->text('payment')->nullable();
             App\Helpers\DbExtender::defaultParams($table);
         });

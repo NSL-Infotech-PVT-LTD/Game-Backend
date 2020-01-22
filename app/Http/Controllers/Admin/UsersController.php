@@ -7,6 +7,8 @@ use App\Role;
 use App\User;
 use App\CompetitionUser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use DB;
 use Auth;
 use Datatables;
 
@@ -189,8 +191,10 @@ class UsersController extends Controller {
     public function transaction($id) {
 
         $UserCompetition = CompetitionUser::where('player_id', 39)->get();
-       
-        
+       $users = DB::table('competitions')
+            ->leftJoin('competition_users', 'competitions.id', '=', 'competition_users.competition_id')
+            ->get();
+//        dd();
 //        $getCompetition = \App\Competition::where('id', $compId)->value('name');
 
         return view('admin.transaction.index', compact('UserCompetition', 'getCompetition'));
