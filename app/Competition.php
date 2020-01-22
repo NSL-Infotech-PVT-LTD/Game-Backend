@@ -74,14 +74,16 @@ class Competition extends Model {
 //        dd($model->toArray());
             if ($model->isEmpty())
                 return 'Not_Enroll_Yet';
-            if ($model->first()->payment_param_2 !== null && $model->first()->state == 0)
-                return 'Payed_One';
-            if ($model->first()->payment_param_2 !== null)
-                return 'Max_Allowance';
-            if ($model->first()->payment_param_1 !== null && $model->first()->state == 1)
-                return 'Enrolled_once';
-            if ($model->first()->payment_param_1 !== null)
-                return 'Payed_One';
+            $modelCompetitionPayment = CompetitionUserPayment::where('competition_user_id', $model->first()->id)->get();
+            
+            if ($modelCompetitionPayment->isEmpty() != true && $model->first()->state == 0)
+                return 'Payed';
+//            if ($model->first()->payment_param_2 !== null)
+//                return 'Max_Allowance';
+            if ($modelCompetitionPayment->isEmpty() != true && $model->first()->state == 1)
+                return 'Enrolled';
+            if ($modelCompetitionPayment->isEmpty() != true)
+                return 'Payed';
             return 'NAN';
         } catch (\Exception $ex) {
             return 'NAN';

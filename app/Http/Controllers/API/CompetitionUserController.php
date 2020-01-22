@@ -65,10 +65,10 @@ class CompetitionUserController extends ApiController {
             $fee = $competition->fee;
 //            dd($model->isEmpty() != true);
             if ($model->isEmpty() != true):
-                if ($model->first()->payment_param_2 != null)
-                    return parent::error('Max Allowance to play this game is reached');
-                if ($model->first()->payment_param_1 != null)
-                    $fee = $fee / 2;
+//                if ($model->first()->payment_param_2 != null)
+//                    return parent::error('Max Allowance to play this game is reached');
+//                if ($model->first() != null)
+                $fee = $competition->sequential_fee;
             endif;
 //            dd(env('STRIPE_SECRET_KEY'));
             \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
@@ -96,11 +96,12 @@ class CompetitionUserController extends ApiController {
 //            $modelsend = null;
             if ($model->isEmpty() != true):
                 $modelUpdate = MyModel::findOrFail($model->first()->id);
-                $modelUpdate->update(['payment_param_2' => json_encode($charge), 'state' => '0']);
-
+                $modelUpdate->update(['state' => '0']);
+                \App\CompetitionUserPayment::create(['competition_user_id' => $model->first()->id, 'payment' => json_encode($charge)]);
 //                $modelUpdate->save();
             else:
-                MyModel::create(['player_id' => Auth::id(), 'competition_id' => $request->competition_id, 'payment_param_1' => json_encode($charge), 'state' => '0']);
+                $modelCreate = MyModel::create(['player_id' => Auth::id(), 'competition_id' => $request->competition_id, 'state' => '0']);
+                \App\CompetitionUserPayment::create(['competition_user_id' => $modelCreate->id, 'payment' => json_encode($charge)]);
             endif;
             \App\Http\Controllers\API\ApiController::pushNotificationsMultipleUsers(['title' => "Enrolled for competition", 'body' => "You're successfully enrolled for competition"], [\Auth::id()], ['target_id' => $request->competition_id, 'target_type' => 'Competition'], 'FCM');
             return parent::successCreated(['message' => 'Thank you for registering for the game', 'data' => \App\Competition::whereId($request->competition_id)->first()]);
