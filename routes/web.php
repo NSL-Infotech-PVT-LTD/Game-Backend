@@ -44,9 +44,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'roles'], 'roles' =>
     Route::post('generator', ['uses' => '\Appzcoder\LaravelAdmin\Controllers\ProcessController@postGenerator']);
     Route::resource('game', 'Admin\GameController');
     Route::resource('competition', 'Admin\CompetitionController');
+    Route::any('hotcompetition', 'Admin\CompetitionController@AllhotCompetition')->name('competition.hotcompetition');
+
     Route::resource('news', 'Admin\NewsController');
     Route::resource('compition-lead-board', 'Admin\CompitionLeadBoardController');
     Route::post('competition/change-status', 'Admin\CompetitionController@changeStatus')->name('competition.changeStatus');
+    Route::post('competition/hot-competition', 'Admin\CompetitionController@hotCompetition')->name('competition.hotCompetition');
     Route::post('game/change-status', 'Admin\GameController@changeStatus')->name('game.changeStatus');
     Route::post('news/change-status', 'Admin\NewsController@changeStatus')->name('news.changeStatus');
     Route::post('users/change-status', 'Admin\UsersController@changeStatus')->name('users.changeStatus');
@@ -57,5 +60,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'roles'], 'roles' =>
     Route::post('competition-categories/change-status', 'Admin\NewsController@changeStatus')->name('competition-categories.changeStatus');
     Route::resource('previouswinner', 'Admin\PreviouswinnerController');
     Route::post('previouswinner/change-status', 'Admin\PreviouswinnerController@changeStatus')->name('previouswinner.changeStatus');
+    Route::get('hot-competition', 'Admin\CompetitionController@AllhotCompetition');
+
+    Route::resource('banners', 'Admin\BannersController');
+    Route::get('transaction/{id}', 'Admin\UsersController@transaction');
+    Route::resource('metas', 'Admin\MetasController');
+    Route::get('privacy_policy', 'Admin\MetasController@privacy_policy');
+    Route::get('terms_and_condition', 'Admin\MetasController@terms_and_condition');
 });
 
