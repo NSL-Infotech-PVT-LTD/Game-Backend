@@ -81,10 +81,11 @@
 </div>
 <script type="text/javascript">
     $(function () {
-    var table = $('.data-table').DataTable({
+    var url = $(location).attr('href');
+            var table = $('.data-table').DataTable({
     processing: true,
             serverSide: true,
-            ajax: "{{ route('competition.show') }}",
+            ajax: url,
             columns: [
             {data: 'id', name: 'id'},
 <?php foreach ($rules as $rule): ?>
@@ -166,6 +167,7 @@
     }
     });
     });
-    });
+    }
+    );
 </script>
 @endsection

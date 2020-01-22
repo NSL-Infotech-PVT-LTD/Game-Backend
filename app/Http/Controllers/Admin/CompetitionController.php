@@ -124,7 +124,7 @@ class CompetitionController extends Controller {
      */
     public function show(Request $request, $id) {
         if ($request->ajax()) {
-            $leadBoard = \App\CompetitionUser::all();
+            $leadBoard = \App\CompetitionUser::where('competition_id',$id)->get();
             return Datatables::of($leadBoard)
                             ->addIndexColumn()
                             ->editColumn('player_id', function($item) {
