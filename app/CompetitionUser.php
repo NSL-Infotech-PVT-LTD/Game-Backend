@@ -40,7 +40,7 @@ class CompetitionUser extends Model {
     }
 
     public function player() {
-        return $this->hasOne(User::class, 'id', 'player_id')->select('id', 'first_name', 'last_name', 'image');
+        return $this->hasOne(User::class, 'id', 'player_id');
     }
 
 }

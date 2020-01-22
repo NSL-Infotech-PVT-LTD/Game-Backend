@@ -13,16 +13,6 @@
     {!! Form::text('name', null, ('required' == 'required') ? ['class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!}
     {!! $errors->first('name', '<p class="help-block">:message</p>') !!}
 </div>
-<!--<div class="form-group{{ $errors->has('date') ? 'has-error' : ''}}">
-    {!! Form::label('date', 'Date', ['class' => 'control-label']) !!}
-    {!! Form::date('date', null, ('' == 'required') ? ['class' => 'form-control','required' => 'required'] : ['class' => 'form-control']) !!}
-    {!! $errors->first('date', '<p class="help-block">:message</p>') !!}
-</div>-->
-<!--<div class="form-group">
-    <label for="date" class="control-label">Date</label>
-    <input class="form-control" name="date" type="date" id="date" onkeydown="return false">
-</div>-->
-
 <div class="form-group{{ $errors->has('date') ? 'has-error' : ''}}">
     {!! Form::label('date', 'Date', ['class' => 'control-label']) !!}
     {!! Form::date('date', null, ('required' == 'required') ? ['class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!}
@@ -50,12 +40,6 @@
     {!! Form::textarea('prize_details', null, ('' == 'required') ? ['class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!}
     {!! $errors->first('prize_details', '<p class="help-block">:message</p>') !!}
 </div>
-<!--<div class="form-group{{ $errors->has('game_id') ? 'has-error' : ''}}">
-    {!! Form::label('game_id', 'Game Id', ['class' => 'control-label']) !!}
-    {!! Form::number('game_id', null, ('' == 'required') ? ['class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!}
-    {!! $errors->first('game_id', '<p class="help-block">:message</p>') !!}
-</div>-->
-
 
 <div class="form-group{{ $errors->has('game_id') ? ' has-error' : ''}} hide-content">
     {!! Form::label('game_id', 'Games: ', ['class' => 'control-label']) !!}
@@ -63,11 +47,6 @@
     'form-control',
     'multiple' => false]) !!}
 </div>
-<!--<div class="form-group{{ $errors->has('hot_competition') ? ' has-error' : ''}} ">
-    {!! Form::label('hot_competition', 'Games: ', ['class' => 'control-label']) !!}
-    {!! Form::checkbox('hot_competition', $game, isset($competition->hot_competition) ? $competition->hot_competition : [], ['class' =>
-    'form-control']) !!}
-</div>-->
 
 <div class="checkbox">
     <label>{!! Form::radio('hot_competitions', '1') !!} Yes</label>
@@ -76,12 +55,6 @@
     <label>{!! Form::radio('hot_competitions', '0') !!} No</label>
 </div>
 
-
-<!--<div class="form-row">
-    <label class="col-sm-4 col-form-label">Mark as hot Competition</label>
-    <input type="checkbox" name="hot_competition" value="1"  class="form-control col-sm-8">
-
-</div>-->
 <br>
 <div class="form-group{{ $errors->has('competition_category_id') ? ' has-error' : ''}} ">
     {!! Form::label('competition_category_id', 'Competition Category:', ['class' => 'control-label']) !!}
