@@ -6,13 +6,15 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\API\ApiController;
 use App\Previouswinner;
+use App\CompetitionUser;
+use App\Competition;
 use Datatables;
 use Illuminate\Http\Request;
 
 class PreviouswinnerController extends Controller
 {
-    public static $_mediaBasePath = 'uploads/previouswinner/';
-    protected $__rulesforindex = ['title' => 'required', 'image' => 'required', 'description' => 'required'];
+    public static $_mediaBasePath = 'uploads/competition/';
+    protected $__rulesforindex = ['player_id' => 'required', 'competition_id' => 'required','score'=>'required'];
     /**
      * Display a listing of the resource.
      *
@@ -21,16 +23,16 @@ class PreviouswinnerController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $previouswinner = Previouswinner::all(); 
-//               
+            $previouswinner = CompetitionUser::all();      
             return Datatables::of($previouswinner)
                             ->addIndexColumn()
-                            ->editColumn('image', function($item) {
-                                if (empty($item->image)) {
-                                    return "<img width='50' src=" . url('noimage.png') . ">";
-                                } else {
-                                    return "<img width='50' src=" . url('uploads/previouswinner/' . $item->image) . ">";
-                                }
+                            ->editColumn('player_id', function($item) {
+                            $return =  \App\User::select('first_name')->where('id',$item->player_id)->first();         
+                            return $return->first_name;
+                            })
+                            ->editColumn('competition_id', function($item) {
+                            $return = \App\Competition::select('name')->where('id',$item->competition_id)->first();         
+                            return $return->name;
                             })
                             ->addColumn('action', function($item) {
 
@@ -44,9 +46,9 @@ class PreviouswinnerController extends Controller
                                 $return .= " <a href=" . url('/admin/previouswinner/' . $item->id) . " title='View Previous winner'><button class='btn btn-info btn-sm'><i class='fa fa-eye' aria-hidden='true'></i></button></a>
                                         <a href=" . url('/admin/previouswinner/' . $item->id . '/edit') . " title='Edit Previous winner'><button class='btn btn-primary btn-sm'><i class='fa fa-pencil-square-o' aria-hidden='true'></i></button></a>"
                                         . " <button class='btn btn-danger btn-sm btnDelete' type='submit' data-remove='" . url('/admin/previouswinner/' . $item->id) . "'><i class='fa fa-trash-o' aria-hidden='true'></i></button>";
-                                return $return;
+//                                return $return;
                             })
-                            ->rawColumns(['action', 'image'])
+//                            ->rawColumns(['action'])
                             ->make(true);
         }
         return view('admin.previouswinner.index', ['rules' => array_keys($this->__rulesforindex)]);

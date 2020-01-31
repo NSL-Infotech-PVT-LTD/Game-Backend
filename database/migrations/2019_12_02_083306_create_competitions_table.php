@@ -17,6 +17,7 @@ class CreateCompetitionsTable extends Migration {
             $table->string('image')->nullable();
             $table->text('description')->nullable();
             $table->date('date')->nullable();
+            $table->date('start_time')->nullable();
             $table->float('fee')->nullable();
             $table->text('prize_image')->nullable();
             $table->text('prize_details')->nullable();

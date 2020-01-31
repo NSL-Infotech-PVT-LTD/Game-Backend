@@ -16,7 +16,13 @@
 <div class="form-group{{ $errors->has('date') ? 'has-error' : ''}}">
     {!! Form::label('date', 'Date', ['class' => 'control-label']) !!}
     {!! Form::date('date', null, ('required' == 'required') ? ['class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!}
-    {!! $errors->first('fee', '<p class="help-block">:message</p>') !!}
+    {!! $errors->first('date', '<p class="help-block">:message</p>') !!}
+</div>
+
+<div class="form-group{{ $errors->has('start_time') ? 'has-error' : ''}}">
+    {!! Form::label('start_time', 'Start_time', ['class' => 'control-label']) !!}
+    {!! Form::time('start_time', null, ('required' == 'required') ? ['class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!}
+    {!! $errors->first('start_time', '<p class="help-block">:message</p>') !!}
 </div>
 
 

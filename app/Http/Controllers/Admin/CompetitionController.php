@@ -19,7 +19,7 @@ class CompetitionController extends Controller {
      * @return \Illuminate\View\View
      */
     public static $_mediaBasePath = 'uploads/competition/';
-    protected $__rulesforindex = ['name' => 'required', 'image' => 'required'];
+    protected $__rulesforindex = ['name' => 'required', 'image' => 'required','start_time'=>'required'];
     protected $__rulesforshow = ['player_id' => 'required', 'score' => 'required', 'created_at' => 'required'];
 
     public function index(Request $request) {
@@ -35,6 +35,9 @@ class CompetitionController extends Controller {
                                 } else {
                                     return "<img width='50' src=" . url('uploads/competition/' . $item->image) . ">";
                                 }
+                            })
+                            ->editColumn('start_time',function($item){
+                                return $item->start_time;
                             })
                             ->addColumn('hot', function($item) {
                                 $return = '';
@@ -68,7 +71,7 @@ class CompetitionController extends Controller {
                                         . " <button class='btn btn-danger btn-sm btnDelete' type='submit' data-remove='" . url('/admin/competition/' . $item->id) . "'><i class='fa fa-trash-o' aria-hidden='true'></i></button>";
                                 return $return;
                             })
-                            ->rawColumns(['action', 'image', 'hot'])
+                            ->rawColumns(['action', 'image','start_time', 'hot'])
                             ->make(true);
         }
         return view('admin.competition.index', ['rules' => array_keys($this->__rulesforindex)]);
