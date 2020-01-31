@@ -26,6 +26,7 @@ class CreateUsersTable extends Migration {
             $table->string('social_id')->nullable();
             $table->string('social_password')->nullable();
             $table->string('age')->nullable();
+            $table->string('image_url')->nullable();
             $table->enum('status', [0, 1])->default(0)->comment('0->Unactive, 1->Active');
             $table->rememberToken();
             $table->timestamps();
