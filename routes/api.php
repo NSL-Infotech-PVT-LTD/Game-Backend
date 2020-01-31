@@ -25,7 +25,7 @@ Route::post('forget-password', 'API\AuthController@resetPassword');
 
 Route::group(['middleware' => ['auth:api', 'roles'], 'namespace' => 'API'], function() {
 //    Route::group(['middleware' => ['auth:api', 'roles'], 'roles' => ['App-Users'],'namespace' => 'API'], function() {
-
+   
     Route::get('Dashboard', 'DashboardController@getItems');
     Route::get('test-push', 'DashboardController@testPush');
 
