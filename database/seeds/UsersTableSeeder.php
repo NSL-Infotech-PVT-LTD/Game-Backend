@@ -14,7 +14,7 @@ class UsersTableSeeder extends Seeder {
       $data = [
           'first_name' => 'admin',
           'last_name' => 'admin',
-          'email' => 'admin@flapibird.com',
+          'email' => 'admin@win_chunks.com',
           'password' => Hash::make('12345678'),
           // 'phone' => '98166422',
 
