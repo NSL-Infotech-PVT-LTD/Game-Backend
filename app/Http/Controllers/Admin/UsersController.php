@@ -8,7 +8,7 @@ use App\User;
 use App\CompetitionUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use DB;
+//use DB;
 use Auth;
 use Datatables;
 
