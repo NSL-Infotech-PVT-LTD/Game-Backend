@@ -44,7 +44,7 @@ class CompetitionController extends Controller {
                                 if ($item->hot_competitions == 1) {
 
                                     $return .= "<label class='switch'>
-     <input type='checkbox' name='hot_competition'  class='hot_competition' data-id='" . $item->id . "' checked data-status='$item->hot_competition'>
+     <input type='checkbox' name='hot_competition'  class='hot_competition' data-id='" . $item->id . "' checked data-status='$item->hot_competitions'>
   <span class='slider round'></span>
 </label>";
                                 } else {
