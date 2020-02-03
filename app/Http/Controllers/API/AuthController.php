@@ -69,6 +69,25 @@ class AuthController extends ApiController {
             return parent::error('Wrong Username or Password', 200);
         }
     }
+    
+    
+    public function logout(Request $request) {
+        $rules = [];
+        $validateAttributes = parent::validateAttributes($request, 'GET', $rules, array_keys($rules), false);
+        if ($validateAttributes):
+            return $validateAttributes;
+        endif;
+        try {
+            $user = User::findOrFail(\Auth::id());
+            
+//            $user->is_login = '0';
+            $user->save();
+            return parent::success('Logout Successfully');
+        } catch (\Exception $ex) {
+            return parent::error($ex->getMessage());
+        }
+    }
+    
 
     /**
      * Register api

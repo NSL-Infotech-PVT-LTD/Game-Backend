@@ -13,6 +13,9 @@ class DashboardController extends ApiController {
         return parent::successCreated(['message' => 'Thank you for registering for the game']);
     }
 
+    
+    
+    
     public function getItems(Request $request) {
         $validateAttributes = parent::validateAttributes($request, 'GET');
         if ($validateAttributes):

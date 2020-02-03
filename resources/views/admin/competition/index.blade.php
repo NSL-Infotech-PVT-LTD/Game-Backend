@@ -109,6 +109,7 @@
 
                 {data: 'hot', name: 'hot', orderable: false, searchable: false}
                 ,
+               
                 {data: 'action', name: 'action', orderable: false, searchable: false}
                 ,
                 ]

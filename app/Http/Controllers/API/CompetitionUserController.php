@@ -43,6 +43,7 @@ class CompetitionUserController extends ApiController {
             if ($GetUserCompetition->isEmpty() === true):
                 throw new \Exception('Data Not Found');
             endif;
+//            dd(array_unique($GetUserCompetition->pluck('competition_id')->toArray()));
             $model = \App\Competition::whereIn('id', $GetUserCompetition->pluck('competition_id')->toArray());
             $perPage = isset($request->limit) ? $request->limit : 20;
 

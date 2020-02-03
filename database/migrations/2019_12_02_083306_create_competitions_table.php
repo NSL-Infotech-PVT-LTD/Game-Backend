@@ -17,6 +17,7 @@ class CreateCompetitionsTable extends Migration {
             $table->string('image')->nullable();
             $table->text('description')->nullable();
             $table->date('date')->nullable();
+            $table->string('start_time')->nullable();
             $table->float('fee')->nullable();
             $table->text('prize_image')->nullable();
             $table->text('prize_details')->nullable();
@@ -24,7 +25,7 @@ class CreateCompetitionsTable extends Migration {
             $table->foreign('game_id')->references('id')->on('games')->onDelete('cascade');
             $table->bigInteger('competition_category_id')->unsigned()->index();
             $table->foreign('competition_category_id')->references('id')->on('competition_categories')->onDelete('cascade');
-            $table->enum('hot_competition', [0, 1])->default(0)->comment('0->No, 1->Yes');
+            $table->enum('hot_competitions', [0, 1])->default(0)->comment('0->No, 1->Yes');
             App\Helpers\DbExtender::defaultParams($table);
         });
     }
