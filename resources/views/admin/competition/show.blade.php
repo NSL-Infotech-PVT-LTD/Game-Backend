@@ -51,7 +51,7 @@
                     </div>
 
                 </div>
-                <div class="card">
+<!--                <div class="card">
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-borderless data-table" >
@@ -72,7 +72,7 @@
                             </table>
                         </div>
                     </div>
-                </div>
+                </div>-->
 
 
             </div>
