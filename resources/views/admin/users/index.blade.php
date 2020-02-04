@@ -72,9 +72,9 @@
             <div class="card">
                 <div class="card-header"><b>Users</b></div>
                 <div class="card-body">
-                    <a href="{{ url('/admin/users/create') }}" class="btn btn-success btn-sm" title="Add New User">
+<!--                    <a href="{{ url('/admin/users/create') }}" class="btn btn-success btn-sm" title="Add New User">
                         <i class="fa fa-plus" aria-hidden="true"></i> Add New
-                    </a>
+                    </a>-->
                         <div class ="table-responsive">
                     <table class="table table-borderless data-table" >
                         
