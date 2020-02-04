@@ -42,5 +42,8 @@ class CompetitionUser extends Model {
     public function player() {
         return $this->hasOne(User::class, 'id', 'player_id');
     }
+    public function payments() {
+        return $this->hasMany(CompetitionUserPayment::class, 'competition_user_id', 'id');
+    }
 
 }
