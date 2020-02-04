@@ -53,7 +53,7 @@
     'form-control',
     'multiple' => false]) !!}
 </div>
-
+{!! Form::label('hot_competitions', 'Hot Competition: ', ['class' => 'control-label']) !!}
 <div class="checkbox">
     <label>{!! Form::radio('hot_competitions', '1') !!} Yes</label>
 </div>
