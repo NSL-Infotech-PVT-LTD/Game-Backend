@@ -14,7 +14,7 @@
     {!! $errors->first('name', '<p class="help-block">:message</p>') !!}
 </div>
 <div class="form-group{{ $errors->has('date') ? 'has-error' : ''}}">
-    {!! Form::label('date', 'Date', ['class' => 'control-label']) !!}
+    {!! Form::label('date', 'Start Date', ['class' => 'control-label']) !!}
     {!! Form::date('date', null, ('required' == 'required') ? ['class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!}
     {!! $errors->first('date', '<p class="help-block">:message</p>') !!}
 </div>
