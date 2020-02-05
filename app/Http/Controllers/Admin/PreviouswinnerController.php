@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 class PreviouswinnerController extends Controller
 {
     public static $_mediaBasePath = 'uploads/competition/';
-    protected $__rulesforindex = ['player_id' => 'required', 'competition_id' => 'required','score'=>'required'];
+    protected $__rulesforindex = ['title' => 'required', 'description' => 'required'];
     /**
      * Display a listing of the resource.
      *
@@ -23,7 +23,7 @@ class PreviouswinnerController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $previouswinner = CompetitionUser::all();      
+            $previouswinner = Previouswinner::all();      
             return Datatables::of($previouswinner)
                             ->addIndexColumn()
                             ->addColumn('action', function($item) {
