@@ -124,6 +124,7 @@
 <!--                    <li><a href="{{ url('admin/metas')}}"><i class="fa fa-rocket"></i> <span>Meta</span></a></li>-->
                     <li><a href="{{ url('admin/privacy_policy')}}"><i class="fa fa-rocket"></i> <span>Privacy Policy</span></a></li>
                     <li><a href="{{ url('admin/terms_and_condition')}}"><i class="fa fa-rocket"></i> <span>Terms and conditions</span></a></li>
+                    <li><a href="{{ url('admin/transactions')}}"><i class="fa fa-exchange"></i> <span>Transactions</span></a></li>
 
   <!--<li><a href="{{ url('admin/generator')}}"><i class="fa fa-bars"></i> <span>Generator</span></a></li>-->
 
