@@ -113,6 +113,7 @@ class CompetitionController extends Controller {
 
 //        $requestData['prize_image'] = \App\Http\Controllers\API\ApiController::__uploadImage($request->file('prize_image'), public_path('uploads/competition/prize_details'));
 //        dd($requestData);
+        $requestData['state'] ='1';
         Competition::create($requestData);
 
         return redirect('admin/competition')->with('flash_message', 'Competition added!');
