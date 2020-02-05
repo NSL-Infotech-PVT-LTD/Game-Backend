@@ -31,7 +31,7 @@ class CompetitionCategory extends Model
      *
      * @var array
      */
-    protected $fillable = ['name'];
+    protected $fillable = ['name','state'];
 
     
 

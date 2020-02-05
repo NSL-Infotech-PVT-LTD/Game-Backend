@@ -201,6 +201,11 @@ class UsersController extends Controller {
         return view('admin.transaction.index', compact('userCompetition'));
     }
 
+    public function transactionList(Request $request) {
+        $userCompetition = CompetitionUser::with('payments')->get();
+        return view('admin.transaction.indexlist', compact('userCompetition'));
+    }
+
 //    function updateUserStatus(Request $request) {
 //        $selectUser = User::where('id', $request->input('id'))->with('roles')->first();
 ////        dd($selectUser->roles->pluck('name'));
