@@ -9,9 +9,9 @@
                 <div class="card">
                     <div class="card-header"><b>Previous Winner</b></div>
                     <div class="card-body">
-<!--                        <a href="{{ url('/admin/previouswinner/create') }}" class="btn btn-success btn-sm" title="Add New Previouswinner">-->
-                            <!--<i class="fa fa-plus" aria-hidden="true"></i> Add New-->
-                        <!--</a>-->
+                        <a href="{{ url('/admin/previouswinner/create') }}" class="btn btn-success btn-sm" title="Add New Previouswinner">
+                            <i class="fa fa-plus" aria-hidden="true"></i> Add New
+                        </a>
 
                      <div class ="table-responsive">
                         <table class="table table-borderless data-table" >
