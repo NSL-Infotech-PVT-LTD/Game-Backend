@@ -58,7 +58,7 @@ class BannersController extends Controller {
             'type' => 'required'
         ]);
         $requestData = $request->all();
-        dd($requestData);
+//        dd($requestData);
         $requestData['image'] = ApiController::__uploadImage($request->file('image'), public_path(self::$_mediaBasePath));
         $requestData['user_id'] = Auth::id();
         Banner::create($requestData);
