@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Banner;
 use Illuminate\Http\Request;
 use App\Http\Controllers\API\ApiController;
+use Datatables;
+
 
 class BannersController extends Controller {
 
@@ -17,7 +19,7 @@ class BannersController extends Controller {
      * @return \Illuminate\View\View
      */
     public static $_mediaBasePath = 'uploads/banner/';
-    protected $__rulesforindex = ['image' => 'required', 'type' => 'required', 'action' => 'required'];
+    protected $__rulesforindex = ['image' => 'required', 'type' => 'required'];
 
     public function index(Request $request) {
 
