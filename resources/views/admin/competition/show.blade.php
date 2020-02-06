@@ -60,7 +60,7 @@
                     </div>
 
                 </div>
-<!--                <div class="card">
+                <div class="card">
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-borderless data-table" >
@@ -75,13 +75,13 @@
                                             ?>
                                             <th>{{ucfirst($rule)}}</th>
                                         <?php endforeach; ?>
-                                        <th>Action</th>
+                                        <!--<th>Action</th>-->
                                     </tr>
                                 </thead>
                             </table>
                         </div>
                     </div>
-                </div>-->
+                </div>
 
             </div>
         </div>
@@ -99,7 +99,7 @@
 <?php foreach ($rules as $rule): ?>
                 {data: "{{$rule}}", name: "{{$rule}}"},
 <?php endforeach; ?>
-            {data: 'action', name: 'action', orderable: false, searchable: false},
+//            {data: 'action', name: 'action', orderable: false, searchable: false},
             ]
     });
 //deleting data

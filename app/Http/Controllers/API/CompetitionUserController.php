@@ -72,8 +72,11 @@ class CompetitionUserController extends ApiController {
 //                if ($model->first() != null)
                 $fee = $competition->sequential_fee;
             endif;
+            if ($fee == 0):
+                $charge = ['id' => 'no_id', 'amount' => $fee];
+            else:
 //            dd(env('STRIPE_SECRET_KEY'));
-            \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+                \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 //            $card = \Stripe\Token::create([
 //                        'card' => [
 //                            'number' => $request->card_number,
@@ -83,18 +86,19 @@ class CompetitionUserController extends ApiController {
 //                        ],
 //            ]);
 //            dd($card->id);
-            $charge = \Stripe\Charge::create([
-                        "amount" => $fee * 100,
-                        "currency" => "usd",
-                        "source" => $request->token,
-                        "description" => $request->competition_id . ' Fees for competition',
-                        "shipping[name]" => "Jenny Rosen",
-                        "shipping[address][line1]" => "510 Townsend St",
-                        "shipping[address][postal_code]" => "510 Townsend St",
-                        "shipping[address][city]" => "510 Townsend St",
-                        "shipping[address][state]" => "510 Townsend St",
-                        "shipping[address][country]" => "510 Townsend St"
-            ]);
+                $charge = \Stripe\Charge::create([
+                            "amount" => $fee * 100,
+                            "currency" => "usd",
+                            "source" => $request->token,
+                            "description" => $request->competition_id . ' Fees for competition',
+                            "shipping[name]" => "Jenny Rosen",
+                            "shipping[address][line1]" => "510 Townsend St",
+                            "shipping[address][postal_code]" => "510 Townsend St",
+                            "shipping[address][city]" => "510 Townsend St",
+                            "shipping[address][state]" => "510 Townsend St",
+                            "shipping[address][country]" => "510 Townsend St"
+                ]);
+            endif;
 //            $modelsend = null;
             if ($model->isEmpty() != true):
                 $modelUpdate = MyModel::findOrFail($model->first()->id);
