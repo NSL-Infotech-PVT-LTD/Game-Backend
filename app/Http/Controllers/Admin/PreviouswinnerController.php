@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 class PreviouswinnerController extends Controller {
 
     public static $_mediaBasePath = 'uploads/previouswinner/';
-    protected $__rulesforindex = ['title' => 'required', 'description' => 'required', 'image' => 'required'];
+    protected $__rulesforindex = ['title' => 'required', 'image' => 'required'];
 
     /**
      * Display a listing of the resource.
