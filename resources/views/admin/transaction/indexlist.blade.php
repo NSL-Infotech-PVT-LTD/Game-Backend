@@ -60,7 +60,11 @@
                                                                     ?>
                                                                     <tr> 
                                                                         <td><b>USD {{$payment->amount/100}}</b></td>
-                                                                        <td>{{date('Y M, d | h:i:s A',$payment->created)}}</td>
+                                                                        <?php if (isset($payment->created)): ?>
+                                                                            <td>{{date('Y M, d | h:i:s A',$payment->created)}}</td>
+                                                                        <?php else: ?>
+                                                                            <td>{{$paymentobj->created_at}}</td>
+                                                                        <?php endif; ?>
                                                                         <td>{{$payment->id}}</td>
                                                                     </tr>
                                                                 <?php endforeach; ?>
