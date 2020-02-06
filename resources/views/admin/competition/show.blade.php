@@ -55,6 +55,12 @@
                                 <tr>
                                     <th> Start Date </th><td> {{ $competition->date }} </td>
                                 </tr>
+                                <tr>
+                                    <th> Fee </th><td> {{ $competition->fee }} </td>
+                                </tr>
+                                <tr>
+                                    <th> Sequential Fee </th><td> {{ $competition->sequential_fee }} </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
