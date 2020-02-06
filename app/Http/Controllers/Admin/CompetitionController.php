@@ -242,6 +242,9 @@ class CompetitionController extends Controller {
 //               dd($competition);
             return Datatables::of($competition)
                             ->addIndexColumn()
+                            ->editColumn('competition_category_id', function($item) {
+                                return \App\CompetitionCategory::whereId($item->competition_category_id)->first()->name;
+                            })
                             ->editColumn('image', function($item) {
                                 if (empty($item->image)) {
                                     return "<img width='50' src=" . url('noimage.png') . ">";
