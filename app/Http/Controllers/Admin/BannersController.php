@@ -83,6 +83,7 @@ class BannersController extends Controller {
 //        dd($requestData);
         $requestData['image'] = ApiController::__uploadImage($request->file('image'), public_path(self::$_mediaBasePath));
         $requestData['user_id'] = Auth::id();
+        $requestData['state'] = '1';
         Banner::create($requestData);
 
         return redirect('admin/banners')->with('flash_message', 'Banner added!');
