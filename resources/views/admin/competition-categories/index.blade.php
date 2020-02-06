@@ -36,6 +36,7 @@
   <script type="text/javascript">
         $(function () {
             var table = $('.data-table').DataTable({
+                "sDom": 'Rfrtlip',
                 processing: true,
                 serverSide: true,
                 ajax: "{{ route('competition-categories.index') }}",

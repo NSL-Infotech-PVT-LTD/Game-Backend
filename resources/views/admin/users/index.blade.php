@@ -126,6 +126,7 @@
     
     $(function () {
             var table = $('.data-table').DataTable({
+                "sDom": 'Rfrtlip',
                 processing: true,
                 serverSide: true,
                 ajax: "{{ route('users.index') }}",
