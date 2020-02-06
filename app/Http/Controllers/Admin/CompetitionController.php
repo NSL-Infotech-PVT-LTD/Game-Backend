@@ -19,7 +19,7 @@ class CompetitionController extends Controller {
      * @return \Illuminate\View\View
      */
     public static $_mediaBasePath = 'uploads/competition/';
-    protected $__rulesforindex = ['name' => 'required', 'image' => 'required', 'start_time' => 'required'];
+    protected $__rulesforindex = ['name' => 'required', 'competition_category_id' => 'required', 'image' => 'required', 'start_time' => 'required'];
     protected $__rulesforshow = ['player_id' => 'required', 'score' => 'required', 'created_at' => 'required'];
 
     public function index(Request $request) {
@@ -29,6 +29,9 @@ class CompetitionController extends Controller {
 //               dd($competition);
             return Datatables::of($competition)
                             ->addIndexColumn()
+                            ->editColumn('competition_category_id', function($item) {
+                                return \App\CompetitionCategory::whereId($item->competition_category_id)->first()->name;
+                            })
                             ->editColumn('image', function($item) {
 
                                 if (!file_exists(public_path(self::$_mediaBasePath . $item->image))) {
