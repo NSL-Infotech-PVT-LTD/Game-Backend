@@ -58,6 +58,7 @@ class BannersController extends Controller {
             'type' => 'required'
         ]);
         $requestData = $request->all();
+        dd($requestData);
         $requestData['image'] = ApiController::__uploadImage($request->file('image'), public_path(self::$_mediaBasePath));
         $requestData['user_id'] = Auth::id();
         Banner::create($requestData);
@@ -87,7 +88,7 @@ class BannersController extends Controller {
      */
     public function edit($id) {
         $banner = Banner::findOrFail($id);
-
+//dd($banner);
         return view('admin.banners.edit', compact('banner'));
     }
 
@@ -104,6 +105,8 @@ class BannersController extends Controller {
         $requestData = $request->all();
 
         $banner = Banner::findOrFail($id);
+        if ($request->image)
+            $requestData['image'] = ApiController::__uploadImage($request->file('image'), public_path(self::$_mediaBasePath));
         $banner->update($requestData);
 
         return redirect('admin/banners')->with('flash_message', 'Banner updated!');
