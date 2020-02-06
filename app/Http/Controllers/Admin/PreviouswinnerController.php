@@ -11,21 +11,28 @@ use App\Competition;
 use Datatables;
 use Illuminate\Http\Request;
 
-class PreviouswinnerController extends Controller
-{
-    public static $_mediaBasePath = 'uploads/competition/';
-    protected $__rulesforindex = ['title' => 'required', 'description' => 'required'];
+class PreviouswinnerController extends Controller {
+
+    public static $_mediaBasePath = 'uploads/previouswinner/';
+    protected $__rulesforindex = ['title' => 'required', 'description' => 'required', 'image' => 'required'];
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\View\View
      */
-    public function index(Request $request)
-    {
+    public function index(Request $request) {
         if ($request->ajax()) {
-            $previouswinner = Previouswinner::all();      
+            $previouswinner = Previouswinner::all();
             return Datatables::of($previouswinner)
                             ->addIndexColumn()
+                            ->editColumn('image', function($item) {
+                                 if (!file_exists(public_path(self::$_mediaBasePath . $item->image))) {
+                                    return "<img width='50' src=" . url('noimage.png') . ">";
+                                } else {
+                                    return "<img width='50' src=" . url(self::$_mediaBasePath . $item->image) . ">";
+                                }
+                            })
                             ->addColumn('action', function($item) {
 
                                 $return = '';
@@ -41,6 +48,7 @@ class PreviouswinnerController extends Controller
 //                                return $return;
                             })
 //                            ->rawColumns(['action'])
+                            ->rawColumns(['action', 'image'])
                             ->make(true);
         }
         return view('admin.previouswinner.index', ['rules' => array_keys($this->__rulesforindex)]);
@@ -52,8 +60,7 @@ class PreviouswinnerController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function create()
-    {
+    public function create() {
         return view('admin.previouswinner.create');
     }
 
@@ -64,9 +71,8 @@ class PreviouswinnerController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function store(Request $request)
-    {
-         $this->validate($request, [
+    public function store(Request $request) {
+        $this->validate($request, [
             'image' => 'required',
         ]);
         $requestData = $request->all();
@@ -84,8 +90,7 @@ class PreviouswinnerController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function show($id)
-    {
+    public function show($id) {
         $previouswinner = Previouswinner::findOrFail($id);
 
         return view('admin.previouswinner.show', compact('previouswinner'));
@@ -98,8 +103,7 @@ class PreviouswinnerController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function edit($id)
-    {
+    public function edit($id) {
         $previouswinner = Previouswinner::findOrFail($id);
 
         return view('admin.previouswinner.edit', compact('previouswinner'));
@@ -113,7 +117,7 @@ class PreviouswinnerController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function update(Request $request, $id){
+    public function update(Request $request, $id) {
         $requestData = $request->all();
         $previouswinner = Previouswinner::findOrFail($id);
         if (isset($request->image))
@@ -130,18 +134,18 @@ class PreviouswinnerController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         Previouswinner::destroy($id);
 
 //        return redirect('admin/previouswinner')->with('flash_message', 'Previouswinner deleted!');
         return response()->json(["success" => true, 'message' => 'Previous Winner deleted!']);
     }
-    
+
     public function changeStatus(Request $request) {
         $previouswinner = Previouswinner::findOrFail($request->id);
         $previouswinner->state = $request->status == 'Block' ? '0' : '1';
         $previouswinner->save();
         return response()->json(["success" => true, 'message' => 'Previous Winner updated!']);
     }
+
 }
