@@ -79,6 +79,7 @@ class PreviouswinnerController extends Controller {
         $requestData = $request->all();
         if (isset($request->image))
             $requestData['image'] = ApiController::__uploadImage($request->file('image'), public_path(self::$_mediaBasePath));
+        $requestData['state'] = '1';
         Previouswinner::create($requestData);
 
         return redirect('admin/previouswinner')->with('flash_message', 'Previouswinner added!');

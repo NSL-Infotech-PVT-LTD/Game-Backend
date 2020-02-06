@@ -31,7 +31,7 @@ class Previouswinner extends Model
      *
      * @var array
      */
-    protected $fillable = ['title', 'description', 'image'];
+    protected $fillable = ['title', 'description', 'image','state'];
 
     
 
