@@ -34,7 +34,7 @@
                                         <td><a href="{{url('admin/competition/'.$items->competition_id)}}"><?= App\Competition::whereId($items->competition_id)->first()->name ?></a></td>
                                         <td>
                                             <div class="text-center">
-                                                <a href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modalL{{$items->id}}"><?= 'Payment Details ('.count($items->payments).')' ?></a>
+                                                <a href="" class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modalL{{$items->id}}"><?= 'Payment Details (' . count($items->payments) . ')' ?></a>
                                             </div>
                                             <div class="modal fade" id="modalL{{$items->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
                                                  aria-hidden="true">
@@ -52,12 +52,11 @@
                                                                 <tr>
                                                                     <th>Amount</th>
                                                                     <th>Date</th>
-                                                                    <th>Transaction Details</th>
+                                                                    <th>Transaction Id</th>
                                                                 </tr> 
                                                                 <?php
                                                                 foreach ($items->payments as $paymentobj):
                                                                     $payment = json_decode($paymentobj->payment);
-                                                                
                                                                     ?>
                                                                     <tr> 
                                                                         <td><b>USD {{$payment->amount/100}}</b></td>
@@ -84,5 +83,9 @@
         </div>
     </div>
 </div>
-
+<style>
+    .modal-dialog {
+        max-width: 800px !important;
+    }
+</style>
 @endsection

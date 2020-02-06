@@ -45,7 +45,16 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th> Description </th><td> {{ $competition->description }} </td></tr><tr><th> Name </th><td> {{ $competition->name }} </td></tr>
+                                    <th> Description </th><td> {{ $competition->description }} </td></tr>
+                                <tr>
+                                    <th> Name </th><td> {{ $competition->name }} </td>
+                                </tr>
+                                <tr>
+                                    <th> Start Time </th><td> {{ $competition->start_time }} </td>
+                                </tr>
+                                <tr>
+                                    <th> Start Date </th><td> {{ $competition->date }} </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
