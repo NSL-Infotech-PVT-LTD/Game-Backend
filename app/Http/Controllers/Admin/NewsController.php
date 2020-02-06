@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 class newsController extends Controller {
 
     public static $_mediaBasePath = 'uploads/news/';
-    protected $__rulesforindex = ['title' => 'required', 'image' => 'required', 'description' => 'required'];
+    protected $__rulesforindex = ['title' => 'required', 'image' => 'required'];
 
     /**
      * Display a listing of the resource.
