@@ -43,7 +43,7 @@
                 columns: [
                     {data: 'id', name: 'id'},
                     {data: "title", name: "title"},
-                    {data: 'description', name: 'description', orderable: false, searchable: false},
+//                    {data: 'description', name: 'description', orderable: false, searchable: false},
                     {data: 'image', name: 'image', orderable: false, searchable: false},
                     {data: 'action', name: 'action', orderable: false, searchable: false},
                 ]
