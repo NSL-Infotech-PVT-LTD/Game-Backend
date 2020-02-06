@@ -22,7 +22,6 @@ class DashboardController extends ApiController {
             return $validateAttributes;
         endif;
         try {
-
 //            dd(\App\Competition::whereDate('date', '=', \Carbon\Carbon::now())->get()->pluck('id')->toArray());
 //            dd(\App\CompetitionUser::whereIn('competition_id',\App\Competition::whereDate('date', '=', \Carbon\Carbon::now())->get()->pluck('id')->toArray())->get()->pluck('player_id')->toArray());
 //            \App\Http\Controllers\API\ApiController::pushNotificationsMultipleUsers(['title' => ' Added', 'body' => 'custom'], ['63'], ['target_id' => '222', 'target_type' => 'testing'],'FCM');
