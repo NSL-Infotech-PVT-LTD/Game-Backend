@@ -63,6 +63,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'roles'], 'roles' =>
     Route::get('hot-competition', 'Admin\CompetitionController@AllhotCompetition');
 
     Route::resource('banners', 'Admin\BannersController');
+    Route::post('banner/change-status', 'Admin\BannersController@changeStatus')->name('banner.changeStatus');
     Route::get('transaction/{id}', 'Admin\UsersController@transaction');
     Route::get('transactions', 'Admin\UsersController@transactionList');
     Route::resource('metas', 'Admin\MetasController');
