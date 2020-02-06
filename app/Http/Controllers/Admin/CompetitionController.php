@@ -30,6 +30,7 @@ class CompetitionController extends Controller {
             return Datatables::of($competition)
                             ->addIndexColumn()
                             ->editColumn('image', function($item) {
+                                
                                 if (!file_exists(public_path(self::$_mediaBasePath . $item->image))) {
                                     return "<img width='50' src=" . url('noimage.png') . ">";
                                 } else {
