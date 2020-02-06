@@ -1,3 +1,4 @@
+<link rel="stylesheet" type="text/css" href="{{ asset('dist/bootstrap-clockpicker.min.css') }}">
 <div class="form-group{{ $errors->has('image') ? 'has-error' : ''}}">
     {!! Form::label('image', 'Image', ['class' => 'control-label']) !!}
     {!! Form::file('image', null, ('' == 'required') ? ['class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!}
@@ -21,7 +22,7 @@
 
 <div class="form-group{{ $errors->has('start_time') ? 'has-error' : ''}}">
     {!! Form::label('start_time', 'Start_time', ['class' => 'control-label']) !!}
-    {!! Form::time('start_time', null, ('required' == 'required') ? ['class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!}
+    {!! Form::text('start_time', null, ('required' == 'required') ? ['class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!}
     {!! $errors->first('start_time', '<p class="help-block">:message</p>') !!}
 </div>
 
@@ -72,3 +73,10 @@
 <div class="form-group">
     {!! Form::submit($formMode === 'edit' ? 'Update' : 'Create', ['class' => 'btn btn-primary']) !!}
 </div>
+<script type="text/javascript" src="{{ asset('dist/bootstrap-clockpicker.min.js') }}"></script>
+<script type="text/javascript">
+$('#start_time').clockpicker({
+    donetext: 'Set',
+    twelvehour: true,
+});
+</script>

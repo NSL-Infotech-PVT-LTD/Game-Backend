@@ -19,7 +19,7 @@ class CompetitionController extends Controller {
      * @return \Illuminate\View\View
      */
     public static $_mediaBasePath = 'uploads/competition/';
-    protected $__rulesforindex = ['name' => 'required', 'image' => 'required','start_time'=>'required'];
+    protected $__rulesforindex = ['name' => 'required', 'image' => 'required', 'start_time' => 'required'];
     protected $__rulesforshow = ['player_id' => 'required', 'score' => 'required', 'created_at' => 'required'];
 
     public function index(Request $request) {
@@ -30,14 +30,14 @@ class CompetitionController extends Controller {
             return Datatables::of($competition)
                             ->addIndexColumn()
                             ->editColumn('image', function($item) {
-                                
+
                                 if (!file_exists(public_path(self::$_mediaBasePath . $item->image))) {
                                     return "<img width='50' src=" . url('noimage.png') . ">";
                                 } else {
                                     return "<img width='50' src=" . url('uploads/competition/' . $item->image) . ">";
                                 }
                             })
-                            ->editColumn('start_time',function($item){
+                            ->editColumn('start_time', function($item) {
                                 return $item->start_time;
                             })
                             ->addColumn('hot', function($item) {
@@ -72,7 +72,7 @@ class CompetitionController extends Controller {
                                         . " <button class='btn btn-danger btn-sm btnDelete' type='submit' data-remove='" . url('/admin/competition/' . $item->id) . "'><i class='fa fa-trash-o' aria-hidden='true'></i></button>";
                                 return $return;
                             })
-                            ->rawColumns(['action', 'image','start_time', 'hot'])
+                            ->rawColumns(['action', 'image', 'start_time', 'hot'])
                             ->make(true);
         }
         return view('admin.competition.index', ['rules' => array_keys($this->__rulesforindex)]);
@@ -112,9 +112,11 @@ class CompetitionController extends Controller {
         endif;
         $requestData['image'] = ApiController::__uploadImage($request->file('image'), public_path(self::$_mediaBasePath));
 
+        if (isset($request->start_time))
+            $requestData['start_time'] = date("H:i:s", strtotime($request->start_time));
 //        $requestData['prize_image'] = \App\Http\Controllers\API\ApiController::__uploadImage($request->file('prize_image'), public_path('uploads/competition/prize_details'));
 //        dd($requestData);
-        $requestData['state'] ='1';
+        $requestData['state'] = '1';
         Competition::create($requestData);
 
         return redirect('admin/competition')->with('flash_message', 'Competition added!');
@@ -129,7 +131,7 @@ class CompetitionController extends Controller {
      */
     public function show(Request $request, $id) {
         if ($request->ajax()) {
-            $leadBoard = \App\CompetitionUser::where('competition_id',$id)->get();
+            $leadBoard = \App\CompetitionUser::where('competition_id', $id)->get();
             return Datatables::of($leadBoard)
                             ->addIndexColumn()
                             ->editColumn('player_id', function($item) {
@@ -183,9 +185,12 @@ class CompetitionController extends Controller {
             'fee' => 'required'
         ]);
         $requestData = $request->all();
-
+//        dd($requestData);
         $competition = Competition::findOrFail($id);
 
+        if (isset($request->start_time))
+            $requestData['start_time'] = date("H:i:s", strtotime($request->start_time));
+//dd($requestData);
         if (isset($request->image))
             $requestData['image'] = \App\Http\Controllers\API\ApiController::__uploadImage($request->file('image'), public_path(self::$_mediaBasePath));
         if (isset($request->prize_image))
@@ -273,7 +278,7 @@ class CompetitionController extends Controller {
         $leadBorad = \App\CompetitionUser::findOrFail($request->id);
         $competitionUser = \App\CompetitionUser::where('competition_id', $leadBorad->competition_id)->get();
         $losserIds = $competitionUser->pluck('player_id')->toArray();
-        $winnerId=$leadBorad->player_id;
+        $winnerId = $leadBorad->player_id;
         if (($key = array_search($winnerId, $losserIds)) !== false) {
             unset($losserIds[$key]);
         }
