@@ -32,7 +32,7 @@ class Competition extends Model {
      * @var array
      */
     protected $appends = ['readyto_go', 'my_competition_status', 'competition_date_status', 'is_going_live'];
-    protected $fillable = ['image', 'description', 'name', 'date', 'fee', 'prize_details', 'game_id', 'competition_category_id', 'hot_competitions', 'sequential_fee','start_time','state'];
+    protected $fillable = ['image', 'description', 'name', 'date', 'fee', 'prize_details', 'game_id', 'competition_category_id', 'hot_competitions', 'sequential_fee', 'start_time', 'state'];
 
     /**
      * Change activity log event description
@@ -75,7 +75,7 @@ class Competition extends Model {
             if ($model->isEmpty())
                 return 'Not_Enroll_Yet';
             $modelCompetitionPayment = CompetitionUserPayment::where('competition_user_id', $model->first()->id)->get();
-            
+
             if ($modelCompetitionPayment->isEmpty() != true && $model->first()->state == 0)
                 return 'Payed';
 //            if ($model->first()->payment_param_2 !== null)
@@ -92,6 +92,10 @@ class Competition extends Model {
 
     public function getReadytoGoAttribute($value) {
         return \Carbon\Carbon::createFromTimeStamp(strtotime($this->date))->diffForHumans();
+    }
+
+    public function getStartTimeAttribute($value) {
+        return \Carbon\Carbon::createFromTimeStamp(strtotime($value))->format('h:s A');
     }
 
     public function game() {

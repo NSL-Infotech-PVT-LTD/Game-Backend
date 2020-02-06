@@ -22,7 +22,7 @@
                                     <?php foreach ($rules as $rule): ?>
                                     <th>{{ucfirst($rule)}}</th>
                                     <?php endforeach; ?>
-                                    <!--<th>Action</th>-->
+                                    <th>Action</th>
                                 </tr>
                                 </thead>
                             </table>
@@ -45,7 +45,7 @@
                         <?php foreach ($rules as $rule): ?>
                     {data: "{{$rule}}", name: "{{$rule}}"},
                         <?php endforeach; ?>
-//                    {data: 'action', name: 'action', orderable: false, searchable: false},
+                    {data: 'action', name: 'action', orderable: false, searchable: false},
                 ]
             });
 //deleting data

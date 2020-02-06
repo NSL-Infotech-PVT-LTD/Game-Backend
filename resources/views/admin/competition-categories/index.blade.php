@@ -7,7 +7,7 @@
 
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">Competitioncategories</div>
+                    <div class="card-header">Competition Categories</div>
                     <div class="card-body">
                         <a href="{{ url('/admin/competition-categories/create') }}" class="btn btn-success btn-sm" title="Add New CompetitionCategory">
                             <i class="fa fa-plus" aria-hidden="true"></i> Add New
