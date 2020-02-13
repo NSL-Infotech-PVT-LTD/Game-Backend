@@ -59,6 +59,10 @@ class AuthController extends ApiController {
             $user = \App\User::find(Auth::user()->id);
             $success['token'] = $user->createToken('MyApp')->accessToken;
             $success['user'] = $user;
+
+            if (!$user->email_verified_at) {
+                return parent::error('Your Email is not Verified', 200);
+            }
 //            if ($user->status != 1) {
 //                return parent::error('Please contact admin to activate your account', 200);
 //            }
@@ -69,8 +73,7 @@ class AuthController extends ApiController {
             return parent::error('Wrong Username or Password', 200);
         }
     }
-    
-    
+
     public function logout(Request $request) {
         $rules = [];
         $validateAttributes = parent::validateAttributes($request, 'GET', $rules, array_keys($rules), false);
@@ -79,7 +82,7 @@ class AuthController extends ApiController {
         endif;
         try {
             $user = User::findOrFail(\Auth::id());
-            
+
 //            $user->is_login = '0';
             $user->save();
             return parent::success('Logout Successfully');
@@ -87,7 +90,6 @@ class AuthController extends ApiController {
             return parent::error($ex->getMessage());
         }
     }
-    
 
     /**
      * Register api
@@ -126,7 +128,8 @@ class AuthController extends ApiController {
     }
 
     public function socialRegister(Request $request) {
-        $rules = ['first_name' => '', 'last_name' => '', 'email' => 'required', 'password' => '', 'mobile' => '', 'social_type' => '', 'social_id' => '', 'social_password' => '', 'age' => ''];
+
+        $rules = ['first_name' => '', 'last_name' => '', 'email' => 'required|email|unique:users', 'password' => '', 'mobile' => '', 'social_type' => '', 'social_id' => '', 'social_password' => '', 'age' => ''];
 
         $rules = array_merge($this->requiredParams, $rules);
         $validator = Validator::make($request->all(), $rules);
@@ -166,7 +169,9 @@ class AuthController extends ApiController {
 //        if ($user->status != 1) {
 //            return parent::error('Please contact admin to activate your account', 200);
 //        }
-        return parent::successCreated($success, 201);
+
+        $user->sendEmailVerificationNotification();
+        return parent::error("Please Verify Your Email to Continue", 200);
     }
 
     public function MyProfile(Request $request) {
