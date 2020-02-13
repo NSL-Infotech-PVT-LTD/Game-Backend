@@ -202,7 +202,7 @@ class AuthController extends ApiController {
         try {
             $input = $request->all();
             if (isset($request->image)):
-                $input['image'] = parent::__uploadImage($request->file('image'), public_path('uploads/users/image'));
+                $input['image'] = parent::__uploadImage($request->file('image'), public_path(\App\Http\Controllers\Admin\UsersController::$_mediaBasePath));
             endif;
             $user->fill($input);
             $user->save();

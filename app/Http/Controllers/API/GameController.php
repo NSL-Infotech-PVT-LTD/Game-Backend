@@ -21,8 +21,8 @@ class GameController extends ApiController {
             $perPage = isset($request->limit) ? $request->limit : 20;
             if (isset($request->search))
                 $model = $model->Where('name', 'LIKE', "%$request->search%");
-         
-            $model = $model->select('id','name', 'image')->orderBy('id', 'desc');
+            $model = $model->Where('state', '1');
+            $model = $model->select('id', 'name', 'image')->orderBy('id', 'desc');
             return parent::success($model->paginate($perPage));
         } catch (\Exception $ex) {
             return parent::error($ex->getMessage());

@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 class newsController extends Controller {
 
     public static $_mediaBasePath = 'uploads/news/';
-    protected $__rulesforindex = ['title' => 'required', 'image' => 'required', 'description' => 'required'];
+    protected $__rulesforindex = ['title' => 'required', 'image' => 'required'];
 
     /**
      * Display a listing of the resource.
@@ -42,8 +42,8 @@ class newsController extends Controller {
                                     $return .= "<button class='btn btn-success btn-sm changeStatus' title='Block' data-id=" . $item->id . " data-status='Block' >Block / Inactive</button>";
                                 endif;
                                 $return .= " <a href=" . url('/admin/news/' . $item->id) . " title='View News'><button class='btn btn-info btn-sm'><i class='fa fa-eye' aria-hidden='true'></i></button></a>
-                                        <a href=" . url('/admin/news/' . $item->id . '/edit') . " title='Edit news'><button class='btn btn-primary btn-sm'><i class='fa fa-pencil-square-o' aria-hidden='true'></i></button></a>"
-                                        . " <button class='btn btn-danger btn-sm btnDelete' type='submit' data-remove='" . url('/admin/news/' . $item->id) . "'><i class='fa fa-trash-o' aria-hidden='true'></i></button>";
+                                        <a href=" . url('/admin/news/' . $item->id . '/edit') . " title='Edit news'><button class='btn btn-primary btn-sm'><i class='fa fa-pencil-square-o' aria-hidden='true'></i></button></a>";
+//                                        . " <button class='btn btn-danger btn-sm btnDelete' type='submit' data-remove='" . url('/admin/news/' . $item->id) . "'><i class='fa fa-trash-o' aria-hidden='true'></i></button>";
                                 return $return;
                             })
                             ->rawColumns(['action', 'image'])

@@ -9,9 +9,9 @@
                 <div class="card">
                     <div class="card-header"><b>Previous Winner</b></div>
                     <div class="card-body">
-<!--                        <a href="{{ url('/admin/previouswinner/create') }}" class="btn btn-success btn-sm" title="Add New Previouswinner">-->
-                            <!--<i class="fa fa-plus" aria-hidden="true"></i> Add New-->
-                        <!--</a>-->
+                        <a href="{{ url('/admin/previouswinner/create') }}" class="btn btn-success btn-sm" title="Add New Previouswinner">
+                            <i class="fa fa-plus" aria-hidden="true"></i> Add New
+                        </a>
 
                      <div class ="table-responsive">
                         <table class="table table-borderless data-table" >
@@ -22,7 +22,7 @@
                                     <?php foreach ($rules as $rule): ?>
                                     <th>{{ucfirst($rule)}}</th>
                                     <?php endforeach; ?>
-                                    <!--<th>Action</th>-->
+                                    <th>Action</th>
                                 </tr>
                                 </thead>
                             </table>
@@ -42,10 +42,10 @@
                 ajax: "{{ route('previouswinner.index') }}",
                 columns: [
                     {data: 'id', name: 'id'},
-                        <?php foreach ($rules as $rule): ?>
-                    {data: "{{$rule}}", name: "{{$rule}}"},
-                        <?php endforeach; ?>
-//                    {data: 'action', name: 'action', orderable: false, searchable: false},
+                    {data: "title", name: "title"},
+//                    {data: 'description', name: 'description', orderable: false, searchable: false},
+                    {data: 'image', name: 'image', orderable: false, searchable: false},
+                    {data: 'action', name: 'action', orderable: false, searchable: false},
                 ]
             });
 //deleting data

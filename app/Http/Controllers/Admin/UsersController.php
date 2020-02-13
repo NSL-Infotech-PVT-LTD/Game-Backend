@@ -189,15 +189,21 @@ class UsersController extends Controller {
     }
 
     public function transaction($id) {
-
-        $UserCompetition = CompetitionUser::where('player_id', 39)->get();
-       $users = DB::table('competitions')
-            ->leftJoin('competition_users', 'competitions.id', '=', 'competition_users.competition_id')
-            ->get();
+//dd($id);
+        $userCompetition = CompetitionUser::where('player_id', $id)->with('payments')->get();
+//        dd($userCompetition);
+//        $users = DB::table('competitions')
+//                ->leftJoin('competition_users', 'competitions.id', '=', 'competition_users.competition_id')
+//                ->get();
 //        dd();
 //        $getCompetition = \App\Competition::where('id', $compId)->value('name');
 
-        return view('admin.transaction.index', compact('UserCompetition', 'getCompetition'));
+        return view('admin.transaction.index', compact('userCompetition'));
+    }
+
+    public function transactionList(Request $request) {
+        $userCompetition = CompetitionUser::with('payments')->get();
+        return view('admin.transaction.indexlist', compact('userCompetition'));
     }
 
 //    function updateUserStatus(Request $request) {

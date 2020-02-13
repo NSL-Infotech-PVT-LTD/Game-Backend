@@ -72,9 +72,9 @@
             <div class="card">
                 <div class="card-header"><b>Users</b></div>
                 <div class="card-body">
-                    <a href="{{ url('/admin/users/create') }}" class="btn btn-success btn-sm" title="Add New User">
+<!--                    <a href="{{ url('/admin/users/create') }}" class="btn btn-success btn-sm" title="Add New User">
                         <i class="fa fa-plus" aria-hidden="true"></i> Add New
-                    </a>
+                    </a>-->
                         <div class ="table-responsive">
                     <table class="table table-borderless data-table" >
                         
@@ -85,7 +85,7 @@
                                     <th>{{ucfirst($rule)}}</th>
                                     <?php endforeach; ?>
                                     <th>Action</th>
-                                    <th>Transaction</th>
+                                    <!--<th>Transaction</th>-->
                                 </tr>
                                 </thead>
                             </table>
@@ -126,6 +126,7 @@
     
     $(function () {
             var table = $('.data-table').DataTable({
+                "sDom": 'Rfrtlip',
                 processing: true,
                 serverSide: true,
                 ajax: "{{ route('users.index') }}",
@@ -135,7 +136,7 @@
                     {data: "{{$rule}}", name: "{{$rule}}"},
                         <?php endforeach; ?>
                     {data: 'action', name: 'action', orderable: false, searchable: false},
-                    {data: 'transaction', name: 'transaction', orderable: false, searchable: false},
+//                    {data: 'transaction', name: 'transaction', orderable: false, searchable: false},
                 ]
             });
 //deleting data

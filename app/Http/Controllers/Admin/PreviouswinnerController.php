@@ -11,44 +11,45 @@ use App\Competition;
 use Datatables;
 use Illuminate\Http\Request;
 
-class PreviouswinnerController extends Controller
-{
-    public static $_mediaBasePath = 'uploads/competition/';
-    protected $__rulesforindex = ['player_id' => 'required', 'competition_id' => 'required','score'=>'required'];
+class PreviouswinnerController extends Controller {
+
+    public static $_mediaBasePath = 'uploads/previouswinner/';
+    protected $__rulesforindex = ['title' => 'required', 'image' => 'required'];
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\View\View
      */
-    public function index(Request $request)
-    {
+    public function index(Request $request) {
         if ($request->ajax()) {
-            $previouswinner = CompetitionUser::all();      
+            $previouswinner = Previouswinner::all();
             return Datatables::of($previouswinner)
                             ->addIndexColumn()
-                            ->editColumn('player_id', function($item) {
-                            $return =  \App\User::select('first_name')->where('id',$item->player_id)->first();         
-                            return $return->first_name;
-                            })
-                            ->editColumn('competition_id', function($item) {
-                            $return = \App\Competition::select('name')->where('id',$item->competition_id)->first();         
-                            return $return->name;
+                            ->editColumn('image', function($item) {
+                                 if (!file_exists(public_path(self::$_mediaBasePath . $item->image))) {
+                                    return "<img width='50' src=" . url('noimage.png') . ">";
+                                } else {
+                                    return "<img width='50' src=" . url(self::$_mediaBasePath . $item->image) . ">";
+                                }
                             })
                             ->addColumn('action', function($item) {
 
                                 $return = '';
 
-//                                if ($item->state == '0'):
-//                                    $return .= "<button class='btn btn-danger btn-sm changeStatus' title='UnBlock'  data-id=" . $item->id . " data-status='UnBlock'>UnBlock / Active</button>";
-//                                else:
-//                                    $return .= "<button class='btn btn-success btn-sm changeStatus' title='Block' data-id=" . $item->id . " data-status='Block' >Block / Inactive</button>";
-//                                endif;
-                                $return .= " <a href=" . url('/admin/previouswinner/' . $item->id) . " title='View Previous winner'><button class='btn btn-info btn-sm'><i class='fa fa-eye' aria-hidden='true'></i></button></a>
-                                        <a href=" . url('/admin/previouswinner/' . $item->id . '/edit') . " title='Edit Previous winner'><button class='btn btn-primary btn-sm'><i class='fa fa-pencil-square-o' aria-hidden='true'></i></button></a>"
-                                        . " <button class='btn btn-danger btn-sm btnDelete' type='submit' data-remove='" . url('/admin/previouswinner/' . $item->id) . "'><i class='fa fa-trash-o' aria-hidden='true'></i></button>";
-//                                return $return;
+                                if ($item->state == '0'):
+                                    $return .= "<button class='btn btn-danger btn-sm changeStatus' title='UnBlock'  data-id=" . $item->id . " data-status='UnBlock'>UnBlock / Active</button>";
+                                else:
+                                    $return .= "<button class='btn btn-success btn-sm changeStatus' title='Block' data-id=" . $item->id . " data-status='Block' >Block / Inactive</button>";
+                                endif;
+//                                $return .= " <a href=" . url('/admin/previouswinner/' . $item->id) . " title='View Previous winner'><button class='btn btn-info btn-sm'><i class='fa fa-eye' aria-hidden='true'></i></button></a>
+                                $return .= "
+                                        <a href=" . url('/admin/previouswinner/' . $item->id . '/edit') . " title='Edit Previous winner'><button class='btn btn-primary btn-sm'><i class='fa fa-pencil-square-o' aria-hidden='true'></i></button></a>";
+//                                        . " <button class='btn btn-danger btn-sm btnDelete' type='submit' data-remove='" . url('/admin/previouswinner/' . $item->id) . "'><i class='fa fa-trash-o' aria-hidden='true'></i></button>";
+                                return $return;
                             })
 //                            ->rawColumns(['action'])
+                            ->rawColumns(['action', 'image'])
                             ->make(true);
         }
         return view('admin.previouswinner.index', ['rules' => array_keys($this->__rulesforindex)]);
@@ -60,8 +61,7 @@ class PreviouswinnerController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function create()
-    {
+    public function create() {
         return view('admin.previouswinner.create');
     }
 
@@ -72,14 +72,14 @@ class PreviouswinnerController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function store(Request $request)
-    {
-         $this->validate($request, [
+    public function store(Request $request) {
+        $this->validate($request, [
             'image' => 'required',
         ]);
         $requestData = $request->all();
         if (isset($request->image))
             $requestData['image'] = ApiController::__uploadImage($request->file('image'), public_path(self::$_mediaBasePath));
+        $requestData['state'] = '1';
         Previouswinner::create($requestData);
 
         return redirect('admin/previouswinner')->with('flash_message', 'Previouswinner added!');
@@ -92,8 +92,7 @@ class PreviouswinnerController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function show($id)
-    {
+    public function show($id) {
         $previouswinner = Previouswinner::findOrFail($id);
 
         return view('admin.previouswinner.show', compact('previouswinner'));
@@ -106,8 +105,7 @@ class PreviouswinnerController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function edit($id)
-    {
+    public function edit($id) {
         $previouswinner = Previouswinner::findOrFail($id);
 
         return view('admin.previouswinner.edit', compact('previouswinner'));
@@ -121,7 +119,7 @@ class PreviouswinnerController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function update(Request $request, $id){
+    public function update(Request $request, $id) {
         $requestData = $request->all();
         $previouswinner = Previouswinner::findOrFail($id);
         if (isset($request->image))
@@ -138,18 +136,18 @@ class PreviouswinnerController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         Previouswinner::destroy($id);
 
 //        return redirect('admin/previouswinner')->with('flash_message', 'Previouswinner deleted!');
         return response()->json(["success" => true, 'message' => 'Previous Winner deleted!']);
     }
-    
+
     public function changeStatus(Request $request) {
         $previouswinner = Previouswinner::findOrFail($request->id);
         $previouswinner->state = $request->status == 'Block' ? '0' : '1';
         $previouswinner->save();
         return response()->json(["success" => true, 'message' => 'Previous Winner updated!']);
     }
+
 }

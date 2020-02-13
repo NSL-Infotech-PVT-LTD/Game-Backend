@@ -45,13 +45,28 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th> Description </th><td> {{ $competition->description }} </td></tr><tr><th> Name </th><td> {{ $competition->name }} </td></tr>
+                                    <th> Description </th><td> {{ $competition->description }} </td></tr>
+                                <tr>
+                                    <th> Name </th><td> {{ $competition->name }} </td>
+                                </tr>
+                                <tr>
+                                    <th> Start Time </th><td> {{ $competition->start_time }} </td>
+                                </tr>
+                                <tr>
+                                    <th> Start Date </th><td> {{ $competition->date }} </td>
+                                </tr>
+                                <tr>
+                                    <th> Fee </th><td> {{ $competition->fee }} </td>
+                                </tr>
+                                <tr>
+                                    <th> Sequential Fee </th><td> {{ $competition->sequential_fee }} </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
 
                 </div>
-<!--                <div class="card">
+                <div class="card">
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table table-borderless data-table" >
@@ -66,13 +81,13 @@
                                             ?>
                                             <th>{{ucfirst($rule)}}</th>
                                         <?php endforeach; ?>
-                                        <th>Action</th>
+                                        <!--<th>Action</th>-->
                                     </tr>
                                 </thead>
                             </table>
                         </div>
                     </div>
-                </div>-->
+                </div>
 
             </div>
         </div>
@@ -90,7 +105,7 @@
 <?php foreach ($rules as $rule): ?>
                 {data: "{{$rule}}", name: "{{$rule}}"},
 <?php endforeach; ?>
-            {data: 'action', name: 'action', orderable: false, searchable: false},
+//            {data: 'action', name: 'action', orderable: false, searchable: false},
             ]
     });
 //deleting data

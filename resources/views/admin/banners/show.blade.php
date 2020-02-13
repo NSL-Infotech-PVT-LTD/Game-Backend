@@ -33,7 +33,8 @@
                                     <tr>
                                         <th>ID</th><td>{{ $banner->id }}</td>
                                     </tr>
-                                    <tr><th> Image </th><td> {{ $banner->image }} </td></tr><tr><th> Type </th><td> {{ $banner->type }} </td></tr><tr><th> User Id </th><td> {{ $banner->user_id }} </td></tr>
+                                    <tr><th> Image </th><td> {{ $banner->image }} </td></tr><tr><th> Type </th><td> {{ $banner->type }} </td></tr>
+                                    <!--<tr><th> User Id </th><td> {{ $banner->user_id }} </td></tr>-->
                                 </tbody>
                             </table>
                         </div>

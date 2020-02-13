@@ -29,7 +29,7 @@ class Banner extends Model
      *
      * @var array
      */
-    protected $fillable = ['image', 'type', 'user_id'];
+    protected $fillable = ['image', 'type', 'user_id','state'];
 
     
 

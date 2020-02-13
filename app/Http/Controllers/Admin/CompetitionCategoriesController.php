@@ -4,18 +4,19 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-
 use App\CompetitionCategory;
 use Illuminate\Http\Request;
 use Datatables;
-class CompetitionCategoriesController extends Controller
-{
+
+class CompetitionCategoriesController extends Controller {
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\View\View
      */
     protected $__rulesforindex = ['name' => 'required'];
+
     public function index(Request $request) {
         if ($request->ajax()) {
             $competitionCategory = CompetitionCategory::all();
@@ -31,7 +32,7 @@ class CompetitionCategoriesController extends Controller
 //                                
 //                            })
                             ->addColumn('action', function($item) {
-                                
+
                                 $return = '';
 
                                 if ($item->state == '0'):
@@ -39,13 +40,12 @@ class CompetitionCategoriesController extends Controller
                                 else:
                                     $return .= "<button class='btn btn-success btn-sm changeStatus' title='Block' data-id=" . $item->id . " data-status='Block' >Block / Inactive</button>";
                                 endif;
-                                $return .= " <a href=" . url('admin/competition-categories/' . $item->id) . " title='View Competition'><button class='btn btn-info btn-sm'><i class='fa fa-eye' aria-hidden='true'></i></button></a>
-                                        <a href=" . url('admin/competition-categories/' . $item->id . '/edit') . " title='Edit competition'><button class='btn btn-primary btn-sm'><i class='fa fa-pencil-square-o' aria-hidden='true'></i></button></a>"
-                                        . " <button class='btn btn-danger btn-sm btnDelete' type='submit' data-remove='" . url('/admin/competition-categories/' . $item->id) . "'><i class='fa fa-trash-o' aria-hidden='true'></i></button>";
+//                                $return .= " <a href=" . url('admin/competition-categories/' . $item->id) . " title='View Competition'><button class='btn btn-info btn-sm'><i class='fa fa-eye' aria-hidden='true'></i></button></a>
+//                                $return .= "&nbsp;<a href=" . url('admin/competition-categories/' . $item->id . '/edit') . " title='Edit competition'><button class='btn btn-primary btn-sm'><i class='fa fa-pencil-square-o' aria-hidden='true'></i></button></a>";
+//                                        . " <button class='btn btn-danger btn-sm btnDelete' type='submit' data-remove='" . url('/admin/competition-categories/' . $item->id) . "'><i class='fa fa-trash-o' aria-hidden='true'></i></button>";
                                 return $return;
                             })
-                        
-                            ->rawColumns(['action','image'])
+                            ->rawColumns(['action', 'image'])
                             ->make(true);
         }
         return view('admin.competition-categories.index', ['rules' => array_keys($this->__rulesforindex)]);
@@ -56,8 +56,7 @@ class CompetitionCategoriesController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function create()
-    {
+    public function create() {
         return view('admin.competition-categories.create');
     }
 
@@ -68,12 +67,12 @@ class CompetitionCategoriesController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function store(Request $request)
-    {
-        
+    public function store(Request $request) {
+
         $requestData = $request->all();
-        
+        $requestData['state'] = '1';
         CompetitionCategory::create($requestData);
+//        dd($requestData);
 
         return redirect('admin/competition-categories')->with('flash_message', 'CompetitionCategory added!');
     }
@@ -85,8 +84,7 @@ class CompetitionCategoriesController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function show($id)
-    {
+    public function show($id) {
         $competitioncategory = CompetitionCategory::findOrFail($id);
 
         return view('admin.competition-categories.show', compact('competitioncategory'));
@@ -99,8 +97,7 @@ class CompetitionCategoriesController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function edit($id)
-    {
+    public function edit($id) {
         $competitioncategory = CompetitionCategory::findOrFail($id);
 
         return view('admin.competition-categories.edit', compact('competitioncategory'));
@@ -114,11 +111,10 @@ class CompetitionCategoriesController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function update(Request $request, $id)
-    {
-        
+    public function update(Request $request, $id) {
+
         $requestData = $request->all();
-        
+
         $competitioncategory = CompetitionCategory::findOrFail($id);
         $competitioncategory->update($requestData);
 
@@ -132,17 +128,18 @@ class CompetitionCategoriesController extends Controller
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         CompetitionCategory::destroy($id);
 
 //        return redirect('admin/competition-categories')->with('flash_message', 'CompetitionCategory deleted!');
         return response()->json(["success" => true, 'message' => 'Competition Category has been deleted']);
     }
+
     public function changeStatus(Request $request) {
         $CompetitionCategory = CompetitionCategory::findOrFail($request->id);
         $CompetitionCategory->state = $request->status == 'Block' ? '0' : '1';
         $CompetitionCategory->save();
         return response()->json(["success" => true, 'message' => 'Competition Category updated!']);
     }
+
 }
