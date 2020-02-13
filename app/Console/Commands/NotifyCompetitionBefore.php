@@ -19,8 +19,8 @@ class NotifyCompetitionBefore extends Command {
      * @var string
      */
     protected $description = 'Send a Push notification to all enrolled users on before of game';
-    protected $title = 'Game is Going to start';
-    protected $body = 'Game is Going to start';
+    protected $title = 'The competition is about to go LIVE';
+    protected $body = '2 hours to go until the competition is LIVE ⏰ Get some practice to have the best chance of winning.';
 
     /**
      * Create a new command instance.
