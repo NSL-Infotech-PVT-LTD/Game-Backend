@@ -23,7 +23,7 @@ Route::post('register', 'API\AuthController@socialRegister');
 Route::post('forget-password', 'API\AuthController@resetPassword');
 
 
-Route::group(['middleware' => ['auth:api', 'roles'], 'namespace' => 'API'], function() {
+Route::group(['middleware' => ['auth:api', 'roles','VerifyEmail'], 'namespace' => 'API'], function() {
 //    Route::group(['middleware' => ['auth:api', 'roles'], 'roles' => ['App-Users'],'namespace' => 'API'], function() {
    
     Route::get('Dashboard', 'DashboardController@getItems');

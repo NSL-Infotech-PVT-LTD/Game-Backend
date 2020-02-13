@@ -15,11 +15,14 @@ Route::get('/', function () {
     return redirect('login');
 });
 
-Auth::routes();
+Auth::routes(['verify' => true]);
 //Route::get('home', function () {
 //    return redirect('/admin');
 //});
-Route::get('/home', 'HomeController@index')->name('home');
+Route::group(['prefix' => 'user', 'middleware' => ['auth', 'roles'], 'roles' => ['App-Users']], function () {
+    Route::get('/home', 'HomeController@userindex');
+});
+//Route::get('/home', 'HomeController@index')->name('home');
 Route::get('/reset-success', function () {
     \Auth::logout();
     return view('auth.after-reset');

@@ -34,6 +34,7 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
+                       <li><a class="nav-link">Logout</a></li>
                         @if(!Auth::check())
 <!--                            <li><a class="nav-link" href="{{ url('/login') }}">Login</a></li>
                             <li><a class="nav-link" href="{{ url('/register') }}">Register</a></li>-->

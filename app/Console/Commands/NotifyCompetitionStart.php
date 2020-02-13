@@ -19,8 +19,8 @@ class NotifyCompetitionStart extends Command {
      * @var string
      */
     protected $description = 'Send a Push notification to all enrolled users on start of game';
-    protected $title = 'Game is started';
-    protected $body = 'Game is started';
+    protected $title = 'Play and win your prize 🕹';
+    protected $body = 'Time to play! The competition is about to go LIVE. Play and win your prize 🕹';
 
     /**
      * Create a new command instance.

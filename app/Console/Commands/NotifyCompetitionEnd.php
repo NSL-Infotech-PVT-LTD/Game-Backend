@@ -19,8 +19,9 @@ class NotifyCompetitionEnd extends Command {
      * @var string
      */
     protected $description = 'Send a Push notification to all enrolled users on end of game';
-    protected $title = 'Game is Ended';
-    protected $body = 'Game is Ended';
+    protected $title = 'The tournament is over';
+    protected $body = 'That’s it! The tournament is over. Results to be announced soon 😱
+';
 
     /**
      * Create a new command instance.
