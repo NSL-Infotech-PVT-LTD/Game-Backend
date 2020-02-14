@@ -17,6 +17,7 @@
         "laravel/passport": "^7.4",
         "laravel/tinker": "^1.0",
         "stripe/stripe-php": "^7.16",
+        "webup/laravel-sendinblue": "^2.0",
         "yajra/laravel-datatables-oracle": "^9.7"
     },
     "require-dev": {
