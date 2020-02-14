@@ -17,7 +17,7 @@ class CompetitionUserController extends ApiController {
             return $validateAttributes;
         endif;
         try {
-            $model = MyModel::where('player_id', Auth::id());
+            $model = new MyModel;
             if ($model->get()->isEmpty() === true):
                 throw new \Exception('Data Not Found');
             endif;
