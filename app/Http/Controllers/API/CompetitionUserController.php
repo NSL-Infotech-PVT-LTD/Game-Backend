@@ -11,7 +11,7 @@ use App\CompetitionUser as MyModel;
 class CompetitionUserController extends ApiController {
 
     public function getMyCompetitionUsers(Request $request) {
-       
+
         $rules = ['search' => '', 'limit' => '', 'competition_id' => 'required|exists:competitions,id'];
         $validateAttributes = parent::validateAttributes($request, 'POST', $rules, array_keys($rules), false);
         if ($validateAttributes):
@@ -47,7 +47,7 @@ class CompetitionUserController extends ApiController {
 //            dd(array_unique($GetUserCompetition->pluck('competition_id')->toArray()));
             $model = \App\Competition::whereIn('id', $GetUserCompetition->pluck('competition_id')->toArray());
             $perPage = isset($request->limit) ? $request->limit : 20;
-
+            $model = $model->orderBy('id', 'desc');
             return parent::success($model->paginate($perPage));
         } catch (\Exception $ex) {
             return parent::error($ex->getMessage());
