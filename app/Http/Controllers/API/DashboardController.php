@@ -9,7 +9,7 @@ use DB;
 class DashboardController extends ApiController {
 
     public function testPush(Request $request) {
-        \App\Http\Controllers\API\ApiController::pushNotificationsMultipleUsers(['title' => "Enrolled for competition", 'body' => "You're successfully enrolled for competition"], [69], ['target_id' => 1, 'target_type' => 'Competition'], 'FCM');
+        \App\Http\Controllers\API\ApiController::pushNotificationsMultipleUsers(['title' => "Enrolled for competition", 'body' => "You're successfully enrolled for competition"], [6], ['target_id' => 1, 'target_type' => 'Competition'], 'FCM');
         return parent::successCreated(['message' => 'Thank you for registering for the game']);
     }
 
