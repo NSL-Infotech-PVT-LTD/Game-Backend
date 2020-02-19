@@ -17,7 +17,6 @@ class BannersController extends ApiController {
      */
     public function getItems(Request $request) {
         $rules = ['limit' => '', 'search' => ''];
-//        dd($request->all());
         $validateAttributes = parent::validateAttributes($request, 'POST', $rules, array_keys($rules), false);
         if ($validateAttributes):
             return $validateAttributes;
