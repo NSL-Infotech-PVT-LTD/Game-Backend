@@ -27,7 +27,7 @@ class BannersController extends ApiController {
             $perPage = isset($request->limit) ? $request->limit : 20;
             if (isset($request->search))
                 $model = $model->Where('type', 'LIKE', "%$request->search%");
-//            $model = $model->Where('state', '1');
+            $model = $model->Where('state', '1');
             $model = $model->select('id', 'user_id', 'type', 'image')->orderBy('id', 'desc');
             return parent::success($model->paginate($perPage));
         } catch (\Exception $ex) {
