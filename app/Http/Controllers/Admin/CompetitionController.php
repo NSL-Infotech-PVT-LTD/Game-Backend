@@ -186,7 +186,7 @@ class CompetitionController extends Controller {
         $this->validate($request, [
             'name' => 'required',
             'fee' => 'required',
-            'date' => 'required|date_format:"d/m/Y"'
+            'date' => 'required|date'
         ]);
         $requestData = $request->all();
 //        dd($requestData);
