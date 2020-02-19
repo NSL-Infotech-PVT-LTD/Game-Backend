@@ -105,7 +105,7 @@ class CompetitionController extends Controller {
             'image' => 'required',
             'fee' => 'required',
             'prize_details' => 'required',
-            'date' => 'required|date_format:"d/m/Y"'
+            'date' => 'required|date'
         ]);
 
 //        dd($request->all());

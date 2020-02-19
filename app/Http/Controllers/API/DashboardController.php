@@ -20,10 +20,11 @@ class DashboardController extends ApiController {
         endif;
         try {
             $date = new \DateTime();
-            $date->modify('-2 hours');
-            $formatted_time = $date->format('H:i:s');
-//            dd($formatted_time);
-            dd(\App\Competition::whereDate('date', '=', \Carbon\Carbon::now())->whereTime('start_time', '<', $formatted_time)->get()->pluck('id')->toArray());
+            $date->modify('+24 hours');
+            $formatted_time = $date->format('H:i').':00';
+//            dd( $formatted_time);
+            dd(\Carbon\Carbon::now());
+            dd(\App\Competition::whereDate('date', '=', \Carbon\Carbon::now())->get()->pluck('id')->toArray());
 //            dd(\App\CompetitionUser::whereIn('competition_id',\App\Competition::whereDate('date', '=', \Carbon\Carbon::now())->get()->pluck('id')->toArray())->get()->pluck('player_id')->toArray());
 //            \App\Http\Controllers\API\ApiController::pushNotificationsMultipleUsers(['title' => ' Added', 'body' => 'custom'], ['63'], ['target_id' => '222', 'target_type' => 'testing'],'FCM');
             $limit = 50;

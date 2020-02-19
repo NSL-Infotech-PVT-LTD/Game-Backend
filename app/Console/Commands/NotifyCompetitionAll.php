@@ -53,6 +53,7 @@ class NotifyCompetitionAll extends Command {
         $date = new \DateTime();
         $date->modify('-2 hours');
         $formatted_time = $date->format('H:i:s');
+//        dd($formatted_time);
         $competitionTwoHours = \App\Competition::whereDate('date', '=', \Carbon\Carbon::now())->whereTime('start_time', '<', $formatted_time)->get()->pluck('id')->toArray();
         $userIds = \App\CompetitionUser::whereIn('competition_id', $competitionTwoHours)->get()->pluck('player_id')->toArray();
         \App\Http\Controllers\API\ApiController::pushNotificationsMultipleUsers(['title' => $this->BEFOREtitle, 'body' => $this->BEFOREbody], $userIds, [], 'FCM');

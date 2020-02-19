@@ -18,9 +18,9 @@ class NotifyCompetitionStart extends Command {
      *
      * @var string
      */
-    public $description = 'Send a Push notification to all enrolled users on start of game';
-    public $title = 'Play and win your prize 🕹';
-    public $body = 'Time to play! The competition is about to go LIVE. Play and win your prize 🕹';
+    protected $description = 'Send a Push notification to all enrolled users on start of game';
+    protected $title = 'Play and win your prize 🕹';
+    protected $body = 'Time to play! The competition is about to go LIVE. Play and win your prize 🕹';
 
     /**
      * Create a new command instance.
@@ -37,7 +37,15 @@ class NotifyCompetitionStart extends Command {
      * @return mixed
      */
     public function handle() {
-        $userIds = \App\CompetitionUser::whereIn('competition_id', \App\Competition::whereDate('date', '=', \Carbon\Carbon::now())->get()->pluck('id')->toArray())->get()->pluck('player_id')->toArray();
+
+
+        $date = new \DateTime();
+//        $date->modify('-2 hours');
+        $formatted_time = $date->format('H:i') . ':00';
+
+//        dd($formatted_time);
+        $competitions = \App\Competition::whereDate('date', '=', \Carbon\Carbon::now())->whereTime('start_time', '<=', $formatted_time)->get()->pluck('id')->toArray();
+        $userIds = \App\CompetitionUser::whereIn('competition_id', $competitions)->get()->pluck('player_id')->toArray();
         \App\Http\Controllers\API\ApiController::pushNotificationsMultipleUsers(['title' => $this->title, 'body' => $this->body], $userIds, [], 'FCM');
         $this->info('Send successfully');
     }
