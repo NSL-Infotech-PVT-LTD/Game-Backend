@@ -40,14 +40,11 @@ class NotifyCompetitionBefore extends Command {
 //        $userIds = \App\CompetitionUser::whereIn('competition_id', \App\Competition::whereDate('date', '=', \Carbon\Carbon::now())->get()->pluck('id')->toArray())->get()->pluck('player_id')->toArray();
 //        \App\Http\Controllers\API\ApiController::pushNotificationsMultipleUsers(['title' => $this->title, 'body' => $this->body], $userIds, [], 'FCM');
 //        $this->info('Send successfully');
-        
-        
-        
         $date = new \DateTime();
-        $date->modify('-2 hours');
-        $formatted_time = $date->format('H:i:s');
+        $date->modify('+24 hours');
+        $formatted_time = $date->format('H:i') . ':00';
 //        dd($formatted_time);
-        $competitionTwoHours = \App\Competition::whereDate('date', '=', \Carbon\Carbon::now())->whereTime('start_time', '<', $formatted_time)->get()->pluck('id')->toArray();
+        $competitionTwoHours = \App\Competition::whereDate('date', '=', \Carbon\Carbon::now()->subDays(1))->where('start_time', '<', $formatted_time)->get()->pluck('id')->toArray();
         $userIds = \App\CompetitionUser::whereIn('competition_id', $competitionTwoHours)->get()->pluck('player_id')->toArray();
         \App\Http\Controllers\API\ApiController::pushNotificationsMultipleUsers(['title' => $this->title, 'body' => $this->body], $userIds, [], 'FCM');
         $this->info('Send Before successfully');
