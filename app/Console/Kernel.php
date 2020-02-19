@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel {
         Commands\NotifyCompetitionBefore::class,
         Commands\NotifyCompetitionStart::class,
         Commands\NotifyCompetitionEnd::class,
+        Commands\NotifyCompetitionAll::class,
     ];
 
     /**
@@ -32,9 +33,10 @@ class Kernel extends ConsoleKernel {
 //        $schedule->command('notify_competition:start')->everyMinute();
 //        $schedule->command('notify_competition:end')->everyMinute();
 
-        $schedule->command('notify_competition:before')->dailyAt('22:00');
-        $schedule->command('notify_competition:start')->dailyAt('00:01');
-        $schedule->command('notify_competition:end')->dailyAt('23:59');
+//        $schedule->command('notify_competition:before')->dailyAt('22:00');
+//        $schedule->command('notify_competition:start')->dailyAt('00:01');
+//        $schedule->command('notify_competition:end')->dailyAt('23:59');
+        $schedule->command('notify_competition:all')->everyMinute();
     }
 
     /**
