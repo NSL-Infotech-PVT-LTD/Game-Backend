@@ -42,11 +42,13 @@ class NotifyCompetitionStart extends Command {
         $date = new \DateTime();
 //        $date->modify('-2 hours');
         $formatted_time = $date->format('H:i') . ':00';
-
-//        dd($formatted_time);
-        $competitions = \App\Competition::whereDate('date', '=', \Carbon\Carbon::now())->whereTime('start_time', '<=', $formatted_time)->get()->pluck('id')->toArray();
-        $userIds = \App\CompetitionUser::whereIn('competition_id', $competitions)->get()->pluck('player_id')->toArray();
-        \App\Http\Controllers\API\ApiController::pushNotificationsMultipleUsers(['title' => $this->title, 'body' => $this->body], $userIds, [], 'FCM');
+        $competitions = \App\Competition::whereDate('date', '=', \Carbon\Carbon::now())->where('start_time', '<=', $formatted_time)->get()->pluck('id')->toArray();
+        foreach ($competitions as $competition_id):
+            $userIds = \App\CompetitionUser::where('competition_id', $competition_id)->get()->pluck('player_id')->toArray();
+            \App\Http\Controllers\API\ApiController::pushNotificationsMultipleUsers(['title' => $this->title, 'body' => $this->body], array_unique($userIds), ['target_id' => $competition_id, 'target_type' => 'Competition'], 'FCM');
+        endforeach;
+//        $userIds = \App\CompetitionUser::whereIn('competition_id', $competitions)->get()->pluck('player_id')->toArray();
+//        \App\Http\Controllers\API\ApiController::pushNotificationsMultipleUsers(['title' => $this->title, 'body' => $this->body], $userIds, [], 'FCM');
         $this->info('Send successfully');
     }
 
