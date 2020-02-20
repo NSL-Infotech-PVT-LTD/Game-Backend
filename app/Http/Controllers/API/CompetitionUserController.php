@@ -91,7 +91,13 @@ class CompetitionUserController extends ApiController {
                             "amount" => $fee * 100,
                             "currency" => "usd",
                             "source" => $request->token,
-                            "description" => $request->competition_id . ' Fees for competition'
+                            "description" => $request->competition_id . ' Fees for competition',
+                            "shipping[name]" => "Jenny Rosen",
+                            "shipping[address][line1]" => "510 Townsend St",
+                            "shipping[address][postal_code]" => "510 Townsend St",
+                            "shipping[address][city]" => "510 Townsend St",
+                            "shipping[address][state]" => "510 Townsend St",
+                            "shipping[address][country]" => "510 Townsend St"
                 ]);
             endif;
 //            $modelsend = null;
