@@ -62,7 +62,7 @@ class PreviouswinnerController extends Controller {
                                 if($item->params!==null)
                                     if(isset(json_decode($item->params)->description))
                                         return json_decode($item->params)->description;
-                                    return "NAN";
+                                    return "NAN";  
 
 
                                     // return isset(json_decode($item->params)->description)?json_decode($item->params)->description:"NAN";
