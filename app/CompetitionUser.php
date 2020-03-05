@@ -46,4 +46,8 @@ class CompetitionUser extends Model {
         return $this->hasMany(CompetitionUserPayment::class, 'competition_user_id', 'id');
     }
 
+    public function getParamsAttribute($value) {
+        return $value!=null?json_decode($value):(object)[];
+    }
+
 }

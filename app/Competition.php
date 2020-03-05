@@ -93,7 +93,9 @@ class Competition extends Model {
     public function getReadytoGoAttribute($value) {
         return \Carbon\Carbon::createFromTimeStamp(strtotime($this->date))->diffForHumans();
     }
-
+    public function getParamsAttribute($value) {
+        return $value!=null?json_decode($value):[];
+    }
     public function getStartTimeAttribute($value) {
         return \Carbon\Carbon::createFromTimeStamp(strtotime($value))->format('h:i A');
     }
