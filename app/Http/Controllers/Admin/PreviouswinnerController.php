@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 class PreviouswinnerController extends Controller {
 
     public static $_mediaBasePath = 'uploads/previouswinner/';
-    protected $__rulesforindex = ['title' => 'required', 'image' => 'required'];
+    protected $__rulesforindex = ['Player' => 'required', 'Competition' => 'required', 'Score' => 'required'];
 
     /**
      * Display a listing of the resource.
@@ -23,33 +23,57 @@ class PreviouswinnerController extends Controller {
      */
     public function index(Request $request) {
         if ($request->ajax()) {
-            $previouswinner = Previouswinner::all();
+            // $previouswinner = Previouswinner::all();
+            $previouswinner = CompetitionUser::where('status', 'winner')->get();
+           
             return Datatables::of($previouswinner)
-                            ->addIndexColumn()
-                            ->editColumn('image', function($item) {
-                                 if (!file_exists(public_path(self::$_mediaBasePath . $item->image))) {
-                                    return "<img width='50' src=" . url('noimage.png') . ">";
-                                } else {
-                                    return "<img width='50' src=" . url(self::$_mediaBasePath . $item->image) . ">";
-                                }
+                            // ->addIndexColumn()
+                            //     ->editColumn('image', function($item) {
+                            //      if (!file_exists(public_path(self::$_mediaBasePath . $item->image))) {
+                            //         return "<img width='50' src=" . url('noimage.png') . ">";
+                            //     } else {
+                            //         return "<img width='50' src=" . url(self::$_mediaBasePath . $item->image) . ">";
+                            //     }
+                            // })
+                            ->addColumn('Player', function($item) {
+                                    
+                                    $competitionUserData = \App\User::where('id', $item->player_id)->first();
+
+                                    $firstName = ucfirst($competitionUserData->first_name);
+                                    return "<a href=" . url('/admin/users/' . $item->player_id) . " title='View User'>$firstName</a>";
+                                
                             })
-                            ->addColumn('action', function($item) {
+                            ->addColumn('Competition', function($item) {
+                                    $competitiondata = \App\Competition::where('id', $item->competition_id)->first();
 
-                                $return = '';
+                                    $competitionName = ucfirst($competitiondata->name);
+                                    return "<a href=" . url('/admin/competition/' . $item->competition_id) . " title='View Competition'>$competitionName</a>";
+                                    
+                                
+                            })
+                            ->addColumn('Score', function($item) {
+                                    
+                                    return $item->score;
+                                    
+                                
+                            })
+                            // ->addColumn('action', function($item) {
 
-                                if ($item->state == '0'):
-                                    $return .= "<button class='btn btn-danger btn-sm changeStatus' title='UnBlock'  data-id=" . $item->id . " data-status='UnBlock'>UnBlock / Active</button>";
-                                else:
-                                    $return .= "<button class='btn btn-success btn-sm changeStatus' title='Block' data-id=" . $item->id . " data-status='Block' >Block / Inactive</button>";
-                                endif;
+                            //     $return = '';
+
+                            //     if ($item->state == '0'):
+                            //         $return .= "<button class='btn btn-danger btn-sm changeStatus' title='UnBlock'  data-id=" . $item->id . " data-status='UnBlock'>UnBlock / Active</button>";
+                            //     else:
+                            //         $return .= "<button class='btn btn-success btn-sm changeStatus' title='Block' data-id=" . $item->id . " data-status='Block' >Block / Inactive</button>";
+                            //     endif;
 //                                $return .= " <a href=" . url('/admin/previouswinner/' . $item->id) . " title='View Previous winner'><button class='btn btn-info btn-sm'><i class='fa fa-eye' aria-hidden='true'></i></button></a>
-                                $return .= "
-                                        <a href=" . url('/admin/previouswinner/' . $item->id . '/edit') . " title='Edit Previous winner'><button class='btn btn-primary btn-sm'><i class='fa fa-pencil-square-o' aria-hidden='true'></i></button></a>";
+                                // $return .= "
+                                //         <a href=" . url('/admin/previouswinner/' . $item->id . '/edit') . " title='Edit Previous winner'><button class='btn btn-primary btn-sm'><i class='fa fa-pencil-square-o' aria-hidden='true'></i></button></a>";
 //                                        . " <button class='btn btn-danger btn-sm btnDelete' type='submit' data-remove='" . url('/admin/previouswinner/' . $item->id) . "'><i class='fa fa-trash-o' aria-hidden='true'></i></button>";
-                                return $return;
-                            })
+                                // return $return;
+                            // })
 //                            ->rawColumns(['action'])
-                            ->rawColumns(['action', 'image'])
+                            ->rawColumns(['Player','Competition', 'Score'])
                             ->make(true);
         }
         return view('admin.previouswinner.index', ['rules' => array_keys($this->__rulesforindex)]);

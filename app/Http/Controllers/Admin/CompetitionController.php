@@ -155,8 +155,9 @@ class CompetitionController extends Controller {
                             ->make(true);
         }
         $competition = Competition::findOrFail($id);
-//        $orderDetails = \App\CompitionLeadBoard::whereCompetitionId($id)->get();
-        return view('admin.competition.show', compact('competition', 'orderDetails', 'user'), ['rules' => array_keys($this->__rulesforshow)]);
+       // $orderDetails = \App\CompitionLeadBoard::whereCompetitionId($id)->get();
+        // return view('admin.competition.show', compact('competition', 'orderDetails', 'user'), ['rules' => array_keys($this->__rulesforshow)]);
+        return view('admin.competition.show', compact('competition'), ['rules' => array_keys($this->__rulesforshow)]);
     }
 
     /**
@@ -281,7 +282,7 @@ class CompetitionController extends Controller {
 
     public function confirmWinner(Request $request) {
 
-//        dd('found u');
+       // dd($request->id);
         $leadBorad = \App\CompetitionUser::findOrFail($request->id);
         $competitionUser = \App\CompetitionUser::where('competition_id', $leadBorad->competition_id)->get();
         $losserIds = $competitionUser->pluck('player_id')->toArray();
@@ -292,6 +293,7 @@ class CompetitionController extends Controller {
         \App\CompetitionUser::whereIn('id', $competitionUser->pluck('id')->toArray())->update(['status' => 'looser']);
         \App\Http\Controllers\API\ApiController::pushNotificationsMultipleUsers(['title' => "Competition Result Declare", 'body' => "Oh !!! You Lose the Game, Better Luck Next time"], $losserIds, ['target_id' => $leadBorad->competition_id, 'target_type' => 'LeaderBoard'], 'FCM');
         $leadBorad->status = 'winner';
+        $leadBorad->params = json_encode(['description'=>$request->winnerDescription]);
         $leadBorad->save();
         \App\Http\Controllers\API\ApiController::pushNotificationsMultipleUsers(['title' => "Competition Result Declare", 'body' => "Yeah !!! You Won the Game"], [$winnerId], ['target_id' => $leadBorad->competition_id, 'target_type' => 'LeaderBoard'], 'FCM');
         return response()->json(["success" => true, 'message' => 'Competition updated!']);

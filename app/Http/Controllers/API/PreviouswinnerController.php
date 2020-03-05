@@ -19,10 +19,12 @@ class PreviouswinnerController extends ApiController {
         try {
             $model = new MyModel;
             $perPage = isset($request->limit) ? $request->limit : 20;
-            if (isset($request->search))
-                $model = $model->Where('title', 'LIKE', "%$request->search%");
-            $model = $model->Where('state', '1');
-            $model = $model->select('id', 'title', 'description', 'image')->orderBy('id', 'desc');
+            // if (isset($request->search))
+            //     $model = $model->Where('title', 'LIKE', "%$request->search%");
+            // $model = $model->Where('state', '1');
+            // $model = $model->select('id', 'title', 'description', 'image')->orderBy('id', 'desc');
+            $model = \App\CompetitionUser::where('status', 'winner')->select('id','score','player_id','competition_id');
+            $model =$model->with(['competition','player']);
             return parent::success($model->paginate($perPage));
         } catch (\Exception $ex) {
             return parent::error($ex->getMessage());
