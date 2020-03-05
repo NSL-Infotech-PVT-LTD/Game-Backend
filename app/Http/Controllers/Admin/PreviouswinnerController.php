@@ -59,13 +59,7 @@ class PreviouswinnerController extends Controller {
                             })
                             ->addColumn('Description', function($item) {
                                     // $item =  json_decode($item->params);
-                                if($item->params!==null)
-                                    if(isset(json_decode($item->params)->description))
-                                        return json_decode($item->params)->description;
-                                    return "NAN";  
-
-
-                                    // return isset(json_decode($item->params)->description)?json_decode($item->params)->description:"NAN";
+                                    return isset($item->params->description)?$item->params->description:"NAN";
                                     
                                 
                             })
