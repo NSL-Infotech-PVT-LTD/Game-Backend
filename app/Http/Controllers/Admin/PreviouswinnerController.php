@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 class PreviouswinnerController extends Controller {
 
     public static $_mediaBasePath = 'uploads/previouswinner/';
-    protected $__rulesforindex = ['Player' => 'required', 'Competition' => 'required', 'Score' => 'required'];
+    protected $__rulesforindex = ['Player' => 'required', 'Competition' => 'required', 'Score' => 'required', 'Description'=>'required'];
 
     /**
      * Display a listing of the resource.
@@ -57,6 +57,12 @@ class PreviouswinnerController extends Controller {
                                     
                                 
                             })
+                            ->addColumn('Description', function($item) {
+                                    // $item =  json_decode($item->params);
+                                    return isset(json_decode($item->params)->description)?json_decode($item->params)->description:"NAN";
+                                    
+                                
+                            })
                             // ->addColumn('action', function($item) {
 
                             //     $return = '';
@@ -73,7 +79,7 @@ class PreviouswinnerController extends Controller {
                                 // return $return;
                             // })
 //                            ->rawColumns(['action'])
-                            ->rawColumns(['Player','Competition', 'Score'])
+                            ->rawColumns(['Player','Competition', 'Score', 'Description'])
                             ->make(true);
         }
         return view('admin.previouswinner.index', ['rules' => array_keys($this->__rulesforindex)]);

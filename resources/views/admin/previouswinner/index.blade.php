@@ -45,6 +45,7 @@
                     {data: "Player", name: "Player"},
                     {data: "Competition", name: "Competition"},
                     {data: "Score", name: "Score"},
+                    {data: "Description", name: "Description"},
 //                    {data: 'description', name: 'description', orderable: false, searchable: false},
                     // {data: 'Competition', name: 'image', orderable: false, searchable: false},
                     // {data: 'action', name: 'action', orderable: false, searchable: false},
