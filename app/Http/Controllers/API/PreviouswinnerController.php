@@ -29,6 +29,6 @@ class PreviouswinnerController extends ApiController {
         } catch (\Exception $ex) {
             return parent::error($ex->getMessage());
         }
-    }
+    } 
 
 }
