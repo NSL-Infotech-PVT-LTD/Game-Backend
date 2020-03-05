@@ -47,7 +47,7 @@ class BannersController extends Controller {
                                 endif;
 //                                $return .= " <a href=" . url('admin/competition-categories/' . $item->id) . " title='View Competition'><button class='btn btn-info btn-sm'><i class='fa fa-eye' aria-hidden='true'></i></button></a>
 //                                $return .= "&nbsp;<a href=" . url('admin/competition-categories/' . $item->id . '/edit') . " title='Edit competition'><button class='btn btn-primary btn-sm'><i class='fa fa-pencil-square-o' aria-hidden='true'></i></button></a>";
-//                                        . " <button class='btn btn-danger btn-sm btnDelete' type='submit' data-remove='" . url('/admin/competition-categories/' . $item->id) . "'><i class='fa fa-trash-o' aria-hidden='true'></i></button>";
+                                       $return .=  " <button class='btn btn-danger btn-sm btnDelete' type='submit' data-remove='" . url('/admin/banners/' . $item->id) . "'><i class='fa fa-trash-o' aria-hidden='true'></i></button>";
                                 return $return;
                             })
                             ->rawColumns(['action', 'image'])
@@ -144,8 +144,9 @@ class BannersController extends Controller {
      */
     public function destroy($id) {
         Banner::destroy($id);
+        return response()->json(["success" => true, 'message' => 'Banner has been deleted']);
 
-        return redirect('admin/banners')->with('flash_message', 'Banner deleted!');
+        // return redirect('admin/banners')->with('flash_message', 'Banner deleted!');
     }
 
     public function changeStatus(Request $request) {
