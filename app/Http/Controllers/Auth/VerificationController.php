@@ -27,7 +27,7 @@ use VerifiesEmails;
      *
      * @var string
      */
-    protected $redirectTo = '/user/home';
+    protected $redirectTo = '/verified';
 
     /**
      * Create a new controller instance.
