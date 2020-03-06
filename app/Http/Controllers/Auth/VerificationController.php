@@ -43,9 +43,9 @@ use VerifiesEmails;
     public function verify(Request $request) {
         $user = \App\User::find($request->route('id'));
 
-        if (!hash_equals((string) $request->route('hash'), sha1($user->getEmailForVerification()))) {
-            throw new AuthorizationException;
-        }
+//        if (!hash_equals((string) $request->route('hash'), sha1($user->getEmailForVerification()))) {
+//            throw new AuthorizationException;
+//        }
 
         if ($user->markEmailAsVerified())
             event(new Verified($user));
