@@ -107,7 +107,7 @@ class CompetitionController extends Controller {
             'prize_details' => 'required',
             'date' => 'required|date|after:today'
         ]);
-
+  
        //   dd($request->all());
         $requestData = $request->all();
         if (isset($request->hot_competition)):
