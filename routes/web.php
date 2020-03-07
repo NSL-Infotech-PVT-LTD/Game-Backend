@@ -23,6 +23,7 @@ Route::group(['prefix' => 'user', 'middleware' => ['auth', 'roles'], 'roles' => 
     Route::get('/home', 'HomeController@userindex');
 });
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/verified', 'HomeController@verify');
 Route::get('/reset-success', function () {
     \Auth::logout();
     return view('auth.after-reset');
@@ -58,7 +59,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'roles'], 'roles' =>
     Route::post('users/change-status', 'Admin\UsersController@changeStatus')->name('users.changeStatus');
     Route::post('competition/confirm-winner', 'Admin\CompetitionController@confirmWinner')->name('competition.confirmWinner');
     Route::post('competition/show', 'Admin\CompetitionController@show')->name('competition.show');
-    
+
     Route::resource('competition-categories', 'Admin\CompetitionCategoriesController');
     Route::post('competition-categories/change-status', 'Admin\CompetitionCategoriesController@changeStatus')->name('competition-categories.changeStatus');
     Route::resource('previouswinner', 'Admin\PreviouswinnerController');

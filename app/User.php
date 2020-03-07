@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Banner;
+
 class User extends Authenticatable implements MustVerifyEmail {
 
     use SoftDeletes;
@@ -81,7 +82,6 @@ class User extends Authenticatable implements MustVerifyEmail {
             return [];
         }
     }
-
 
     public static function usersIdByPermissionName($name) {
 
