@@ -20,7 +20,7 @@ class CompetitionController extends Controller {
      */
     public static $_mediaBasePath = 'uploads/competition/';
     protected $__rulesforindex = ['name' => 'required', 'competition_category_id' => 'required', 'image' => 'required', 'start_time' => 'required'];
-    protected $__rulesforshow = ['player_id' => 'required', 'score' => 'required', 'created_at' => 'required'];
+    protected $__rulesforshow = ['Player Name' => 'required', 'score' => 'required', 'created_at' => 'required'];
 
     public function index(Request $request) {
 
@@ -105,10 +105,10 @@ class CompetitionController extends Controller {
             'image' => 'required',
             'fee' => 'required',
             'prize_details' => 'required',
-            'date' => 'required|date'
+            'date' => 'required|date|after_or_equal:today'
         ]);
 
-//        dd($request->all());
+       //   dd($request->all());
         $requestData = $request->all();
         if (isset($request->hot_competition)):
             $requestData['hot_competition'] = $request->hot_competition;
@@ -133,15 +133,25 @@ class CompetitionController extends Controller {
      * @return \Illuminate\View\View
      */
     public function show(Request $request, $id) {
+          $competitionDetails = \App\Competition::where('id', $id)->first();
+            $competitionDateTime = $competitionDetails->date.' '.$competitionDetails->start_time;
+            // dd($competitionDetails->date->gt(\Carbon\Carbon::now()));
+            // dd((\Carbon\Carbon::parse($competitionDateTime)->addDay() < \Carbon\Carbon::now()));
+            $dateCheck = (\Carbon\Carbon::parse($competitionDateTime)->addDay() < \Carbon\Carbon::now());
         if ($request->ajax()) {
+            // dd($id);
             $leadBoard = \App\CompetitionUser::where('competition_id', $id)->get();
+          
             return Datatables::of($leadBoard)
                             ->addIndexColumn()
-                            ->editColumn('player_id', function($item) {
+                            ->editColumn('Player Name', function($item) {
                                 return isset($item->player_id) ? \App\User::where('id', $item->player_id)->first()->first_name : '';
+                                
                             })
-                            ->addColumn('action', function($item) {
+                            ->addColumn('action', function($item) use($dateCheck){
                                 $return = '';
+
+                                if($dateCheck){ 
                                 if ($item->status == 'not_yet'):
                                     $return .= "<button class='btn btn-warning btn-sm changeStatus'   data-id=" . $item->id . " data-status='confirm'>Mark as winner</button>";
                                 elseif (($item->status == 'winner')):
@@ -149,6 +159,9 @@ class CompetitionController extends Controller {
                                 elseif (($item->status == 'looser')):
                                     $return .= "<button class='btn btn-danger btn-sm ' title='Block'  data-status='Block' >Better luck next time</button>";
                                 endif;
+                                }else{ 
+                                    $return = 'Match Not Ended yet';
+                                }
                                 return $return;
                             })
                             ->rawColumns(['action', 'image'])
