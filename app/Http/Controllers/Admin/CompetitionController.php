@@ -105,7 +105,7 @@ class CompetitionController extends Controller {
             'image' => 'required',
             'fee' => 'required',
             'prize_details' => 'required',
-            'date' => 'required|date|after_or_equal:today'
+            'date' => 'required|date|after:today'
         ]);
 
        //   dd($request->all());
@@ -199,22 +199,23 @@ class CompetitionController extends Controller {
     public function update(Request $request, $id) {
         $this->validate($request, [
             'name' => 'required',
-            'fee' => 'required',
-            'date' => 'required|date'
+            'fee' => 'required'
+            // 'date' => 'required|date'
         ]);
         $requestData = $request->all();
 //        dd($requestData);
         $competition = Competition::findOrFail($id);
 
-        if (isset($request->start_time))
-            $requestData['start_time'] = date("H:i:s", strtotime($request->start_time));
+        // if (isset($request->start_time))
+        //     $requestData['start_time'] = date("H:i:s", strtotime($request->start_time));
 //dd($requestData);
         if (isset($request->image))
             $requestData['image'] = \App\Http\Controllers\API\ApiController::__uploadImage($request->file('image'), public_path(self::$_mediaBasePath));
         if (isset($request->prize_image))
             $requestData['prize_image'] = \App\Http\Controllers\API\ApiController::__uploadImage($request->file('prize_image'), public_path('uploads/competition/prize_details'));
         $competition->update($requestData);
-        return redirect('admin/competition')->with('flash_message', 'Competition updated!', compact('game'));
+        // return redirect('admin/competition')->with('flash_message', 'Competition updated!', compact('game'));
+        return redirect('admin/competition')->with('flash_message', 'Competition updated!');
     }
 
     /**
