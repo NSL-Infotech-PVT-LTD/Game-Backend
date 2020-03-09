@@ -23,7 +23,7 @@ class PreviouswinnerController extends ApiController {
             //     $model = $model->Where('title', 'LIKE', "%$request->search%");
             // $model = $model->Where('state', '1');
             // $model = $model->select('id', 'title', 'description', 'image')->orderBy('id', 'desc');
-            $model = \App\CompetitionUser::where('status', 'winner')->select('id','score','player_id','competition_id');
+            $model = \App\CompetitionUser::where('status', 'winner')->select('id','score','player_id','competition_id','params');
             $model =$model->with(['competition','player']);
             return parent::success($model->paginate($perPage));
         } catch (\Exception $ex) {
