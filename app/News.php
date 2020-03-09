@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class News extends Model
-{
+class News extends Model {
+
     use LogsActivity;
     use SoftDeletes;
 
@@ -19,10 +19,10 @@ class News extends Model
     protected $table = 'news';
 
     /**
-    * The database primary key value.
-    *
-    * @var string
-    */
+     * The database primary key value.
+     *
+     * @var string
+     */
     protected $primaryKey = 'id';
 
     /**
@@ -30,9 +30,7 @@ class News extends Model
      *
      * @var array
      */
-    protected $fillable = ['title', 'description', 'image'];
-
-    
+    protected $fillable = ['title', 'description', 'image', 'state'];
 
     /**
      * Change activity log event description
@@ -41,8 +39,8 @@ class News extends Model
      *
      * @return string
      */
-    public function getDescriptionForEvent($eventName)
-    {
+    public function getDescriptionForEvent($eventName) {
         return __CLASS__ . " model has been {$eventName}";
     }
+
 }

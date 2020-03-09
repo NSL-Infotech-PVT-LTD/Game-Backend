@@ -75,6 +75,7 @@ class newsController extends Controller {
         $requestData = $request->all();
         if (isset($request->image))
             $requestData['image'] = ApiController::__uploadImage($request->file('image'), public_path(self::$_mediaBasePath));
+        $requestData['state'] ='1';
         News::create($requestData);
         return redirect('admin/news')->with('flash_message', 'news added!');
     }
