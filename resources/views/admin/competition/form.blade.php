@@ -14,6 +14,8 @@
     {!! Form::text('name', null, ('required' == 'required') ? ['class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!}
     {!! $errors->first('name', '<p class="help-block">:message</p>') !!}
 </div>
+
+@if($formMode === 'create')
 <div class="form-group{{ $errors->has('date') ? 'has-error' : ''}}">
     {!! Form::label('date', 'Start Date', ['class' => 'control-label']) !!}
     {!! Form::date('date', null, ('required' == 'required') ? ['class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!}
@@ -25,7 +27,7 @@
     {!! Form::text('start_time', null, ('required' == 'required') ? ['class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!}
     {!! $errors->first('start_time', '<p class="help-block">:message</p>') !!}
 </div>
-
+@endif
 
 <div class="form-group{{ $errors->has('fee') ? 'has-error' : ''}}">
     {!! Form::label('fee', 'Fee', ['class' => 'control-label']) !!}
