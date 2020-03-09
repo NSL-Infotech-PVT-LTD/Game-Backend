@@ -20,7 +20,7 @@ class CompetitionController extends Controller {
      */
     public static $_mediaBasePath = 'uploads/competition/';
     protected $__rulesforindex = ['name' => 'required', 'competition_category_id' => 'required', 'image' => 'required', 'start_time' => 'required'];
-    protected $__rulesforshow = ['Player Name' => 'required', 'score' => 'required', 'created_at' => 'required'];
+    protected $__rulesforshow = ['Player Name' => 'required', 'Player Email' => 'required', 'Player Mobile' => 'required', 'score' => 'required', 'created_at' => 'required'];
 
     public function index(Request $request) {
 
@@ -107,8 +107,8 @@ class CompetitionController extends Controller {
             'prize_details' => 'required',
             'date' => 'required|date|after:today'
         ]);
-  
-       //   dd($request->all());
+
+        //   dd($request->all());
         $requestData = $request->all();
         if (isset($request->hot_competition)):
             $requestData['hot_competition'] = $request->hot_competition;
@@ -133,33 +133,38 @@ class CompetitionController extends Controller {
      * @return \Illuminate\View\View
      */
     public function show(Request $request, $id) {
-          $competitionDetails = \App\Competition::where('id', $id)->first();
-            $competitionDateTime = $competitionDetails->date.' '.$competitionDetails->start_time;
-            // dd($competitionDetails->date->gt(\Carbon\Carbon::now()));
-            // dd((\Carbon\Carbon::parse($competitionDateTime)->addDay() < \Carbon\Carbon::now()));
-            $dateCheck = (\Carbon\Carbon::parse($competitionDateTime)->addDay() < \Carbon\Carbon::now());
+        $competitionDetails = \App\Competition::where('id', $id)->first();
+        $competitionDateTime = $competitionDetails->date . ' ' . $competitionDetails->start_time;
+        // dd($competitionDetails->date->gt(\Carbon\Carbon::now()));
+        // dd((\Carbon\Carbon::parse($competitionDateTime)->addDay() < \Carbon\Carbon::now()));
+        $dateCheck = (\Carbon\Carbon::parse($competitionDateTime)->addDay() < \Carbon\Carbon::now());
         if ($request->ajax()) {
             // dd($id);
             $leadBoard = \App\CompetitionUser::where('competition_id', $id)->get();
-          
+
             return Datatables::of($leadBoard)
                             ->addIndexColumn()
                             ->editColumn('Player Name', function($item) {
                                 return isset($item->player_id) ? \App\User::where('id', $item->player_id)->first()->first_name : '';
-                                
                             })
-                            ->addColumn('action', function($item) use($dateCheck){
+                            ->addColumn('Player Email', function($item) use($dateCheck) {
+                                return isset($item->player_id) ? \App\User::where('id', $item->player_id)->first()->email : '';
+                            })
+                            ->addColumn('Player Mobile', function($item) use($dateCheck) {
+                                return isset($item->player_id) ? \App\User::where('id', $item->player_id)->first()->mobile : '';
+                            })
+                            ->addColumn('action', function($item) use($dateCheck) {
                                 $return = '';
 
-                                if($dateCheck){ 
-                                if ($item->status == 'not_yet'):
-                                    $return .= "<button class='btn btn-warning btn-sm changeStatus'   data-id=" . $item->id . " data-status='confirm'>Mark as winner</button>";
-                                elseif (($item->status == 'winner')):
-                                    $return .= "<button class='btn btn-info btn-sm '   data-status='Block' >Game Winner</button>";
-                                elseif (($item->status == 'looser')):
-                                    $return .= "<button class='btn btn-danger btn-sm ' title='Block'  data-status='Block' >Better luck next time</button>";
-                                endif;
-                                }else{ 
+                                if ($dateCheck) {
+                                    if ($item->status == 'not_yet'):
+                                        $return .= "<button class='btn btn-warning btn-sm changeStatus'   data-id=" . $item->id . " data-status='confirm'>Mark as winner</button>";
+                                    elseif (($item->status == 'winner')):
+                                        $return .= "<button class='btn btn-info btn-sm '   data-status='Block' >Game Winner</button>";
+                                    elseif (($item->status == 'looser')):
+                                        $return .= "<button class='btn btn-danger btn-sm ' title='Block'  data-status='Block' >Better luck next time</button>";
+                                    endif;
+                                } else {
                                     $return = 'Match Not Ended yet';
                                 }
                                 return $return;
@@ -168,7 +173,7 @@ class CompetitionController extends Controller {
                             ->make(true);
         }
         $competition = Competition::findOrFail($id);
-       // $orderDetails = \App\CompitionLeadBoard::whereCompetitionId($id)->get();
+        // $orderDetails = \App\CompitionLeadBoard::whereCompetitionId($id)->get();
         // return view('admin.competition.show', compact('competition', 'orderDetails', 'user'), ['rules' => array_keys($this->__rulesforshow)]);
         return view('admin.competition.show', compact('competition'), ['rules' => array_keys($this->__rulesforshow)]);
     }
@@ -200,7 +205,7 @@ class CompetitionController extends Controller {
         $this->validate($request, [
             'name' => 'required',
             'fee' => 'required'
-            // 'date' => 'required|date'
+                // 'date' => 'required|date'
         ]);
         $requestData = $request->all();
 //        dd($requestData);
@@ -296,7 +301,7 @@ class CompetitionController extends Controller {
 
     public function confirmWinner(Request $request) {
 
-       // dd($request->id);
+//         dd($request->all());
         $leadBorad = \App\CompetitionUser::findOrFail($request->id);
         $competitionUser = \App\CompetitionUser::where('competition_id', $leadBorad->competition_id)->get();
         $losserIds = $competitionUser->pluck('player_id')->toArray();
@@ -306,8 +311,9 @@ class CompetitionController extends Controller {
         }
         \App\CompetitionUser::whereIn('id', $competitionUser->pluck('id')->toArray())->update(['status' => 'looser']);
         \App\Http\Controllers\API\ApiController::pushNotificationsMultipleUsers(['title' => "Competition Result Declare", 'body' => "Oh !!! You Lose the Game, Better Luck Next time"], $losserIds, ['target_id' => $leadBorad->competition_id, 'target_type' => 'LeaderBoard'], 'FCM');
+        $media = ApiController::__uploadImage($request->file('media'), public_path('uploads/previouswinner'));
         $leadBorad->status = 'winner';
-        $leadBorad->params = json_encode(['description'=>$request->winnerDescription]);
+        $leadBorad->params = json_encode(['title' => $request->title, 'description' => $request->winnerDescription, 'media' => $media]);
         $leadBorad->save();
         \App\Http\Controllers\API\ApiController::pushNotificationsMultipleUsers(['title' => "Competition Result Declare", 'body' => "Yeah !!! You Won the Game"], [$winnerId], ['target_id' => $leadBorad->competition_id, 'target_type' => 'LeaderBoard'], 'FCM');
         return response()->json(["success" => true, 'message' => 'Competition updated!']);

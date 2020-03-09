@@ -73,7 +73,7 @@
 
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
+                                        <!--<th>ID</th>-->
                                         <?php
                                         foreach ($rules as $rule):
                                             if ($rule == 'user_id')
@@ -101,7 +101,7 @@
             serverSide: true,
             ajax: url,
             columns: [
-            {data: 'id', name: 'id'},
+//            {data: 'id', name: 'id'},
 <?php foreach ($rules as $rule): ?>
                 {data: "{{$rule}}", name: "{{$rule}}"},
 <?php endforeach; ?>
@@ -144,8 +144,8 @@
             var id = $(this).attr('data-id');
             var status = $(this).attr('data-status');
             Swal.fire({
-            html: '<textarea name="" class="form-control winnerDescription" placeholder="Add Description"></textarea>',
-            title: 'Add Description Related to Competition Winner',
+            html: '<input class="form-control" placeholder="Title" type="text" name="title"><textarea name="" class="form-control winnerDescription" placeholder="Add Description"></textarea><input type="file" class="form-control" name="media">',
+            title: 'Add Details Related to Competition Winner',
                     text: "You can revert this,in case you change your mind!",
                     type: 'warning',
                     showCancelButton: true,
@@ -156,10 +156,10 @@
     Swal.showLoading();
             if (result.value) {
     var form_data = new FormData();
-    
             form_data.append("winnerDescription", $('.winnerDescription').val());
             form_data.append("id", id);
-            form_data.append("status", status);
+            form_data.append("title", $('input[name="title"]').val());
+            form_data.append("media", $('input[name="media"]')[0].files[0]);
             form_data.append("_token", $('meta[name="csrf-token"]').attr('content'));
             $.ajax({
             url: "{{route('competition.confirmWinner')}}",
@@ -169,7 +169,10 @@
                     cache: false,
                     processData: false,
                     beforeSend: function () {
-//                        Swal.showLoading();
+                       
+                        setTimeout(function () {
+                            Swal.showLoading();
+                          }, 1000);
                     },
                     success: function (data)
                     {
