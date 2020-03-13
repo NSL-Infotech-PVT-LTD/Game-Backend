@@ -38,10 +38,10 @@ class NotifyCompetitionBefore extends Command {
      */
     public function handle() {
         $date = new \DateTime();
-        $date->modify('-2 hours');
+        $date->modify('+2 hours');
         $formatted_time = $date->format('H:i:s');
 //        dd($formatted_time);
-        $competitions = \App\Competition::whereDate('date', '=', \Carbon\Carbon::now())->where('start_time', '>', $formatted_time)->get()->pluck('id')->toArray();
+        $competitions = \App\Competition::whereDate('date', '=', \Carbon\Carbon::now())->where('start_time', '=', $formatted_time)->get()->pluck('id')->toArray();
         foreach ($competitions as $competition_id):
             $userIds = \App\CompetitionUser::where('competition_id', $competition_id)->get()->pluck('player_id')->toArray();
 //        dd($userIds);

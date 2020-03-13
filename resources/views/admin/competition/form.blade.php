@@ -29,6 +29,30 @@
 </div>
 @endif
 
+@if($formMode === 'edit')
+<?php
+//dd($competition->date.' '.$competition->start_time);
+$to = \Carbon\Carbon::createFromFormat('Y-m-d H:s:i', $competition->date . ' ' . \Carbon\Carbon::createFromTimeStamp(strtotime($competition->start_time))->format('H:s:i'));
+//dd($to);
+$from = \Carbon\Carbon::now();
+$diff_in_days = $to->diffInDays($from);
+//dd($diff_in_days);
+?>
+<?php if ($diff_in_days >= 1): ?>
+    <div class="form-group{{ $errors->has('date') ? 'has-error' : ''}}">
+        {!! Form::label('date', 'Start Date', ['class' => 'control-label']) !!}
+        {!! Form::date('date', null, ('required' == 'required') ? ['class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!}
+        {!! $errors->first('date', '<p class="help-block">:message</p>') !!}
+    </div>
+
+    <div class="form-group{{ $errors->has('start_time') ? 'has-error' : ''}}">
+        {!! Form::label('start_time', 'Start_time', ['class' => 'control-label']) !!}
+        {!! Form::text('start_time', null, ('required' == 'required') ? ['class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!}
+        {!! $errors->first('start_time', '<p class="help-block">:message</p>') !!}
+    </div>
+<?php endif; ?>
+@endif
+
 <div class="form-group{{ $errors->has('fee') ? 'has-error' : ''}}">
     {!! Form::label('fee', 'Fee', ['class' => 'control-label']) !!}
     {!! Form::number('fee', null, ('required' == 'required') ? ['class' => 'form-control', 'required' => 'required'] : ['class' => 'form-control']) !!}
