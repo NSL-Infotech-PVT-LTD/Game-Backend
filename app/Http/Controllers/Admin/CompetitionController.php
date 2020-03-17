@@ -319,4 +319,15 @@ class CompetitionController extends Controller {
         return response()->json(["success" => true, 'message' => 'Competition updated!']);
     }
 
+    public function notify(Request $request) {
+//         dd($request->all());
+//        dd(explode(',', $request->id));
+        foreach (explode(',', $request->id) as $competition_id):
+            $userIds = \App\CompetitionUser::where('competition_id', $competition_id)->get()->pluck('player_id')->toArray();
+//        dd($userIds);
+            \App\Http\Controllers\API\ApiController::pushNotificationsMultipleUsers(['title' => $request->title, 'body' => $request->description], array_unique($userIds), ['target_id' => $competition_id, 'target_type' => 'Competition'], 'FCM');
+        endforeach;
+        return response()->json(["success" => true, 'message' => 'Competition notification sent!', 'status' => 'sent']);
+    }
+
 }

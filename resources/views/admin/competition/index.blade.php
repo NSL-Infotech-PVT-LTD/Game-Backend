@@ -1,4 +1,4 @@
-    @extends('layouts.backend')
+@extends('layouts.backend')
 <style>
     .switch {
         position: relative;
@@ -61,6 +61,8 @@
     }
 </style>
 @section('content')
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.0/css/select.dataTables.min.css" media="screen" />
+<script charset="utf8" src="https://cdn.datatables.net/select/1.3.0/js/dataTables.select.min.js"></script>
 <div class="container">
     <div class="row">
         @include('admin.sidebar')
@@ -71,11 +73,14 @@
                 <div class="card-body">
                     <a href="{{ url('/admin/competition/create') }}" class="btn btn-success btn-sm" title="Add New Competition">
                         <i class="fa fa-plus" aria-hidden="true"></i> Add New</a>
+                        <a class="btn btn-info btn-sm" title="Notify" id="checkBoxSelected">
+                        <i class="fa fa-ambulance" aria-hidden="true"></i> Notify</a>
                     <div class ="table-responsive">
                         <table class="table table-borderless data-table" >
 
                             <thead>
                                 <tr>
+                                    <th></th>
                                     <th>ID</th>
                                     <?php foreach ($rules as $rule): ?>
                                         <th>{{ucfirst($rule)}}</th>
@@ -96,128 +101,195 @@
 </div>
 
 <script type="text/javascript">
-    $(function () {
-        var table = $('.data-table').DataTable({
-                "sDom": 'Rfrtlip',
+$(function () {
+var table = $('.data-table').DataTable({
+columnDefs: [ {
+orderable: false,
+        className: 'select-checkbox',
+        targets: 0,
+        data: null,
+        defaultContent: ''
+} ],
+        select: {
+        style:    'multi',
+                selector: 'td:first-child'
+        },
+        order: [[ 1, 'asc' ]],
+        "sDom": 'Rfrtlip',
         processing: true,
-                serverSide: true,
-                ajax: "{{ route('competition.index') }}",
-                columns: [
-                {data: 'id', name: 'id'},
+        serverSide: true,
+        ajax: "{{ route('competition.index') }}",
+        columns: [
+        {data: '', name: ''},
+        {data: 'id', name: 'id'},
 <?php foreach ($rules as $rule): ?>
-                    {data: "{{$rule}}", name: "{{$rule}}"},
+            {data: "{{$rule}}", name: "{{$rule}}"},
 <?php endforeach; ?>
 
-                {data: 'hot', name: 'hot', orderable: false, searchable: false}
-                ,
-               
-                {data: 'action', name: 'action', orderable: false, searchable: false}
-                ,
-                ]
-    });
-//deleting data
-    $('.data-table').on('click', '.btnDelete[data-remove]', function (e) {
-        e.preventDefault();
-        var url = $(this).data('remove');
-
-        swal.fire({
-            title: "Are you sure want to remove this item?",
-            text: "Data will be Temporary Deleted!",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonClass: "btn-danger",
-            confirmButtonText: "Confirm",
-            cancelButtonText: "Cancel",
-        }).then((result) => {
-            Swal.showLoading();
-            if (result.value) {
-                $.ajax({
-                    url: url,
-                    type: 'DELETE',
-                    dataType: 'json',
-                    data: {method: '_DELETE', submit: true, _token: '{{csrf_token()}}'},
-                    success: function (data) {
-                        if (data.success) {
-                            swal.fire("Deleted!", data.message, "success");
-                            table.ajax.reload(null, false);
-                        }
-                    }
-                });
-            }
+        {data: 'hot', name: 'hot', orderable: false, searchable: false
+        }
+        ,
+        {data: 'action', name: 'action', orderable: false, searchable: false
+        }
+        ,
+        ]
         });
-    });
-    
-    $('.data-table').on('click', '.hot_competition[data-id]', function () {
-      
-        var form_data = new FormData();
-        form_data.append("url", $(this).attr('data-id'));
-        form_data.append("status", $(this).attr('data-status'));
-        form_data.append("_token", $('meta[name="csrf-token"]').attr('content'));
-        $.ajax({
-            url: "{{route('competition.hotCompetition')}}",
-            method: "POST",
-            data: form_data,
-            contentType: false,
-            cache: false,
-            processData: false,
-            dataType: "json",
-            beforeSend: function () {
-//                        Swal.showLoading();
-            },
-            success: function (data)
-            {
-                
-            }
-        });
-    });
-//end
-
-
-
-    $('.data-table').on('click', '.changeStatus', function (e) {
-    e.preventDefault();
-            var id = $(this).attr('data-id');
-            var status = $(this).attr('data-status');
-            Swal.fire({
-            title: 'Are you sure you wanted to change status?',
+$('#checkBoxSelected').on('click', function (e) {
+var data = table.rows({ selected: true }).data().pluck('id').toArray();
+if(data.length < 1){
+    Swal.fire('Info','You have to select one row first','alert').then(() => {
+                    table.ajax.reload(null, false);
+                    });
+    return true;
+}
+Swal.fire({
+            html: '<input class="form-control" placeholder="Title" type="text" name="title"><textarea name="" class="form-control description" placeholder="Add Description"></textarea>',
+            title: 'Add Details to Notify Competition Players',
                     text: "You can revert this,in case you change your mind!",
-                    type: 'warning',
+                    type: 'alert',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
                     confirmButtonText: 'Yes, ' + status + ' it!'
             }).then((result) => {
+              if($('.description').val().length > 0 && $('input[name="title"]').val().length > 0){
     Swal.showLoading();
             if (result.value) {
     var form_data = new FormData();
-            form_data.append("id", id);
-            form_data.append("status", status);
+            form_data.append("description", $('.description').val());
+            form_data.append("id", data);
+            form_data.append("title", $('input[name="title"]').val());
             form_data.append("_token", $('meta[name="csrf-token"]').attr('content'));
             $.ajax({
-            url: "{{route('competition.changeStatus')}}",
+            url: "{{route('competition.notify')}}",
                     method: "POST",
                     data: form_data,
                     contentType: false,
                     cache: false,
                     processData: false,
                     beforeSend: function () {
-//                        Swal.showLoading();
+                       
+                        setTimeout(function () {
+                            Swal.showLoading();
+                          }, 1000);
                     },
                     success: function (data)
                     {
                     Swal.fire(
-                            status + ' !',
-                            'Competition has been ' + status + ' .',
-                            'success'
+                            status + 'Sent',
+                            'Notification has been sent .',
+                            'Sent'
                             ).then(() => {
                     table.ajax.reload(null, false);
                     });
                     }
             });
     }
-    });
-    });
     }
-    );
+    });
+  console.log(data); 
+});
+//deleting data
+$('.data-table').on('click', '.btnDelete[data-remove]', function (e) {
+e.preventDefault();
+var url = $(this).data('remove');
+swal.fire({
+title: "Are you sure want to remove this item?",
+        text: "Data will be Temporary Deleted!",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonClass: "btn-danger",
+        confirmButtonText: "Confirm",
+        cancelButtonText: "Cancel",
+}).then((result) => {
+Swal.showLoading();
+if (result.value) {
+$.ajax({
+url: url,
+        type: 'DELETE',
+        dataType: 'json',
+        data: {method: '_DELETE', submit: true, _token: '{{csrf_token()}}'},
+        success: function (data) {
+        if (data.success) {
+        swal.fire("Deleted!", data.message, "success");
+        table.ajax.reload(null, false);
+        }
+        }
+});
+}
+});
+});
+$('.data-table').on('click', '.hot_competition[data-id]', function () {
+
+var form_data = new FormData();
+form_data.append("url", $(this).attr('data-id'));
+form_data.append("status", $(this).attr('data-status'));
+form_data.append("_token", $('meta[name="csrf-token"]').attr('content'));
+$.ajax({
+url: "{{route('competition.hotCompetition')}}",
+        method: "POST",
+        data: form_data,
+        contentType: false,
+        cache: false,
+        processData: false,
+        dataType: "json",
+        beforeSend: function () {
+//                        Swal.showLoading();
+        },
+        success: function (data)
+        {
+
+        }
+});
+});
+//end
+
+
+
+$('.data-table').on('click', '.changeStatus', function (e) {
+e.preventDefault();
+var id = $(this).attr('data-id');
+var status = $(this).attr('data-status');
+Swal.fire({
+title: 'Are you sure you wanted to change status?',
+        text: "You can revert this,in case you change your mind!",
+        type: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, ' + status + ' it!'
+}).then((result) => {
+Swal.showLoading();
+if (result.value) {
+var form_data = new FormData();
+form_data.append("id", id);
+form_data.append("status", status);
+form_data.append("_token", $('meta[name="csrf-token"]').attr('content'));
+$.ajax({
+url: "{{route('competition.changeStatus')}}",
+        method: "POST",
+        data: form_data,
+        contentType: false,
+        cache: false,
+        processData: false,
+        beforeSend: function () {
+//                        Swal.showLoading();
+        },
+        success: function (data)
+        {
+        Swal.fire(
+                status + ' !',
+                'Competition has been ' + status + ' .',
+                'success'
+                ).then(() => {
+        table.ajax.reload(null, false);
+        });
+        }
+});
+}
+});
+});
+}
+);
 </script>
 @endsection

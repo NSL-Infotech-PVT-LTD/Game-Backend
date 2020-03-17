@@ -58,6 +58,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'roles'], 'roles' =>
     Route::post('news/change-status', 'Admin\NewsController@changeStatus')->name('news.changeStatus');
     Route::post('users/change-status', 'Admin\UsersController@changeStatus')->name('users.changeStatus');
     Route::post('competition/confirm-winner', 'Admin\CompetitionController@confirmWinner')->name('competition.confirmWinner');
+    
+    Route::post('competition/notify', 'Admin\CompetitionController@notify')->name('competition.notify');
+    
     Route::post('competition/show', 'Admin\CompetitionController@show')->name('competition.show');
 
     Route::resource('competition-categories', 'Admin\CompetitionCategoriesController');
