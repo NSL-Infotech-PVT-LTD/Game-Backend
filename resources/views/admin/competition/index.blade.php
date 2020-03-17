@@ -74,7 +74,7 @@
                     <a href="{{ url('/admin/competition/create') }}" class="btn btn-success btn-sm" title="Add New Competition">
                         <i class="fa fa-plus" aria-hidden="true"></i> Add New</a>
                         <a class="btn btn-info btn-sm" title="Notify" id="checkBoxSelected">
-                        <i class="fa fa-ambulance" aria-hidden="true"></i> Notify</a>
+                        <i class="fa fa-bell" aria-hidden="true"></i> Notify</a>
                     <div class ="table-responsive">
                         <table class="table table-borderless data-table" >
 
@@ -137,7 +137,7 @@ orderable: false,
 $('#checkBoxSelected').on('click', function (e) {
 var data = table.rows({ selected: true }).data().pluck('id').toArray();
 if(data.length < 1){
-    Swal.fire('Info','You have to select one row first','alert').then(() => {
+    Swal.fire('info','You have to select one row first','alert').then(() => {
                     table.ajax.reload(null, false);
                     });
     return true;
