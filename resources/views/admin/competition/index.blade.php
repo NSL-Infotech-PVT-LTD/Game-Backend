@@ -146,7 +146,7 @@ Swal.fire({
             html: '<input class="form-control" placeholder="Title" type="text" name="title"><textarea name="" class="form-control description" placeholder="Add Description"></textarea>',
             title: 'Add Details to Notify Competition Players',
                     text: "You can revert this,in case you change your mind!",
-                    type: 'alert',
+                    type: 'info',
                     showCancelButton: true,
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
