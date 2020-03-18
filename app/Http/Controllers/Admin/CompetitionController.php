@@ -325,7 +325,7 @@ class CompetitionController extends Controller {
         foreach (explode(',', $request->id) as $competition_id):
             $userIds = \App\CompetitionUser::where('competition_id', $competition_id)->get()->pluck('player_id')->toArray();
 //        dd($userIds);
-            \App\Http\Controllers\API\ApiController::pushNotificationsMultipleUsers(['title' => $request->title, 'body' => $request->description], array_unique($userIds), ['target_id' => $competition_id, 'target_type' => 'Competition','notId'=> rand(1000,9999)], 'FCM');
+            \App\Http\Controllers\API\ApiController::pushNotificationsMultipleUsers(['title' => $request->title, 'body' => $request->description], array_unique($userIds), ['target_id' => $competition_id, 'target_type' => 'Competition', 'additionalData' => ['coldstart' => true, 'foreground' => true, 'priority' => 'high', 'content-available' => 1, 'notId' => rand(1000, 9999)]], 'FCM');
         endforeach;
         return response()->json(["success" => true, 'message' => 'Competition notification sent!', 'status' => 'sent']);
     }
