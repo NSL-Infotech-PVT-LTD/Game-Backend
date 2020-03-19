@@ -37,7 +37,7 @@ class Kernel extends ConsoleKernel {
 //        $schedule->command('notify_competition:start')->dailyAt('00:01');
 //        $schedule->command('notify_competition:end')->dailyAt('23:59');
 //        
-        $schedule->command('notify_competition:before')->everyMinute();
+//        $schedule->command('notify_competition:before')->everyMinute();
         $schedule->command('notify_competition:start')->everyMinute();
         $schedule->command('notify_competition:end')->dailyAt('23:59');
 //        dd('s');
