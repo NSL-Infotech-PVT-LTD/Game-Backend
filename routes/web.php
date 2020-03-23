@@ -60,6 +60,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'roles'], 'roles' =>
     Route::post('competition/confirm-winner', 'Admin\CompetitionController@confirmWinner')->name('competition.confirmWinner');
     
     Route::post('competition/notify', 'Admin\CompetitionController@notify')->name('competition.notify');
+    Route::post('users/notify', 'Admin\UsersController@notify')->name('users.notify');
     
     Route::post('competition/show', 'Admin\CompetitionController@show')->name('competition.show');
 

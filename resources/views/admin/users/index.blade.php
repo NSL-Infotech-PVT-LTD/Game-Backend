@@ -186,7 +186,7 @@ Swal.fire({
             form_data.append("title", $('input[name="title"]').val());
             form_data.append("_token", $('meta[name="csrf-token"]').attr('content'));
             $.ajax({
-            url: "{{route('competition.notify')}}",
+            url: "{{route('users.notify')}}",
                     method: "POST",
                     data: form_data,
                     contentType: false,
