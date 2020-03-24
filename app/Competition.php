@@ -44,7 +44,7 @@ class Competition extends Model {
     public function getIsGoingLiveAttribute($value) {
 //        $date = \Carbon\Carbon::createFromFormat('Y-m-d', $this->date)->subDays(1)->toDateString();
         if (\Carbon\Carbon::createFromFormat('Y-m-d', $this->date)->subDays(1)->toDateString() == \Carbon\Carbon::now()->toDateString()):
-            $date = \Carbon\Carbon::createFromFormat('Y-m-d h:i:s', date("Y-m-d h:i:s", strtotime($this->date)));
+            $date = \Carbon\Carbon::createFromFormat('Y-m-d h:i:s', date("Y-m-d h:i:s", strtotime($this->date. ' ' . $this->start_time)));
             $current = \Carbon\Carbon::now();
             return $date->diffInSeconds($current);
         else:
