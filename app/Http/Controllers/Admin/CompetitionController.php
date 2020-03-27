@@ -217,7 +217,10 @@ class CompetitionController extends Controller {
         if (isset($request->image))
             $requestData['image'] = \App\Http\Controllers\API\ApiController::__uploadImage($request->file('image'), public_path(self::$_mediaBasePath));
         if (isset($request->prize_image))
-            $requestData['prize_image'] = \App\Http\Controllers\API\ApiController::__uploadImage($request->file('prize_image'), public_path('uploads/competition/prize_details'));
+            $requestData['prize_image'] = \App\Http\Controllers\API\ApiController::__uploadImage($request->file('prize_image'), public_path('uploads/competition/prize_details'));       
+        if (isset($request->start_time))
+            $requestData['start_time'] = date("H:i:s", strtotime($request->start_time));
+        
         $competition->update($requestData);
         // return redirect('admin/competition')->with('flash_message', 'Competition updated!', compact('game'));
         return redirect('admin/competition')->with('flash_message', 'Competition updated!');
