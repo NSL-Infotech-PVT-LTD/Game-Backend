@@ -99,7 +99,8 @@ class Competition extends Model {
     }
 
     public function getStartTimeAttribute($value) {
-        return \Carbon\Carbon::createFromTimeStamp(strtotime($value))->format('h:s A');
+//        dd($value);
+        return \Carbon\Carbon::createFromTimeStamp(strtotime($value))->format('h:i A');
     }
 
     public function game() {

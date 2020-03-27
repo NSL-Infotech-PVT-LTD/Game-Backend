@@ -208,7 +208,7 @@ class CompetitionController extends Controller {
                 // 'date' => 'required|date'
         ]);
         $requestData = $request->all();
-//        dd($requestData);
+//        dd($request->start_time);
         $competition = Competition::findOrFail($id);
 
         // if (isset($request->start_time))
@@ -220,7 +220,7 @@ class CompetitionController extends Controller {
             $requestData['prize_image'] = \App\Http\Controllers\API\ApiController::__uploadImage($request->file('prize_image'), public_path('uploads/competition/prize_details'));       
         if (isset($request->start_time))
             $requestData['start_time'] = date("H:i:s", strtotime($request->start_time));
-        
+//        dd(strtotime($request->start_time),$request->start_time,$requestData);
         $competition->update($requestData);
         // return redirect('admin/competition')->with('flash_message', 'Competition updated!', compact('game'));
         return redirect('admin/competition')->with('flash_message', 'Competition updated!');

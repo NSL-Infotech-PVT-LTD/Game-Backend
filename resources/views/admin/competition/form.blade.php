@@ -101,8 +101,12 @@ $diff_in_days = $to->diffInDays($from);
 </div>
 <script type="text/javascript" src="{{ asset('dist/bootstrap-clockpicker.min.js') }}"></script>
 <script type="text/javascript">
-$('#start_time').clockpicker({
+var clockpicker = $('#start_time').clockpicker({
     donetext: 'Set',
     twelvehour: true,
+    afterDone: function () {
+        console.log("after done");
+        clockpicker.val(clockpicker.val().slice(0, -2) + ' ' + clockpicker.val().slice(-2));
+    }
 });
 </script>
