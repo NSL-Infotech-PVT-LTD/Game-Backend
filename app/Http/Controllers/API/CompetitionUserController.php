@@ -25,7 +25,8 @@ class CompetitionUserController extends ApiController {
             $model = $model->select('id', 'player_id', 'competition_id', 'score', 'status')->with(['competition', 'player']);
             if (isset($request->competition_id))
                 $model = $model->where('competition_id', $request->competition_id);
-            $perPage = isset($request->limit) ? $request->limit : 20;
+            $perPage = isset($request->limit) ? $request->limit : 20;            
+            $model = $model->Where('state', '1');
             $model = $model->orderBy('score', 'desc');
             return parent::success($model->paginate($perPage));
         } catch (\Exception $ex) {
@@ -46,7 +47,8 @@ class CompetitionUserController extends ApiController {
             endif;
 //            dd(array_unique($GetUserCompetition->pluck('competition_id')->toArray()));
             $model = \App\Competition::whereIn('id', $GetUserCompetition->pluck('competition_id')->toArray());
-            $perPage = isset($request->limit) ? $request->limit : 20;
+            $perPage = isset($request->limit) ? $request->limit : 20;            
+            $model = $model->Where('state', '1');
             $model = $model->orderBy('id', 'desc');
             return parent::success($model->paginate($perPage));
         } catch (\Exception $ex) {
