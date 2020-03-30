@@ -76,15 +76,17 @@ class AuthController extends ApiController {
 
     public function logout(Request $request) {
         $rules = [];
+        $rules = array_merge($this->requiredParams, $rules);
         $validateAttributes = parent::validateAttributes($request, 'GET', $rules, array_keys($rules), false);
         if ($validateAttributes):
             return $validateAttributes;
         endif;
         try {
-            $user = User::findOrFail(\Auth::id());
-
-//            $user->is_login = '0';
-            $user->save();
+//            $user = User::findOrFail(\Auth::id());
+//
+////            $user->is_login = '0';
+//            $user->save();
+            App\UserDevice::whereIn('id', \App\UserDevice::where('device_token', $request->device_token)->get()->pluck('id')->toArray())->delete();
             return parent::success('Logout Successfully');
         } catch (\Exception $ex) {
             return parent::error($ex->getMessage());

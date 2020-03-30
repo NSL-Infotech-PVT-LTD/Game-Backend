@@ -29,7 +29,7 @@ Route::group(['middleware' => ['auth:api', 'roles','VerifyEmail'], 'namespace' =
     Route::get('Dashboard', 'DashboardController@getItems');
     Route::get('test-push', 'DashboardController@testPush');
 
-    Route::get('logout', 'AuthController@logout');
+    Route::post('logout', 'AuthController@logout');
     Route::get('getprofile', 'AuthController@MyProfile');
     Route::post('updateprofile', 'AuthController@ProfileUpdate');
 
