@@ -11,7 +11,6 @@ use App\CompetitionUser as MyModel;
 class CompetitionUserController extends ApiController {
 
     public function getMyCompetitionUsers(Request $request) {
-
         $rules = ['search' => '', 'limit' => '', 'competition_id' => 'required|exists:competitions,id'];
         $validateAttributes = parent::validateAttributes($request, 'POST', $rules, array_keys($rules), false);
         if ($validateAttributes):
