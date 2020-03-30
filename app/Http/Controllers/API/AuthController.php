@@ -86,7 +86,7 @@ class AuthController extends ApiController {
 //
 ////            $user->is_login = '0';
 //            $user->save();
-            App\UserDevice::whereIn('id', \App\UserDevice::where('device_token', $request->device_token)->get()->pluck('id')->toArray())->delete();
+            App\UserDevice::whereIn('id', \App\UserDevice::where('token', $request->device_token)->get()->pluck('id')->toArray())->delete();
             return parent::success('Logout Successfully');
         } catch (\Exception $ex) {
             return parent::error($ex->getMessage());
