@@ -77,7 +77,7 @@ class CompetitionUserController extends ApiController {
             if ($fee == 0):
                 $charge = ['id' => 'no_id', 'amount' => $fee];
             else:
-            dd(env('STRIPE_SECRET_KEY'));
+//            dd(env('STRIPE_SECRET_KEY'));
                 \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 //            $card = \Stripe\Token::create([
 //                        'card' => [
