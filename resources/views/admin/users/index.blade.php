@@ -12,7 +12,7 @@
         display: block;
         position: absolute;
         top: 13em;
-        left: 11%;
+        left: 10%;
         width: 12px;
         height: 12px;
         box-sizing: border-box;
