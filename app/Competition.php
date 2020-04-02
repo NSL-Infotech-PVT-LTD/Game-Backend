@@ -42,13 +42,18 @@ class Competition extends Model {
      * @return string
      */
     public function getIsGoingLiveAttribute($value) {
-//        $date = \Carbon\Carbon::createFromFormat('Y-m-d', $this->date)->subDays(1)->toDateString();
-        if (\Carbon\Carbon::createFromFormat('Y-m-d', $this->date)->subDays(1)->toDateString() == \Carbon\Carbon::now()->toDateString()):
-            $date = \Carbon\Carbon::createFromFormat('Y-m-d h:i:s', date("Y-m-d h:i:s", strtotime($this->date. ' ' . $this->start_time)));
+        $date = \Carbon\Carbon::createFromFormat('Y-m-d', $this->date)->subDays(1)->toDateString();
+//        dd(\Carbon\Carbon::createFromFormat('Y-m-d h:i:s a', date("Y-m-d h:i:s a", strtotime($this->date . ' ' . $this->start_time))));
+//        dd(\Carbon\Carbon::createFromFormat('Y-m-d h:i:s a', date("Y-m-d h:i:s a", strtotime($this->date . ' ' . $this->start_time))) > \Carbon\Carbon::now());
+//        if (\Carbon\Carbon::createFromFormat('Y-m-d h:i:s a', $this->date)->subDays(1)->toDateString() == \Carbon\Carbon::now()->toDateString()):
+        if (\Carbon\Carbon::createFromFormat('Y-m-d h:i:s a', date("Y-m-d h:i:s a", strtotime($this->date . ' ' . $this->start_time))) > \Carbon\Carbon::now()):
+            $date = \Carbon\Carbon::createFromFormat('Y-m-d h:i:s a', date("Y-m-d h:i:s a", strtotime($this->date . ' ' . $this->start_time)));
             $current = \Carbon\Carbon::now();
             return $date->diffInSeconds($current);
         else:
-            return 0;
+            $date = \Carbon\Carbon::createFromFormat('Y-m-d h:i:s a', date("Y-m-d h:i:s a", strtotime($this->date . ' ' . $this->start_time)));
+            $current = \Carbon\Carbon::now();
+            return -$date->diffInSeconds($current);
         endif;
     }
 

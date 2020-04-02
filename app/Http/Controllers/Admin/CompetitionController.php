@@ -217,7 +217,7 @@ class CompetitionController extends Controller {
         if (isset($request->image))
             $requestData['image'] = \App\Http\Controllers\API\ApiController::__uploadImage($request->file('image'), public_path(self::$_mediaBasePath));
         if (isset($request->prize_image))
-            $requestData['prize_image'] = \App\Http\Controllers\API\ApiController::__uploadImage($request->file('prize_image'), public_path('uploads/competition/prize_details'));       
+            $requestData['prize_image'] = \App\Http\Controllers\API\ApiController::__uploadImage($request->file('prize_image'), public_path('uploads/competition/prize_details'));
         if (isset($request->start_time))
             $requestData['start_time'] = date("H:i:s", strtotime($request->start_time));
 //        dd(strtotime($request->start_time),$request->start_time,$requestData);
@@ -318,7 +318,7 @@ class CompetitionController extends Controller {
         $leadBorad->status = 'winner';
         $leadBorad->params = json_encode(['title' => $request->title, 'description' => $request->winnerDescription, 'media' => $media]);
         $leadBorad->save();
-        \App\Http\Controllers\API\ApiController::pushNotificationsMultipleUsers(['title' => "Competition Result Declare", 'body' => "Yeah !!! You Won the Game"], [$winnerId], ['target_id' => $leadBorad->competition_id, 'target_type' => 'LeaderBoard'], 'FCM');
+        \App\Http\Controllers\API\ApiController::pushNotificationsMultipleUsers(['title' => "YOU WON!", 'body' => "You won the competition! Email us at hello@winchunks.com to claim your prize!"], [$winnerId], ['target_id' => $leadBorad->competition_id, 'target_type' => 'LeaderBoard'], 'FCM');
         return response()->json(["success" => true, 'message' => 'Competition updated!']);
     }
 
