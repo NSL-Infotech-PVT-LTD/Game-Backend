@@ -23,9 +23,10 @@ class CompetitionController extends ApiController {
                 $model = $model->Where('name', 'LIKE', "%$request->search%");
             if (isset($request->category_id))
                 $model = $model->Where('competition_category_id', "%$request->category_id%");
-            $model = $model->whereDate('date', '>=', \Carbon\Carbon::now());
+            $model = $model->whereDate(\DB::raw('concat(date," ",start_time)'), '>=', \Carbon\Carbon::now());
+//            $model = $model->whereDate('date', '>=', \Carbon\Carbon::now());
             $model = $model->Where('state', '1');
-            $model = $model->select('id', 'image', 'description', 'name','start_time', 'date', 'fee', 'sequential_fee', 'prize_details', 'game_id', 'competition_category_id')->with(['game', 'category'])->orderBy('id', 'desc');
+            $model = $model->select('id', 'image', 'description', 'name', 'start_time', 'date', 'fee', 'sequential_fee', 'prize_details', 'game_id', 'competition_category_id')->with(['game', 'category'])->orderBy('id', 'desc');
             return parent::success($model->paginate($perPage));
         } catch (\Exception $ex) {
             return parent::error($ex->getMessage());
@@ -39,7 +40,7 @@ class CompetitionController extends ApiController {
             return $validateAttributes;
         endif;
         try {
-            return parent::success(MyModel::select('id', 'image', 'description', 'name', 'date', 'start_time','fee', 'sequential_fee', 'prize_details', 'game_id', 'competition_category_id')->with(['game', 'category'])->where('id', $request->id)->first());
+            return parent::success(MyModel::select('id', 'image', 'description', 'name', 'date', 'start_time', 'fee', 'sequential_fee', 'prize_details', 'game_id', 'competition_category_id')->with(['game', 'category'])->where('id', $request->id)->first());
         } catch (\Exception $ex) {
             return parent::error($ex->getMessage());
         }
