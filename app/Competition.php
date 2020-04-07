@@ -59,14 +59,14 @@ class Competition extends Model {
 
     public function getCompetitionDateStatusAttribute($value) {
         try {
-//            dd(\Carbon\Carbon::now()->toDateString());
-//        dd($model->toArray());
-            if ($this->date == \Carbon\Carbon::now()->toDateString())
-                return 'Live';
-            if ($this->date > \Carbon\Carbon::now()->toDateString())
+            $date = \Carbon\Carbon::createFromFormat('Y-m-d h:i:s a', date("Y-m-d h:i:s a", strtotime($this->date . ' ' . $this->start_time)));
+            if (\Carbon\Carbon::createFromFormat('Y-m-d h:i:s a', date("Y-m-d h:i:s a", strtotime($this->date . ' ' . $this->start_time))) > \Carbon\Carbon::now()):
                 return 'UpComing';
-            if ($this->date < \Carbon\Carbon::now()->toDateString())
+            elseif ($date->diffInDays(\Carbon\Carbon::now()) == 0):
+                return 'Live';
+            else:
                 return 'Ended';
+            endif;
             return 'NAN';
         } catch (\Exception $ex) {
             return 'NAN';
