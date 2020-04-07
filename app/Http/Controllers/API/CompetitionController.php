@@ -23,7 +23,7 @@ class CompetitionController extends ApiController {
                 $model = $model->Where('name', 'LIKE', "%$request->search%");
             if (isset($request->category_id))
                 $model = $model->Where('competition_category_id', "%$request->category_id%");
-            $model = $model->where(\DB::raw('concat(date," ",start_time)'), '>=', \Carbon\Carbon::now());
+            $model = $model->whereDateTime(\DB::raw('concat(date," ",start_time)'), '>=', \Carbon\Carbon::now());
 //            $model = $model->whereDate('date', '>=', \Carbon\Carbon::now());
             $model = $model->Where('state', '1');
             $model = $model->select('id', 'image', 'description', 'name', 'start_time', 'date', 'fee', 'sequential_fee', 'prize_details', 'game_id', 'competition_category_id')->with(['game', 'category'])->orderBy('id', 'desc');
