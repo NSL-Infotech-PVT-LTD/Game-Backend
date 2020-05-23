@@ -24,7 +24,7 @@ class CompetitionUserController extends ApiController {
             $model = $model->select('id', 'player_id', 'competition_id', 'score', 'status')->with(['competition', 'player']);
             if (isset($request->competition_id))
                 $model = $model->where('competition_id', $request->competition_id);
-            $perPage = isset($request->limit) ? $request->limit : 20;            
+            $perPage = isset($request->limit) ? $request->limit : 20;
             $model = $model->Where('state', '1');
             $model = $model->orderBy('score', 'desc');
             return parent::success($model->paginate($perPage));
@@ -46,7 +46,7 @@ class CompetitionUserController extends ApiController {
             endif;
 //            dd(array_unique($GetUserCompetition->pluck('competition_id')->toArray()));
             $model = \App\Competition::whereIn('id', $GetUserCompetition->pluck('competition_id')->toArray());
-            $perPage = isset($request->limit) ? $request->limit : 20;            
+            $perPage = isset($request->limit) ? $request->limit : 20;
             $model = $model->Where('state', '1');
             $model = $model->orderBy('id', 'desc');
             return parent::success($model->paginate($perPage));
@@ -145,6 +145,7 @@ class CompetitionUserController extends ApiController {
                             'exp_year' => $request->card_exp_year,
                             'cvc' => $request->card_cvc,
                         ],
+                        'issuing_country' => 'US'
             ]);
 //            dd($card->id);
             $charge = \Stripe\Charge::create([
@@ -152,7 +153,7 @@ class CompetitionUserController extends ApiController {
                         "currency" => "usd",
                         "source" => $card->id,
                         "description" => $request->competition_id . ' Fees for competition',
-                        "country" => 'JP',
+                        'issuing_country' => 'US',
                         "shipping[name]" => "Jenny Rosen",
                         "shipping[address][line1]" => "510 Townsend St",
                         "shipping[address][postal_code]" => "510 Townsend St",
