@@ -145,7 +145,6 @@ class CompetitionUserController extends ApiController {
                             'exp_year' => $request->card_exp_year,
                             'cvc' => $request->card_cvc,
                         ],
-                        'issuing_country' => 'US'
             ]);
 //            dd($card->id);
             $charge = \Stripe\Charge::create([
