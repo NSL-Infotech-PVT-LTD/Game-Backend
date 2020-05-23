@@ -157,7 +157,7 @@ class CompetitionUserController extends ApiController {
                         "shipping[address][postal_code]" => "510 Townsend St",
                         "shipping[address][city]" => "510 Townsend St",
                         "shipping[address][state]" => "510 Townsend St",
-                        "shipping[address][country]" => "510 Townsend St"
+                        "shipping[address][country]" => "US"
             ]);
 //            $modelsend = null;
             if ($model->isEmpty() != true):
