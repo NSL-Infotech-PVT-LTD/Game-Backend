@@ -152,6 +152,7 @@ class CompetitionUserController extends ApiController {
                         "currency" => "usd",
                         "source" => $card->id,
                         "description" => $request->competition_id . ' Fees for competition',
+                        "country" => 'JP',
                         "shipping[name]" => "Jenny Rosen",
                         "shipping[address][line1]" => "510 Townsend St",
                         "shipping[address][postal_code]" => "510 Townsend St",
