@@ -163,7 +163,9 @@ class AuthController extends ApiController {
         $assignRole = DB::table('role_user')->insert(
                 ['user_id' => $lastId, 'role_id' => $selectClientRole->id]
         );
-
+//dd('ss');
+        $stripeCustomer = $user->createAsStripeCustomer();
+//        dd($stripeCustomer);
         $success['user'] = User::where('id', $user->id)->select('first_name', 'last_name', 'email', 'password', 'status', 'image', 'mobile', 'country', 'image_url', 'social_type', 'social_id', 'social_password', 'age')->first();
 //        dd($user);
         // Add user device details for firbase
@@ -183,9 +185,7 @@ class AuthController extends ApiController {
             return $validateAttributes;
         endif;
         try {
-            $model = User::Where('id', Auth::id())->select('id', 'first_name', 'last_name', 'email', 'password', 'status', 'image', 'mobile', 'country', 'image_url'
-                            , 'social_type', 'social_id', 'social_password', 'age')->first();
-//            dd($model->toArray());
+            $model = User::Where('id', Auth::id())->select('id', 'first_name', 'last_name', 'email', 'password', 'status', 'image', 'mobile', 'country', 'image_url', 'social_type', 'social_id', 'social_password', 'age', 'stripe_id', 'card_brand', 'card_last_four', 'trial_ends_at')->first();
             return parent::success($model);
         } catch (\Exception $ex) {
             return parent::error($ex->getMessage());

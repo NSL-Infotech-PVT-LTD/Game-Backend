@@ -54,6 +54,13 @@ Route::group(['middleware' => ['auth:api', 'roles','VerifyEmail'], 'namespace' =
     Route::post('competition-leadboard', 'CompetitionUserController@getMyCompetitionUsers');
     Route::post('play-competition', 'CompetitionUserController@playCompetitionCreate');
     Route::post('play-competition-token', 'CompetitionUserController@playCompetitionCreateWithToken');
+    Route::post('play-competition-customercard', 'CompetitionUserController@playCompetitionCreateWithCustomerCard');
     Route::post('play-competition-update', 'CompetitionUserController@playCompetitionUpdate');
+    
+    
+    Route::post('cards/list', 'PaymentController@getItems');
+    Route::post('cards/store', 'PaymentController@store');
+    Route::post('cards/delete', 'PaymentController@delete');
+    Route::post('cards/default-card', 'PaymentController@defaultCard');
     
 });
