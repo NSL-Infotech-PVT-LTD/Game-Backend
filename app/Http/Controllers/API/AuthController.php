@@ -67,6 +67,9 @@ class AuthController extends ApiController {
 //                return parent::error('Please contact admin to activate your account', 200);
 //            }
             // Add user device details for firbase
+//            dd($user->stripe_id);
+            if ($user->stripe_id === null)
+                $user->createAsStripeCustomer();
             parent::addUserDeviceData($user, $request);
             return parent::success($success, $this->successStatus);
         } else {
