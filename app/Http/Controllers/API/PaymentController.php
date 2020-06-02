@@ -51,7 +51,7 @@ class PaymentController extends ApiController {
                             \Auth::user()->stripe_id,
                             ['source' => $stripeCard->id]
             );
-            return parent::successCreated(['message' => 'Created Successfully', 'card' => self::cardList()]);
+            return parent::successCreated(['message' => 'Created Successfully', 'data' => self::cardList()->data]);
         } catch (\Exception $ex) {
             return parent::error($ex->getMessage());
         }
@@ -66,7 +66,7 @@ class PaymentController extends ApiController {
         try {
             \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
             $card = \Stripe\Customer::deleteSource(\Auth::user()->stripe_id, $request->card_id);
-            return parent::successCreated(['message' => 'Deleted Successfully', 'card' => self::cardList()]);
+            return parent::successCreated(['message' => 'Deleted Successfully', 'data' => self::cardList()->data]);
         } catch (\Exception $ex) {
             return parent::error($ex->getMessage());
         }
