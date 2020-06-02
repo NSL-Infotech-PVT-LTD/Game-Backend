@@ -9,6 +9,15 @@ use App\Previouswinner as MyModel;
 
 class PaymentController extends ApiController {
 
+    private static function cardList() {
+        \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+        $cards = \Stripe\Customer::allSources(
+                        \Auth::user()->stripe_id,
+                        ['object' => 'card', 'limit' => 20]
+        );
+        return $cards;
+    }
+
     public function getItems(Request $request) {
         $rules = ['search' => '', 'limit' => ''];
         $validateAttributes = parent::validateAttributes($request, 'POST', $rules, array_keys($rules), false);
@@ -16,12 +25,7 @@ class PaymentController extends ApiController {
             return $validateAttributes;
         endif;
         try {
-            \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
-            $cards = \Stripe\Customer::allSources(
-                            \Auth::user()->stripe_id,
-                            ['object' => 'card', 'limit' => 20]
-            );
-            return parent::success($cards);
+            return parent::success(self::cardList());
         } catch (\Exception $ex) {
             return parent::error($ex->getMessage());
         }
@@ -47,7 +51,7 @@ class PaymentController extends ApiController {
                             \Auth::user()->stripe_id,
                             ['source' => $stripeCard->id]
             );
-            return parent::successCreated(['message' => 'Created Successfully', 'card' => $card]);
+            return parent::successCreated(['message' => 'Created Successfully', 'card' => self::cardList()]);
         } catch (\Exception $ex) {
             return parent::error($ex->getMessage());
         }
@@ -62,7 +66,7 @@ class PaymentController extends ApiController {
         try {
             \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
             $card = \Stripe\Customer::deleteSource(\Auth::user()->stripe_id, $request->card_id);
-            return parent::successCreated(['message' => 'Deleted Successfully', 'card' => $card]);
+            return parent::successCreated(['message' => 'Deleted Successfully', 'card' => self::cardList()]);
         } catch (\Exception $ex) {
             return parent::error($ex->getMessage());
         }
@@ -79,7 +83,7 @@ class PaymentController extends ApiController {
             $customer = \Stripe\Customer::retrieve(\Auth::user()->stripe_id);
             $customer->default_source = $request->card_id;
             $customer->save();
-            return parent::successCreated(['message' => 'Updated Successfully']);
+            return parent::successCreated(['message' => 'Updated Successfully', 'card' => self::cardList()]);
         } catch (\Exception $ex) {
             return parent::error($ex->getMessage());
         }
