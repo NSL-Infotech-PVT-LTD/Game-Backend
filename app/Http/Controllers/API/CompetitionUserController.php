@@ -57,7 +57,7 @@ class CompetitionUserController extends ApiController {
 
     public function playCompetitionCreateWithCustomerCard(Request $request) {
 //        $rules = ['card_number' => 'required', 'card_exp_month' => 'required', 'card_exp_year' => 'required', 'card_cvc' => 'required', 'competition_id' => 'required|exists:competitions,id'];
-        $rules = ['competition_id' => 'required|exists:competitions,id'];
+        $rules = ['competition_id' => 'required|exists:competitions,id','card_id'=>'required'];
         $validateAttributes = parent::validateAttributes($request, 'POST', $rules, array_keys($rules), false);
         if ($validateAttributes):
             return $validateAttributes;
@@ -88,6 +88,9 @@ class CompetitionUserController extends ApiController {
 //                        ],
 //            ]);
 //            dd($card->id);
+                $customer = \Stripe\Customer::retrieve(\Auth::user()->stripe_id);
+                $customer->default_source = $request->card_id;
+                $customer->save();
                 $charge = \Stripe\Charge::create([
                             "amount" => $fee * 100,
                             "currency" => "usd",
