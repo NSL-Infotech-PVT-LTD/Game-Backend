@@ -28,16 +28,24 @@ class PaymentController extends ApiController {
     }
 
     public function store(Request $request) {
-        $rules = ['token' => 'required'];
+        $rules = ['card_number' => 'required', 'card_exp_month' => 'required', 'card_exp_year' => 'required', 'card_cvc' => 'required'];
         $validateAttributes = parent::validateAttributes($request, 'POST', $rules, array_keys($rules), false);
         if ($validateAttributes):
             return $validateAttributes;
         endif;
         try {
             \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+            $stripeCard = \Stripe\Token::create([
+                        'card' => [
+                            'number' => $request->card_number,
+                            'exp_month' => $request->card_exp_month,
+                            'exp_year' => $request->card_exp_year,
+                            'cvc' => $request->card_cvc,
+                        ],
+            ]);
             $card = \Stripe\Customer::createSource(
                             \Auth::user()->stripe_id,
-                            ['source' => $request->token]
+                            ['source' => $stripeCard->id]
             );
             return parent::successCreated(['message' => 'Created Successfully', 'card' => $card]);
         } catch (\Exception $ex) {
