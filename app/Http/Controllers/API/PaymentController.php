@@ -25,6 +25,9 @@ class PaymentController extends ApiController {
             return $validateAttributes;
         endif;
         try {
+            $user = \App\User::find(\Auth::user()->id);
+            if ($user->stripe_id === null)
+                $user->createAsStripeCustomer();
             return parent::success(self::cardList());
         } catch (\Exception $ex) {
             return parent::error($ex->getMessage());
@@ -69,6 +72,9 @@ class PaymentController extends ApiController {
         endif;
         try {
             \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+            $user = \App\User::find(\Auth::user()->id);
+            if ($user->stripe_id === null)
+                $user->createAsStripeCustomer();
             $card = \Stripe\Customer::deleteSource(\Auth::user()->stripe_id, $request->card_id);
             return parent::successCreated(['message' => 'Deleted Successfully', 'data' => self::cardList()->data]);
         } catch (\Exception $ex) {
@@ -84,6 +90,9 @@ class PaymentController extends ApiController {
         endif;
         try {
             \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+            $user = \App\User::find(\Auth::user()->id);
+            if ($user->stripe_id === null)
+                $user->createAsStripeCustomer();
             $customer = \Stripe\Customer::retrieve(\Auth::user()->stripe_id);
             $customer->default_source = $request->card_id;
             $customer->save();
