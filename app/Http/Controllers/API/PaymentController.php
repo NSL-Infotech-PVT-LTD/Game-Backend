@@ -42,7 +42,7 @@ class PaymentController extends ApiController {
             $user = \App\User::find(Auth::user()->id);
             if ($user->stripe_id === null)
                 $user->createAsStripeCustomer();
-            
+            $stripeId = ( \Auth::user()->stripe_id === null) ? $user->stripe_id : \Auth::user()->stripe_id;
             $stripeCard = \Stripe\Token::create([
                         'card' => [
                             'number' => $request->card_number,
@@ -52,7 +52,7 @@ class PaymentController extends ApiController {
                         ],
             ]);
             $card = \Stripe\Customer::createSource(
-                            \Auth::user()->stripe_id,
+                            $stripeId,
                             ['source' => $stripeCard->id]
             );
             return parent::successCreated(['message' => 'Created Successfully', 'data' => self::cardList()->data]);
