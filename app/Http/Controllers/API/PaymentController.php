@@ -11,8 +11,9 @@ class PaymentController extends ApiController {
 
     private static function cardList() {
         \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
+        $stripeId = ( \Auth::user()->stripe_id === null) ? \App\User::whereId(\Auth::user()->id)->first()->stripe_id : \Auth::user()->stripe_id;
         $cards = \Stripe\Customer::allSources(
-                        \Auth::user()->stripe_id,
+                        $stripeId,
                         ['object' => 'card', 'limit' => 20]
         );
         return $cards;
