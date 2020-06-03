@@ -39,7 +39,7 @@ class PaymentController extends ApiController {
         endif;
         try {
             \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
-            $user = \App\User::find(Auth::user()->id);
+            $user = \App\User::find(\Auth::user()->id);
             if ($user->stripe_id === null)
                 $user->createAsStripeCustomer();
             $stripeId = ( \Auth::user()->stripe_id === null) ? $user->stripe_id : \Auth::user()->stripe_id;
