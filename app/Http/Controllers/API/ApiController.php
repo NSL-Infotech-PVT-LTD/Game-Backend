@@ -246,29 +246,34 @@ class ApiController extends \App\Http\Controllers\Controller {
     }
 
     public static function pushNotoficationFCM($data = [], $deviceToken, $customData = null) {
-        // FCM
-        $optionBuilder = new OptionsBuilder();
-        $optionBuilder->setTimeToLive(60 * 20);
-//        $notificationBuilder = new PayloadNotificationBuilder();
-        $notificationBuilder = new PayloadNotificationBuilder($data['title']);
-        $notificationBuilder->setBody($data['body']);
-        $notificationBuilder->setSound('default');
+        try {
 
-        $dataBuilder = new PayloadDataBuilder();
-        if (!is_null($customData))
-            $dataBuilder->addData(array_merge($data, $customData));
+            // FCM
+            $optionBuilder = new OptionsBuilder();
+            $optionBuilder->setTimeToLive(60 * 20);
+//        $notificationBuilder = new PayloadNotificationBuilder();
+            $notificationBuilder = new PayloadNotificationBuilder($data['title']);
+            $notificationBuilder->setBody($data['body']);
+            $notificationBuilder->setSound('default');
+
+            $dataBuilder = new PayloadDataBuilder();
+            if (!is_null($customData))
+                $dataBuilder->addData(array_merge($data, $customData));
 //            $dataBuilder->addData(['messageInfo' => array_merge($data, $customData)]);
 
-        $option = $optionBuilder->build();
-        $notification = $notificationBuilder->build();
-        $data = $dataBuilder->build();
+            $option = $optionBuilder->build();
+            $notification = $notificationBuilder->build();
+            $data = $dataBuilder->build();
 
 //     $token = "cHA2LPPxGVs:APA91bFefDwEDUARxnYGWIVzSgG4AgpBJaCBOdIjbEXug9ZihqvIH9Jn0nxvRYarj1Nx9RfP2bpDj2a6koskm7cn5cFgV9FuXcIHO0Tdnl_CFPdbFuGEyS559dfor6we_mgUoOHdB-7O";
 //        $deviceToken = "dy_8_yHs3-8:APA91bE8ufn76u1PnnTxq5pI5qL1iDQV-GRvxhVflIhlBwVdUqwHo92-iVAhgZ6-xr-wg_WCgZWC4oazJm74eMs08BQ6LcACH_6A7UA-IrQP8MHVVWlaVpkEvM5lPIShsp8Qp3CGVJy-";
-        $downstreamResponse = FCM::sendTo($deviceToken, $option, $notification, $data);
+            $downstreamResponse = FCM::sendTo($deviceToken, $option, $notification, $data);
 //        dd($downstreamResponse);
 //        $downstreamResponse->numberFailure();
-        return $downstreamResponse->numberSuccess() == '1' ? true : false;
+            return $downstreamResponse->numberSuccess() == '1' ? true : false;
+        } catch (\Exception $ex) {
+            return true;
+        }
     }
 
 //    public static function pushNotoficationFCM($data = [], $deviceToken, $customData = null) {
