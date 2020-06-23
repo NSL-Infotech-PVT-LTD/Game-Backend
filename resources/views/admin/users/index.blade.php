@@ -263,7 +263,7 @@ var form_data = new FormData();
                 Swal.fire(
                         status + 'Sent',
                         'Notification has been sent .',
-                        'Sent'
+                        'success'
                         ).then(() => {
                 table.ajax.reload(null, false);
                 });
@@ -272,7 +272,7 @@ var form_data = new FormData();
         }
 }
 });
-        console.log(data);
+//        console.log(data);
 });
 //deleting data
         $('.data-table').on('click', '.btnDelete[data-remove]', function (e) {

@@ -209,8 +209,12 @@ class ApiController extends \App\Http\Controllers\Controller {
 //    }
 
     public static function pushNotificationsMultipleUsers($data = [], $userIds, $customData = null, $type = 'all') {
+//        dd($userIds);
         foreach ($userIds as $userId):
-            self::pushNotification($data, $userId, $customData, $type);
+            if (\App\UserDevice::whereUserId($userId)->get()->toArray() > 0)
+                self::pushNotification($data, $userId, $customData, $type);
+            else
+                continue;
         endforeach;
         return true;
     }

@@ -226,7 +226,7 @@ class UsersController extends Controller {
     public function notify(Request $request) {
 //         dd($request->all());
 //        dd(explode(',', $request->id));
-        \App\Http\Controllers\API\ApiController::pushNotificationsMultipleUsers(['title' => $request->title, 'body' => $request->description], [explode(',', $request->id)],[], 'FCM');
+        \App\Http\Controllers\API\ApiController::pushNotificationsMultipleUsers(['title' => $request->title, 'body' => $request->description], explode(',', $request->id),[], 'FCM');
         return response()->json(["success" => true, 'message' => 'Competition notification sent!', 'status' => 'sent']);
     }
 
