@@ -150,9 +150,10 @@ class ApiController extends \App\Http\Controllers\Controller {
         }
 
         //Check device specific
-//        $agent = new \Jenssegers\Agent\Agent;
-//        if ($agent->isMobile() != true)
-//            return self::error("You're not allowed ", 401, false);
+        $agent = new \Jenssegers\Agent\Agent;
+//        dd($agent->is('Android'));
+        if ($agent->is('Android') == false)
+            return self::error("You're not allowed ", 401, false);
         
         return false;
     }
