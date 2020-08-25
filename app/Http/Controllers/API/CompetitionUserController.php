@@ -57,7 +57,7 @@ class CompetitionUserController extends ApiController {
 
     public function playCompetitionCreateWithCustomerCard(Request $request) {
 //        $rules = ['card_number' => 'required', 'card_exp_month' => 'required', 'card_exp_year' => 'required', 'card_cvc' => 'required', 'competition_id' => 'required|exists:competitions,id'];
-        $rules = ['competition_id' => 'required|exists:competitions,id','card_id'=>'required'];
+        $rules = ['competition_id' => 'required|exists:competitions,id', 'card_id' => 'required'];
         $validateAttributes = parent::validateAttributes($request, 'POST', $rules, array_keys($rules), false);
         if ($validateAttributes):
             return $validateAttributes;
@@ -249,7 +249,6 @@ class CompetitionUserController extends ApiController {
             return $validateAttributes;
         endif;
         try {
-//            dd(Auth::id());
             $competitionUser = MyModel::where('competition_id', $request->competition_id)->where('player_id', Auth::id())->get();
 //            dd($competitionUser->isEmpty());
             if ($competitionUser->isEmpty())
